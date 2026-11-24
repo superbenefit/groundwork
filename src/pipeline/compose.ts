@@ -175,7 +175,12 @@ export async function compose(env: ModelEnv, input: ComposeInput): Promise<Compo
       const r = await writeJson(env, { system: SYSTEM, user: facts + feedback, schema: ComposeOut, jsonSchema: COMPOSE_SCHEMA });
       usage.push(r.usage);
       const briefing = assemble(input, toProse(r.value, base), "model");
-      const errors = validateBriefing(briefing, ctx);
+      let errors = validateBriefing(briefing, ctx);
+      // An overview that is only too long is repaired in code rather than discarded.
+      if (errors.length && errors.every((e) => /^overview is \d+ words/.test(e))) {
+        briefing.overview = trimToWords(briefing.overview, 120);
+        errors = validateBriefing(briefing, ctx);
+      }
       attempts.push({ errors });
       if (!errors.length) return { briefing, attempts, usage };
       feedback = `\n\nYOUR PREVIOUS ANSWER WAS REJECTED. Fix these problems:\n${errors.map((e) => `- ${e}`).join("\n")}`;
@@ -185,6 +190,19 @@ export async function compose(env: ModelEnv, input: ComposeInput): Promise<Compo
   }
   const briefing = assemble(input, base, "fallback");
   return { briefing, attempts, usage };
+}
+
+/** Drops whole sentences from the end until the paragraphs fit. */
+export function trimToWords(paragraphs: string[], max: number): string[] {
+  const count = (ps: string[]) => ps.join(" ").split(/\s+/).filter(Boolean).length;
+  const ps = paragraphs.map((p) => p.split(/(?<=[.!?])\s+/));
+  while (count(ps.map((x) => x.join(" "))) > max) {
+    const last = ps[ps.length - 1]!;
+    if (last.length > 1) last.pop();
+    else if (ps.length > 1) ps.pop();
+    else break;
+  }
+  return ps.map((x) => x.join(" ")).filter(Boolean);
 }
 
 const clean = (s: string) => s.replace(/\s*\[[a-z]\](\[[a-z]\])*/g, "").replace(/\s+/g, " ").trim();

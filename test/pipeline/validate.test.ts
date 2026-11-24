@@ -3,7 +3,7 @@ import { fixtureSnapshot, RIVERSIDE } from "../fixtures";
 import { weigh } from "../../src/pipeline/weigh";
 import { retrieveMechanisms, retrieveOrgTypes, retrieveTools } from "../../src/pipeline/retrieve";
 import { assess } from "../../src/pipeline/assess";
-import { assemble, factSheet, type ComposeInput } from "../../src/pipeline/compose";
+import { assemble, factSheet, trimToWords, type ComposeInput } from "../../src/pipeline/compose";
 import { fallbackProse } from "../../src/pipeline/fallback";
 import { validateBriefing, type ValidationContext } from "../../src/pipeline/validate";
 import { decisionQuestions, pickNeeds } from "../../src/pipeline/plan";
@@ -80,6 +80,14 @@ describe("validator", () => {
   it("rejects a long overview and out-of-order blocks", () => {
     expect(mutate((b) => (b.overview = [Array(130).fill("word").join(" ")]))).toEqual(expect.arrayContaining([expect.stringMatching(/overview is 130 words/)]));
     expect(mutate((b) => b.blocks.reverse())).toEqual(expect.arrayContaining([expect.stringMatching(/out of order/)]));
+  });
+});
+
+describe("overview repair", () => {
+  it("drops trailing sentences until the overview fits", () => {
+    const long = ["One two three four. Five six seven.", "Eight nine. Ten eleven twelve thirteen."];
+    expect(trimToWords(long, 9)).toEqual(["One two three four. Five six seven.", "Eight nine."]);
+    expect(trimToWords(long, 4)).toEqual(["One two three four."]);
   });
 });
 

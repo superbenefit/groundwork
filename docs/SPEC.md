@@ -389,6 +389,23 @@ Weights affect ordering inside the comparison only. Output is always alphabetica
   - `stale` means `lastInvestigated` is more than 183 days old.
   - Plain labels come from `vocab.ts`: development status code to "Early release" or "In use"; capture risk to Low, Moderate or High.
 
+**Limit checks (as built in M1, `assess.ts` `CHECKS`).** Each reads OpenHaven's free-text fields by their leading wording. Anything ambiguous is `unknown`, never `conflict`:
+
+| Limit | ✓ yes | ✕ conflict | ? unknown |
+|---|---|---|---|
+| Crypto | "no token" in the takeover-risk reasoning | monetary or smart-contract entity type; `smartContract`/`assetValueEmbedding` "Yes"; "token-gated", "must hold a token", "gas fees", "requires a wallet" | any other mention of tokens, chains or wallets (for example Hypha's paid plans) |
+| Cost | terms say free, open source, no paid tiers | gas fees; paid or subscription only | freemium (question: "Does the free tier cover what your group needs?") |
+| Server | no server required, official/free public instance, SaaS, managed hosting | self-host only, requires a server | otherwise |
+| Phone | `mobileSupport` Yes, native, PWA, responsive | No, Not yet, In development | N/A or partial |
+| Poor internet | `offline-mesh`/`local-first-storage`, or `offlineCapabilities` Yes | Online-required, No | Limited |
+| Data export | `data-portability`, or `dataPortability` Yes | `web2DataExport` No with no portability, or `dataPortability` No | Partial, Limited, not stated |
+
+**Comparison lanes (M1).** Ready-made apps fill the comparison first, by score. With a developer, building blocks take at most 2 of the 6 slots unless there are fewer apps. Shown alphabetically.
+
+**Widening (M1).** If fewer than 2 options remain, up to 2 more needs with p ≥ 0.3 from the decision call are added (worded with the capability name) and Retrieve/Assess run again once. If OpenHaven has no ready-made tools for the needs (for example relational matching today), the briefing says so.
+
+**Overview repair (M1).** If the only validator error is overview length, trailing sentences are dropped in code instead of rejecting the model's prose.
+
 **Compose**
 - **Prompt input:** the profile, the plan, `ToolView[]`, the cells, the set-aside list, the questions, org types and mechanisms, and the style rules (§10.1).
 - **Output:** a `Briefing` with fixed block order. The model writes the title, the overview, leaning implications, "How to choose", safeguards, the legal paragraphs and the test/review text.

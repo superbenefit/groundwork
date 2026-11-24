@@ -92,7 +92,7 @@ export function fallbackProse(input: {
   const moderate = risks.filter((v) => v.takeoverRiskPlain !== "Low risk").map((v) => v.name);
   const early = risks.filter((v) => v.maturityPlain === "Early release").map((v) => v.name);
   return {
-    title: `Tools for ${lowerFirst(needs.slice(0, 2).join(" and "))}`.slice(0, 80),
+    title: `Software options for ${profile.name}`.slice(0, 80),
     overview: [
       `${profile.name} needs: ${needs.join("; ")}. ${n ? `${n} ready-made ${n === 1 ? "option meets" : "options meet"} at least one of these without breaking your limits.` : "No ready-made option meets these without breaking your limits."}`,
       `This briefing compares them, lists what is still unknown, and covers safeguards, your legal setup and how to test a choice.`,
@@ -129,5 +129,4 @@ export function fallbackProse(input: {
 }
 
 export { leanLabel };
-const lowerFirst = (s: string) => (s ? s[0]!.toLowerCase() + s.slice(1) : s);
 const firstSentence = (s: string) => (s.match(/^.*?[.!?](\s|$)/)?.[0] ?? s).trim().slice(0, 200);
