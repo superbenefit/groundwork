@@ -338,16 +338,17 @@ Worker (Hono)  ── run_worker_first: /agents/*, /api/*  ── static assets 
 
 ## 13. Models
 
-Workers AI changed under us this month. Kimi K2.x and GLM-5.2 were retired on Nov 20, 2026 (they now return 410). Think's default model, DeepSeek V4.1 Flash, is paid-only and limited to 20 requests per minute.
+Chosen from the M0 evals ([model-eval.md](model-eval.md)):
 
-| Use | Starting choice (free-tier models) | Alternatives to test in M0 | Paid-only option |
-|---|---|---|---|
-| Plan and Compose (structured output, non-streaming) | `@cf/google/gemma-4-26b-a4b-it` | `@cf/qwen/qwen3.8-27b`, `@cf/zai-org/glm-4.7-flash` | `@cf/deepseek-ai/deepseek-v4.1-flash-1017` |
-| Follow-up chat (tool calling) | `@cf/qwen/qwen3.8-27b` | `@cf/google/gemma-4-26b-a4b-it` | `@cf/deepseek-ai/deepseek-v4.1-flash-1017`, `@cf/zai-org/glm-5.3` |
+| Job | Model | Variable |
+|---|---|---|
+| Capability picks, Plan flags, mapping "Other" answers to the closest option | `@cf/cloudflare/clef-flash` (decision model) | `MODEL_PICK` |
+| Need wording, notes, Compose prose, follow-up chat | `@cf/deepseek-ai/deepseek-v4.1-flash-1017`, reasoning off | `MODEL_WRITE` |
+| Fallback for both | `@cf/google/gemma-4-26b-a4b-it` | `MODEL_FALLBACK` |
 
-- **Configuration:** model ids are Worker variables (`MODEL_PLAN`, `MODEL_COMPOSE`, `MODEL_CHAT`), so they can be swapped without code changes.
-- **Spike first:** the Think docs only confirm forced tool calls on DeepSeek V4.1. M0 runs a 10-persona eval on each candidate model and picks the models from its validator pass rate and latency (SPEC §12).
-- **Budget:** 10k free Neurons a day, then $0.011 per 1,000 Neurons. Expect about $2–3 per 1,000 briefings, and $5–10 a month in total on Workers Paid (SPEC §11.4).
+- **Configuration:** model ids are Worker variables, so they can be swapped without code changes.
+- **Limits:** DeepSeek V4.1 Flash is paid-only and limited to 20 requests per minute. The weekly caps and the burst limits keep the demo well under that. A 429 falls back to Gemma.
+- **Cost:** about $0.18 per 1,000 Plan decisions and about $0.50 per 1,000 chat turns at list prices; Compose adds about $1–2 per 1,000 briefings. Expect $5–10 a month in total on Workers Paid (SPEC §11.4).
 - **Plan requirement:** the Free Workers plan's 10 ms CPU limit is too tight for Think plus MCP, so the PoC needs Workers Paid.
 
 ## 14. Out of scope for the PoC

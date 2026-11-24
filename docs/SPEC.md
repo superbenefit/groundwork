@@ -112,9 +112,9 @@ groundwork/
   ],
   "triggers": { "crons": ["17 4 * * *"] },        // daily OpenHaven snapshot refresh
   "vars": {
-    "MODEL_PLAN": "@cf/google/gemma-4-26b-a4b-it",
-    "MODEL_COMPOSE": "@cf/google/gemma-4-26b-a4b-it",
-    "MODEL_CHAT": "@cf/qwen/qwen3.8-27b",
+    "MODEL_PICK": "@cf/cloudflare/clef-flash",                     // decisions: capability picks, flags, "Other" mapping
+    "MODEL_WRITE": "@cf/deepseek-ai/deepseek-v4.1-flash-1017",     // writing: need wording, notes, Compose, chat
+    "MODEL_FALLBACK": "@cf/google/gemma-4-26b-a4b-it",             // fallback for both
     "AI_GATEWAY_ID": "groundwork",
     "TURNSTILE_SITE_KEY": "<site key>",
     "OPENHAVEN_API": "https://openhaven.net/api",
@@ -273,7 +273,7 @@ type BriefingState = {
 ```ts
 export class BriefingAgent extends Think<Env, BriefingState> {
   waitForMcpConnections = { timeout: 8_000 };
-  getModel() { return this.env.MODEL_CHAT; }
+  getModel() { return this.env.MODEL_WRITE; }                            // reasoning off: reasoning_effort "none"
   getGateway() { return { id: this.env.AI_GATEWAY_ID, skipCache: true }; } // confirmed in think/src/model.ts; must be synchronous
   classifyChatError(err) { return is429(err) ? "rate_limit" : undefined; }   // Think then retries with backoff (1 s doubling to 30 s)
   getSystemPrompt() { return FOLLOW_UP_PROMPT; }                         // §10.2
@@ -342,17 +342,23 @@ When a cap is hit, the UI says so in plain words, for example "This demo allows 
 
 | Step (UI label) | Module | Kind | Contract |
 |---|---|---|---|
-| Understanding your question | `plan.ts` | 1 model call | Profile + question + vocabularies → `Plan` |
+| Understanding your question | `plan.ts` | 1 decision call (Clef-flash) + 1 writing call (DeepSeek) | Profile + question + vocabularies → `Plan` |
 | Weighing your priorities | `weigh.ts` | Code | `leans` → `affordanceWeights`, `flags` |
 | Finding tools that match | `retrieve.ts` | Code | Plan + weights + snapshot → candidates (tools, org types, mechanisms) |
 | Removing what you ruled out | `assess.ts` | Code | Candidates × profile → `ToolView[]`, cells, set-aside, questions |
 | Writing your briefing | `compose.ts` + `validate.ts` | 1 model call, up to 1 retry | Assessed data → `Briefing` |
 
 **Plan**
-- **Call:** `generateText({ model: ai(MODEL_PLAN), output: Output.object({ schema: PlanSchema }), prompt })`, non-streaming because Workers AI rejects JSON Schema when streaming. Confirmed in M0: ai 7.0.181 deprecates `generateObject`; use `generateText({ output: Output.object({ schema }) })` and read `result.output`. Reasoning must be off for every structured call: `ai(model, { reasoningEffort: null, chatTemplateKwargs: { enable_thinking: false } })` (64–93 s down to about 3 s; see docs/model-eval.md). Timeout of about 20 s with one retry, because about 1 call in 10 queues for 26–40 s.
-- **Prompt input:** a compact affordance list (id, name, description, domain), the domain list, the profile with every `other.*` text, and the question.
-- **Output:** 2–5 `needs` (plain wording plus `affordanceId`), mappings for any "Other" answers (`{ field, mappedTo?, note }`), `wantsOrgModels`, `wantsMoney`.
-- **Repair:** drop any `affordanceId` not in the vocabulary and retry once. Then fall back to keyword overlap between the question and affordance descriptions.
+- **Decision call (`MODEL_PICK`, Clef-flash, System One API):** `env.AI.run(MODEL_PICK, { model: "clef-flash", state, questions })` with:
+  - one `noul` question per affordance (43). Keep those with p ≥ 0.5, ordered by p, at most 5; if fewer than 2 pass, take the top 2;
+  - `noul` questions `wantsOrgModels` and `wantsMoney`;
+  - for each "Other" answer, a `choice` question whose `criteria` are that field's real options plus `none` ("doesn't match any option"). `mappedTo` is the chosen option; `none` keeps the text as context only.
+  - Ids are fixed by the question keys, so no repair step is needed. The p values are stored on the plan for the research screen and the eval.
+- **Writing call (`MODEL_WRITE`, DeepSeek, reasoning off):** `generateText` with `Output.object` writes `plain` (≤ 10 words, specific to the question) and `why` for each picked need, and a ≤ 25-word `note` for each "Other" answer. On failure the affordance name and a template note are used.
+- **Fallback:** if the decision call fails twice, `MODEL_FALLBACK` (Gemma) picks with a JSON schema whose ids are an enum.
+- Structured writing calls are non-streaming because Workers AI rejects JSON Schema when streaming. Confirmed in M0: ai 7.0.181 deprecates `generateObject`; use `generateText({ output: Output.object({ schema }) })` and read `result.output`. Reasoning must be off for every structured call: `ai(model, { reasoningEffort: null, chatTemplateKwargs: { enable_thinking: false } })` (64–93 s down to about 3 s; see docs/model-eval.md). Timeout of about 20 s with one retry, because about 1 call in 10 queues for 26–40 s.
+- **State text:** the profile written as plain requirements ("must be free", "data must be exportable"), every `other.*` text, and the question.
+- **Output:** 2–5 `needs` (`plain`, `why`, `affordanceId`, `p`), `otherMappings` (`{ field, mappedTo?, note }`), `wantsOrgModels`, `wantsMoney`.
 
 **Weigh** (table-driven):
 

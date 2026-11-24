@@ -9,7 +9,7 @@ DECISIONS ALREADY MADE (do not reopen):
 - Hosting: the SuperBenefit Cloudflare account (id c36c9a59f6251430c514f4fff55c3f4a), on the Workers Paid plan. Custom domain groundwork.superbenefit.dev. New GitHub repo superbenefit/groundwork, connected to Workers Builds.
 - Stack: one Worker. Hono with hono-agents, plus a static Astro build (React islands, no Cloudflare adapter) served as Worker assets. Two agents: WorkspaceAgent (a plain Agent) and BriefingAgent (extends Think from @cloudflare/think 0.24, pinned). Workers AI through AI Gateway "groundwork". KV snapshot of OpenHaven's static JSON API, refreshed by a daily cron. Turnstile at session start, then an HMAC session cookie. Agent names are bound to the workspace id.
 - Limits: weekly caps per browser of 20 briefings and 200 follow-up messages, stored in WorkspaceAgent SQLite by ISO week (UTC). The ratelimits binding is a burst guard only. Chat enters only through BriefingAgent.ask(), because Think has no admission hook.
-- Models (environment variables): MODEL_PLAN and MODEL_COMPOSE are @cf/google/gemma-4-26b-a4b-it; MODEL_CHAT is @cf/qwen/qwen3.8-27b. Confirm them with the 10-persona eval in M0. Models retired on Nov 20, 2026 (Kimi, GLM-5.2, glm-5.3-flash and others) must not be used.
+- Models (environment variables, decided after the M0 evals in docs/model-eval.md): MODEL_PICK is @cf/cloudflare/clef-flash; MODEL_WRITE is @cf/deepseek-ai/deepseek-v4.1-flash-1017 (reasoning off); MODEL_FALLBACK is @cf/google/gemma-4-26b-a4b-it. Models retired on Nov 20, 2026 (Kimi, GLM-5.2, glm-5.3-flash and others) must not be used.
 - Product rules:
   - The briefing presents options, never recommendations or "best".
   - The title is a plain document title.
