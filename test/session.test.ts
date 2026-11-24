@@ -4,7 +4,7 @@ import { isoWeek, weekResetsAt } from "../src/limits";
 
 const W = "8f14e45f-ceea-467a-9a3e-2d1f9f5b7c11";
 const OTHER = "0b9c1d2e-3f40-4a5b-8c6d-7e8f90a1b2c3";
-const env = { COOKIE_SECRET: "k", TURNSTILE_SECRET: "t", PRODUCTION_HOST: "groundwork.superbenefit.dev", AI_GATEWAY_ID: "g" } as unknown as Env;
+const env = { COOKIE_SECRET: "k", TURNSTILE_SECRET: "t", TURNSTILE_SITE_KEY: "0x4AAAAAAGQXeHxPm9HUPaLm", PRODUCTION_HOST: "groundwork.superbenefit.dev", AI_GATEWAY_ID: "g" } as unknown as Env;
 const req = async (path: string, cookieFor?: string, secret = "k") =>
   new Request(`https://groundwork.superbenefit.dev${path}`, { headers: cookieFor ? { cookie: `x=1; gw_session=${await signSession(secret, cookieFor)}` } : {} });
 
@@ -31,6 +31,9 @@ describe("agent gate", () => {
   it("requires a valid cookie", async () => {
     expect((await gate(await req(`/agents/workspace-agent/${W}`), env))?.status).toBe(401);
     expect((await gate(await req(`/agents/workspace-agent/${W}`, W, "wrong"), env))?.status).toBe(401);
+  });
+  it("refuses production with a test site key", async () => {
+    expect((await gate(await req(`/agents/workspace-agent/${W}`, W), { ...env, TURNSTILE_SITE_KEY: "1x00000000000000000000AA" } as Env))?.status).toBe(401);
   });
   it("refuses production without configured secrets", async () => {
     const bare = { PRODUCTION_HOST: "groundwork.superbenefit.dev", AI_GATEWAY_ID: "g" } as unknown as Env;
