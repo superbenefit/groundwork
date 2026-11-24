@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { agentsMiddleware } from "hono-agents";
 import { loadSnapshot, refreshSnapshot, snapshotDate } from "./openhaven/cache";
 import { Profile, Question } from "./shared/schema";
+import { gate, sessionWorkspace, startSession } from "./session";
 
 export { WorkspaceAgent } from "./agents/workspace";
 export { BriefingAgent } from "./agents/briefing";
@@ -58,10 +59,24 @@ app.post("/api/m0/brief", async (c) => {
 });
 app.get("/api/m0/brief/:name", async (c) => c.json(await c.env.BriefingAgent.getByName(c.req.param("name")).getRunState()));
 
+// Session bootstrap: Turnstile once, then a signed cookie (SPEC §6).
+app.get("/api/config", (c) => c.json({ turnstileSiteKey: c.env.TURNSTILE_SITE_KEY }));
+app.get("/api/session", async (c) => {
+  const w = await sessionWorkspace(c.req.raw, c.env);
+  return w ? c.json({ workspaceId: w }) : c.json({ error: "No session" }, 401);
+});
+app.post("/api/session", (c) => startSession(c.req.raw, c.env));
+
+// Agents: every connection and RPC must carry the cookie, and only reaches its own workspace (SPEC §5).
+/** Preview-only: set a workspace's weekly counters to test the caps. POST { runs, chatTurns }. */
+app.post("/api/m0/usage/:workspace", async (c) => {
+  const { runs, chatTurns } = await c.req.json<{ runs: number; chatTurns: number }>();
+  return c.json(await c.env.WorkspaceAgent.getByName(c.req.param("workspace")).setUsageForTest(runs, chatTurns));
+});
+
 app.use("/agents/*", (c, next) => {
-  // Agents are reachable on previews only until the cookie gate (SPEC §5) lands with the UI.
-  const deny = (req: Request) => (isProduction(req, c.env) ? new Response("Forbidden", { status: 403 }) : undefined);
-  return agentsMiddleware<{ Bindings: Env }>({ options: { onBeforeConnect: deny, onBeforeRequest: deny } })(c, next);
+  const check = (req: Request) => gate(req, c.env);
+  return agentsMiddleware<{ Bindings: Env }>({ options: { onBeforeConnect: check, onBeforeRequest: check } })(c, next);
 });
 
 export default {

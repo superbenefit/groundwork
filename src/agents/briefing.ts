@@ -27,6 +27,7 @@ export type BriefingState = {
   diagnostics?: { composeAttempts: { errors: string[] }[]; usage: { model: string; ms: number; inTokens: number; outTokens: number }[]; ms: number; topProbabilities: Record<string, number> };
 };
 
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const freshSteps = (): BriefingState["steps"] => STEPS.map((s) => ({ key: s.key, label: s.label, status: "pending" as const }));
 
 /**
@@ -103,9 +104,33 @@ export class BriefingAgent extends Think<Env, BriefingState> {
     return { ok: true };
   }
 
-  /** Weekly follow-up cap. M4 replaces this with the workspace's counter. */
-  protected async admitChatTurn(_workspace: string): Promise<{ ok: boolean; resetsAt?: string }> {
-    return { ok: true };
+  /** Weekly follow-up cap, counted by the workspace (SPEC §8). Preview test runs have no workspace. */
+  protected async admitChatTurn(workspace: string): Promise<{ ok: boolean; resetsAt?: string }> {
+    if (!UUID.test(workspace)) return { ok: true };
+    return this.env.WorkspaceAgent.getByName(workspace).consumeChatTurn();
+  }
+
+  /** Tells the workspace this session finished, with its title and suggested follow-on questions. */
+  private async reportToWorkspace(status: "done" | "failed") {
+    const [workspace, sessionId] = this.name.split(":");
+    if (!workspace || !sessionId || !UUID.test(workspace)) return;
+    const b = this.state.briefing;
+    const names = new Map(b?.tools.map((t) => [t.id, t.name]) ?? []);
+    const followOns: string[] = [];
+    if (b) {
+      followOns.push("The trial is done. What's a good next step?");
+      const q = b.blocks.find((x) => x.kind === "questions");
+      if (q && q.kind === "questions") {
+        const specific = q.items.find((i) => i.toolIds !== "all" && i.toolIds.length === 1);
+        if (specific && specific.toolIds !== "all") followOns.push(`${names.get(specific.toolIds[0]!) ?? ""}: ${specific.question[0]!.toLowerCase()}${specific.question.slice(1)}`);
+      }
+    }
+    await this.env.WorkspaceAgent.getByName(workspace).sessionDone(sessionId, status, b?.title ?? null, followOns).catch(() => undefined);
+  }
+
+  /** Retention: the workspace deletes its sessions after 30 days without use. */
+  async destroyBriefing() {
+    await this.destroy();
   }
 
   /** Keeps one assistant answer in the briefing under "From your questions". */
@@ -147,8 +172,10 @@ export class BriefingAgent extends Think<Env, BriefingState> {
     });
   }
 
-  /** Starts the research run. Idempotent: a second call while running or done returns the current phase. */
-  @callable()
+  /**
+   * Starts the research run. Not client-callable: WorkspaceAgent.startSession() calls it over RPC after
+   * the weekly cap check (preview test hooks call it directly). Idempotent.
+   */
   async start(profileIn: unknown, questionIn: unknown) {
     if (this.state.phase !== "idle" && this.state.phase !== "failed") return { phase: this.state.phase };
     const profile = Profile.parse(profileIn);
@@ -188,9 +215,11 @@ export class BriefingAgent extends Think<Env, BriefingState> {
       }, resume);
       const ms = Date.now() - (this.state.startedAt ?? Date.now());
       update({ phase: "done", steps: [...steps], plan: result.plan, briefing: result.briefing, counts: result.counts, chatFacts: result.facts, finishedAt: Date.now(), diagnostics: { composeAttempts: result.composeAttempts, usage: result.usage, ms, topProbabilities: result.topProbabilities } });
+      await this.reportToWorkspace("done");
       console.log(JSON.stringify({ event: "briefing.done", ms: Date.now() - (this.state.startedAt ?? Date.now()), composedBy: result.briefing.composedBy, composeAttempts: result.composeAttempts, usage: result.usage, counts: result.counts }));
     } catch (e) {
       update({ phase: "failed", error: String((e as Error)?.message ?? e).slice(0, 300) });
+      await this.reportToWorkspace("failed");
       console.error(JSON.stringify({ event: "briefing.failed", error: String((e as Error)?.stack ?? e) }));
     }
   }

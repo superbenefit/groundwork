@@ -90,7 +90,7 @@ export function toProfile(a: Answers): Profile {
   };
 }
 
-/** Local persistence. M4 moves groups and sessions into the workspace agent. */
+/** The in-progress draft of a new group's answers. Saved groups live in the workspace agent. */
 const KEY = "gw.draft";
 export const storage = {
   load(): Answers | null {
@@ -99,11 +99,7 @@ export const storage = {
   save(a: Answers) {
     try { localStorage.setItem(KEY, JSON.stringify(a)); } catch { /* private mode */ }
   },
-  workspaceId(): string {
-    try {
-      let id = localStorage.getItem("gw.workspace");
-      if (!id) { id = crypto.randomUUID(); localStorage.setItem("gw.workspace", id); }
-      return id;
-    } catch { return crypto.randomUUID(); }
+  clear() {
+    try { localStorage.removeItem(KEY); } catch { /* private mode */ }
   },
 };

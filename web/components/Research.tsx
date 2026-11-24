@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useAgent } from "agents/react";
 import type { BriefingState } from "../../src/agents/briefing";
-import type { Profile } from "../../src/shared/schema";
 import { Brand } from "./Brand";
 import { PoweredBy } from "./PoweredBy";
 import "./onboarding.css";
@@ -14,32 +13,16 @@ const DETAIL: Record<string, string> = {
   compose: "",
 };
 
-export function rememberSession(name: string, profile: Profile, question: string) {
-  try {
-    const list = JSON.parse(localStorage.getItem("gw.sessions") ?? "[]") as { name: string; group: string; question: string; at: number }[];
-    if (!list.some((s) => s.name === name)) list.unshift({ name, group: profile.name, question, at: Date.now() });
-    localStorage.setItem("gw.sessions", JSON.stringify(list.slice(0, 20)));
-  } catch { /* private mode */ }
-}
-
-export function Research({ name, profile, question, onBack }: { name: string; profile: Profile; question: string; onBack?: () => void }) {
+/** Watches a run the workspace started; the steps tick off as the agent reports them. */
+export function Research({ name, question, onBack }: { name: string; question: string; onBack?: () => void }) {
   const [state, setState] = useState<BriefingState | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const started = useRef(false);
   const agent = useAgent<BriefingState>({
     agent: "briefing-agent",
     name,
     onStateUpdate: (s) => setState(s),
+    onStateUpdateError: (e: unknown) => setError(String((e as Error)?.message ?? e)),
   });
-
-  useEffect(() => {
-    if (started.current || !state) return;
-    if (state.phase === "idle") {
-      started.current = true;
-      rememberSession(name, profile, question);
-      agent.stub.start(profile, question).catch((e: unknown) => setError(String((e as Error)?.message ?? e)));
-    }
-  }, [state, agent, name, profile, question]);
 
   const steps = state?.steps ?? [];
   const done = state?.phase === "done";
@@ -75,7 +58,7 @@ export function Research({ name, profile, question, onBack }: { name: string; pr
           {failed && (
             <div className="gw-run-fail">
               <p>{error ?? state?.error}</p>
-              <button type="button" className="gw-btn" onClick={() => agent.stub.retryRun()}>Try again</button>
+              <button type="button" className="gw-btn" onClick={() => agent.stub.retryRun().catch((e: unknown) => setError(String((e as Error)?.message ?? e)))}>Try again</button>
               {onBack && <button type="button" className="gw-link-btn" onClick={onBack}>Back to your answers</button>}
             </div>
           )}

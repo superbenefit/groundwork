@@ -46,7 +46,7 @@ function Connected({ name }: { name: string }) {
   if (!state) return <div className="gw-page-loading" aria-live="polite">Loading the briefing…</div>;
   if (state.phase === "idle") return <Missing />;
   if (state.phase !== "done" || !state.briefing || !state.profile) {
-    return <Research name={name} profile={state.profile!} question={state.question ?? ""} />;
+    return <Research name={name} question={state.question ?? ""} />;
   }
   return (
     <div className="gw-page">

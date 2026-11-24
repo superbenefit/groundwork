@@ -2,25 +2,47 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { CHOICES, EXAMPLES, LIMIT_OPTS, SCALES, emptyAnswers, storage, toProfile, type Answers, type ChoiceQ } from "../lib/answers";
 import { Brand } from "./Brand";
 import { PoweredBy } from "./PoweredBy";
-import { Research } from "./Research";
+import type { WorkspaceState } from "../../src/agents/workspace";
+import type { Workspace } from "./App";
 import "./onboarding.css";
+import "./returning.css";
 
 const KEYS = "ABCDEFGH";
 const PART = (step: number) => (step <= 4 ? "Your group" : step <= 8 ? "How you work" : step === 9 ? "Your question" : "Check your answers");
 const clip = (s: string, n: number) => (s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s);
 
-export function Onboarding() {
-  const [a, setA] = useState<Answers>(emptyAnswers);
-  const [step, setStep] = useState(0);
+type Props = {
+  workspace: Workspace;
+  state: WorkspaceState;
+  /** Editing an existing group: its id and saved answers. */
+  groupId?: string;
+  initial?: Answers;
+  startAt?: number;
+  onRun: (name: string, question: string) => void;
+  onCancel?: () => void;
+};
+
+const REFUSED: Record<string, string> = {
+  weekly_cap: "This demo allows 20 briefings a week per browser. More are available from Monday.",
+  rate: "That's several briefings in a minute. Wait a moment and try again.",
+  not_found: "That group isn't here any more.",
+};
+
+export function Onboarding({ workspace, groupId, initial, startAt, onRun, onCancel }: Props) {
+  const [a, setA] = useState<Answers>(() => initial ?? emptyAnswers());
+  const [step, setStep] = useState(startAt ?? 0);
   const [dir, setDir] = useState<"up" | "down">("up");
-  const [run, setRun] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const editing = !!groupId;
 
   useEffect(() => {
+    if (initial) return;
     const saved = storage.load();
     if (saved) setA(saved);
-  }, []);
-  const update = (patch: Partial<Answers>) => setA((prev) => { const next = { ...prev, ...patch }; storage.save(next); return next; });
+  }, [initial]);
+  const update = (patch: Partial<Answers>) => setA((prev) => { const next = { ...prev, ...patch }; if (!editing) storage.save(next); return next; });
   const go = (n: number) => { clearTimeout(timer.current); setDir(n < step ? "down" : "up"); setStep(n); window.scrollTo(0, 0); };
 
   const canNext = useMemo(() => {
@@ -30,19 +52,29 @@ export function Onboarding() {
     return true;
   }, [step, a]);
 
-  const start = () => {
-    const ws = storage.workspaceId();
-    setRun(`${ws}:${crypto.randomUUID()}`);
-    go(11);
+  const start = async () => {
+    if (busy) return;
+    setBusy(true);
+    setNotice(null);
+    try {
+      const { groupId: id } = await workspace.stub.saveGroup(toProfile(a), a, groupId);
+      const r = await workspace.stub.startSession(id, a.question.trim());
+      if ("name" in r) {
+        if (!editing) storage.clear();
+        onRun(r.name, a.question.trim());
+      } else setNotice(REFUSED[r.refused] ?? "Couldn't start the briefing.");
+    } catch (e) {
+      setNotice(String((e as Error)?.message ?? e));
+    } finally {
+      setBusy(false);
+    }
   };
-
-  if (step === 11 && run) return <Research name={run} profile={toProfile(a)} question={a.question.trim()} onBack={() => go(10)} />;
 
   return (
     <div className="gw-ob">
       <div className="gw-ob-bar">
         <div className="gw-ob-bar-left">
-          {step > 0 && (
+          {(step > 0 || onCancel) && (
             <button type="button" className="gw-icon-btn" aria-label="Previous question" onClick={() => go(step - 1)}>
               <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 6l-6 6 6 6" /></svg>
             </button>
@@ -165,8 +197,9 @@ export function Onboarding() {
                   </button>
                 ))}
               </div>
+              {notice && <p className="gw-ret-notice" role="status">{notice}</p>}
               <div className="gw-flex" />
-              <button type="button" className="gw-btn gw-btn-big" disabled={!canNext} onClick={start}>Find tools</button>
+              <button type="button" className="gw-btn gw-btn-big" disabled={!canNext || busy} onClick={start}>{busy ? "Starting…" : "Find tools"}</button>
             </div>
           )}
         </div>
