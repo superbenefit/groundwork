@@ -92,7 +92,7 @@
     "MODEL_FALLBACK": "@cf/google/gemma-4-26b-a4b-it",
     "AI_GATEWAY_ID": "groundwork",
     "PRODUCTION_HOST": "groundwork.superbenefit.dev",
-    "TURNSTILE_SITE_KEY": "1x00000000000000000000AA",
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAGQXeHxPm9HUPaLm",
     "OPENHAVEN_API": "https://openhaven.net/api",
     "OPENHAVEN_MCP": "https://openhaven.net/mcp",
     "RETENTION_DAYS": "30"

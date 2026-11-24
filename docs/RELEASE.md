@@ -7,7 +7,7 @@ Production deploys when `main` changes (Workers Builds). Merge the stack bottom-
 These need someone with access to the SuperBenefit Cloudflare account. None can be done from the repo.
 
 1. **Turnstile widget.** Turnstile → Add widget → hostname `groundwork.superbenefit.dev`, mode Managed.
-   - Put the **site key** in `wrangler.jsonc` → `vars.TURNSTILE_SITE_KEY` (top level only; previews keep the test key).
+   - Done: site key `0x4AAAAAAGQXeHxPm9HUPaLm` is in `wrangler.jsonc` → `vars.TURNSTILE_SITE_KEY` (previews keep the test key).
    - Add the **secret key** as a Worker secret: Workers & Pages → groundwork → Settings → Variables and secrets → Production → `TURNSTILE_SECRET` (type Secret).
 2. **Cookie secret.** Same place: `COOKIE_SECRET`, a random value of 32+ characters (for example the output of `openssl rand -base64 48`).
    Without both secrets, production refuses to start sessions ("Sessions are not configured on this deployment").
