@@ -78,14 +78,14 @@ export function leanLabel(scale: keyof typeof SCALE_POLES, value: number): strin
 }
 
 /** The profile as plain text for model state and prompts. Limits are written as requirements. */
-export function profileText(p: Profile, question: string): string {
+export function profileText(p: Profile, question: string, opts: { limits?: boolean } = {}): string {
   const other = Object.entries(p.other ?? {}).filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join("; ");
   const opt = (f: OtherField, v: string) => (v === "other" ? `other (${(p.other as Record<string, string | undefined>)?.[f] ?? "see free text"})` : OPTIONS[f][v] ?? v);
   return [
     `Group: ${p.name}. What it does: ${p.purpose || "not given"}.`,
     `People doing the work: ${opt("scale", p.scale)}. Who benefits: ${opt("reach", p.reach)}. Decisions today: ${opt("decision", p.decision)}.`,
     `Leanings, 1 to 5: ${SCALE_POLES.speedSay.join(" (1) vs ")} (5): ${p.leans.speedSay}; ${SCALE_POLES.stableAdapt.join(" (1) vs ")} (5): ${p.leans.stableAdapt}; ${SCALE_POLES.autoJudge.join(" (1) vs ")} (5): ${p.leans.autoJudge}.${p.leanNote ? ` Note: ${p.leanNote}` : ""}`,
-    `Hard requirements: ${p.limits.length ? p.limits.map((l) => LIMIT_REQUIREMENT[l]).join("; ") : "none"}.`,
+    opts.limits === false ? "" : `Hard requirements: ${p.limits.length ? p.limits.map((l) => LIMIT_REQUIREMENT[l]).join("; ") : "none"}.`,
     `Who sets it up: ${opt("setup", p.setup)}. Legal form: ${opt("legal", p.legal)}.`,
     other ? `Free-text answers: ${other}.` : "",
     `Question: ${question}`,

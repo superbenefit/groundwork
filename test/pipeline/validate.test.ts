@@ -50,6 +50,12 @@ describe("validator", () => {
   it("rejects \"best\" anywhere, even when denying it", () => {
     expect(mutate((b) => (block(b, "howToChoose").items[0]!.body = "No option is best for your group."))).toEqual(expect.arrayContaining([expect.stringMatching(/"best"/)]));
   });
+  it("rejects singling out an option to try first", () => {
+    expect(mutate((b) => (block(b, "howToChoose").items[0]!.body = "If voting and spending must sit together, Group Income is the one to trial first."))).toEqual(
+      expect.arrayContaining([expect.stringMatching(/first pick|the one to/)]),
+    );
+    expect(mutate((b) => (block(b, "howToChoose").items[0]!.body = "Your group should use Moss."))).toEqual(expect.arrayContaining([expect.stringMatching(/should choose\/use/)]));
+  });
   it("rejects first-person plural", () => {
     expect(mutate((b) => (b.overview[0] = "We compared four tools for you."))).toEqual(expect.arrayContaining([expect.stringMatching(/"we"/)]));
     expect(mutate((b) => (b.overview[0] = "Tell us what you learn."))).toEqual(expect.arrayContaining([expect.stringMatching(/"us"/)]));

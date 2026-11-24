@@ -2,7 +2,7 @@ import { z } from "zod";
 import { decide, writeJson, type DecisionQuestion, type ModelEnv, type Usage } from "./ai";
 import { OPTIONS, profileText } from "./vocab";
 import { STYLE_RULES } from "./style";
-import { OTHER_FIELDS, type OtherField, type Plan, type Profile } from "../shared/schema";
+import { OTHER_FIELDS, type Limit, type OtherField, type Plan, type Profile } from "../shared/schema";
 import type { Affordance } from "../openhaven/types";
 
 const MAX_NEEDS = 5;
@@ -15,10 +15,18 @@ export function otherAnswers(profile: Profile): { field: OtherField; text: strin
 }
 
 /** Questions for the decision model: one per capability, two flags, one choice per free-text answer. */
+/** Capabilities that duplicate a limit the group chose; the limit column already covers them. */
+const LIMIT_AFFORDANCES: Partial<Record<Limit, string[]>> = { export: ["data-portability"], offline: ["offline-mesh", "local-first-storage"] };
+
+export function needCandidates(profile: Profile, affordances: Affordance[]): Affordance[] {
+  const skip = new Set(profile.limits.flatMap((l) => LIMIT_AFFORDANCES[l] ?? []));
+  return affordances.filter((a) => !skip.has(a.id));
+}
+
 export function decisionQuestions(profile: Profile, affordances: Affordance[]): Record<string, DecisionQuestion> {
   const q: Record<string, DecisionQuestion> = {};
-  for (const a of affordances) {
-    q[`aff.${a.id}`] = { type: "noul", instructions: `Does this group need this capability to act on its question? ${a.name}: ${a.description}` };
+  for (const a of needCandidates(profile, affordances)) {
+    q[`aff.${a.id}`] = { type: "noul", instructions: `Does the group's question need this capability? Judge from the question and what the group does. ${a.name}: ${a.description}` };
   }
   q["flag.orgModels"] = { type: "noul", instructions: "Does the question or the group's legal answer touch how the group is structured, governed as an organization, or incorporated?" };
   q["flag.money"] = { type: "noul", instructions: "Does the question touch money: budgets, dues, funding, spending, pooling or payments?" };
@@ -70,7 +78,8 @@ const WORDING_SCHEMA = {
 export type PlanResult = { plan: Plan; usage: Usage[]; probabilities: Record<string, number> };
 
 export async function runPlan(env: ModelEnv, profile: Profile, question: string, affordances: Affordance[]): Promise<PlanResult> {
-  const state = profileText(profile, question);
+  // Limits are checked separately (Assess), so they stay out of the decision state.
+  const state = profileText(profile, question, { limits: false });
   const usage: Usage[] = [];
   const byId = new Map(affordances.map((a) => [a.id, a]));
 
@@ -98,7 +107,7 @@ export async function runPlan(env: ModelEnv, profile: Profile, question: string,
     }
   } catch {
     source = "keywords";
-    picked = keywordNeeds(question, affordances);
+    picked = keywordNeeds(question, needCandidates(profile, affordances));
   }
 
   // 2. Wording.
@@ -113,7 +122,7 @@ export async function runPlan(env: ModelEnv, profile: Profile, question: string,
         STYLE_RULES,
       ].join("\n"),
       user: [
-        state,
+        profileText(profile, question),
         "",
         "Capabilities to word:",
         ...picked.map((n) => `- ${n.id}: ${byId.get(n.id)?.name}. ${byId.get(n.id)?.description}`),

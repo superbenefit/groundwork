@@ -151,7 +151,8 @@ export function assess(candidates: Candidate[], profile: Profile, plan: Plan, we
     const isApp = APP_TYPES.has(t.entityType);
     if (!isApp && !developer) {
       const who = profile.setup === "guided" ? "You said the person setting it up can follow a guide, not build software." : "You said no one technical will set things up.";
-      excluded.push({ toolId: t.id, name: t.name, why: "buildingBlock", reason: `${coversText}It is a ${kindPlain(t.entityType).toLowerCase()}, not a ready-made app. ${who}`, score: c.score });
+      const also = conflicts.length ? " " + conflicts.map((l) => LIMIT_REASON[l]).join(" ") : "";
+      excluded.push({ toolId: t.id, name: t.name, why: "buildingBlock", reason: `${coversText}It is a ${kindPlain(t.entityType).toLowerCase()}, not a ready-made app. ${who}${also}`, score: c.score });
       continue;
     }
     if (conflicts.length) {

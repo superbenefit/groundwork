@@ -5,6 +5,7 @@ export const STYLE_RULES = [
   "State facts directly, one idea per sentence. No preambles, no hedging adjectives.",
   "Never recommend, rank or call anything best. Do not use the word \"best\" at all, even to deny it. Present options and trade-offs.",
   "Label a suggestion as a suggestion. Never present a combination as known to work.",
+  "Never say which option to try, pick or start with first, and never single one out as the one to choose. Say what each option covers and what is unknown.",
 ].join("\n");
 
 export const BANNED: { re: RegExp; label: string }[] = [
@@ -17,6 +18,10 @@ export const BANNED: { re: RegExp; label: string }[] = [
   { re: /you should use/i, label: "\"you should use\"" },
   { re: /the right tool/i, label: "\"the right tool\"" },
   { re: /perfect for/i, label: "\"perfect for\"" },
+  { re: /\b(trial|try|test|start with|pick|choose) (it |them )?first\b/i, label: "a first pick" },
+  { re: /\bthe one to (trial|try|choose|pick|use)\b/i, label: "\"the one to …\"" },
+  { re: /\bgo with\b/i, label: "\"go with\"" },
+  { re: /\bshould (choose|pick|use|try|adopt|go)\b/i, label: "\"should choose/use\"" },
   { re: /\baffordances?\b/i, label: "\"affordance\"" },
   { re: /\bentity types?\b/i, label: "\"entity type\"" },
   { re: /\bcapture risk\b/i, label: "\"capture risk\"" },
