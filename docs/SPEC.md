@@ -349,7 +349,7 @@ When a cap is hit, the UI says so in plain words, for example "This demo allows 
 | Writing your briefing | `compose.ts` + `validate.ts` | 1 model call, up to 1 retry | Assessed data → `Briefing` |
 
 **Plan**
-- **Call:** `generateText({ model: ai(MODEL_PLAN), output: Output.object({ schema: PlanSchema }), prompt })`, non-streaming because Workers AI rejects JSON Schema when streaming. Confirmed in M0: ai 7.0.181 deprecates `generateObject`; use `generateText({ output: Output.object({ schema }) })` and read `result.output`.
+- **Call:** `generateText({ model: ai(MODEL_PLAN), output: Output.object({ schema: PlanSchema }), prompt })`, non-streaming because Workers AI rejects JSON Schema when streaming. Confirmed in M0: ai 7.0.181 deprecates `generateObject`; use `generateText({ output: Output.object({ schema }) })` and read `result.output`. Reasoning must be off for every structured call: `ai(model, { reasoningEffort: null, chatTemplateKwargs: { enable_thinking: false } })` (64–93 s down to about 3 s; see docs/model-eval.md). Timeout of about 20 s with one retry, because about 1 call in 10 queues for 26–40 s.
 - **Prompt input:** a compact affordance list (id, name, description, domain), the domain list, the profile with every `other.*` text, and the question.
 - **Output:** 2–5 `needs` (plain wording plus `affordanceId`), mappings for any "Other" answers (`{ field, mappedTo?, note }`), `wantsOrgModels`, `wantsMoney`.
 - **Repair:** drop any `affordanceId` not in the vocabulary and retry once. Then fall back to keyword overlap between the question and affordance descriptions.
@@ -464,7 +464,8 @@ CPU time is low; wall time is mostly model latency, and Durable Object requests 
    - build `npm ci && npm run build`;
    - deploy `npx wrangler deploy`;
    - preview `npx wrangler preview`;
-   - Preview custom domain: `groundwork.superbenefit.dev`, so branch Previews are `<branch>.groundwork.superbenefit.dev`.
+   - Preview URLs are on workers.dev: `<branch>-groundwork.superbenefit.workers.dev` (for example `m0-spike-groundwork.superbenefit.workers.dev`).
+   - Previews inherit nothing: `vars`, `ai`, KV and rate limits are repeated in the `previews` block.
 
 ### 11.2 Environments
 
