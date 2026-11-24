@@ -1,0 +1,45 @@
+/* Brand tokens (feature-relaunch.superbenefit.dev) and shared base styles. */
+:root {
+  --cream: #f5ede0;
+  --cream-deep: #edddc8;
+  --paper: #fffaf2;
+  --charcoal: #2d2d2d;
+  --black: #1a1a1a;
+  --orange: #f5872c;
+  --red: #c4401a;
+  --red-deep: #8f3b24;
+  --gold: #d4a843;
+  --green: #7a9a4e;
+  --green-deep: #4f6b2c;
+  --muted: #5a4a3a;
+  --rule: #d9c8b0;
+  --serif: "Playfair Display", Georgia, serif;
+  --sans: Inter, -apple-system, "Segoe UI", sans-serif;
+  --side: 22px;
+  --gap: 34px;
+}
+@media (min-width: 761px) {
+  :root { --side: 48px; --gap: 44px; }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--cream); color: var(--black); font-family: var(--sans); }
+a { color: var(--red-deep); }
+a:hover { color: var(--black); }
+button { font: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+
+@keyframes gw-in-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+.gw-up { animation: gw-in-up 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.gw-s1 { animation-delay: 0.1s; } .gw-s2 { animation-delay: 0.2s; } .gw-s3 { animation-delay: 0.3s; } .gw-s4 { animation-delay: 0.4s; }
+@media (prefers-reduced-motion: reduce) { .gw-up { animation: none; } }
+
+@media print {
+  .gw-noprint { display: none !important; }
+  .gw-up { animation: none; }
+  body { background: #fff; }
+}
+
+/* "Powered by OpenHaven" badge, on every screen. */
+.gw-powered { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--muted); font-size: 12px; border: 1px solid #cdb99d; border-radius: 50px; padding: 6px 12px 6px 8px; }
+.gw-powered:hover { color: var(--black); border-color: var(--charcoal); }
+.gw-powered strong { font-weight: 600; color: var(--black); }

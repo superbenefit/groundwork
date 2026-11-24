@@ -1,5 +1,10 @@
 ---
+import Base from "../layouts/Base.astro";
 ---
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8" /><title>Not found · Groundwork</title></head>
-<body style="background:#f5ede0;font-family:Inter,system-ui,sans-serif;padding:24px"><h1>Page not found</h1><p><a href="/">Go to Groundwork</a></p></body></html>
+<Base title="Page not found · Groundwork">
+  <main style="max-width:720px;margin:0 auto;padding:56px 22px;display:flex;flex-direction:column;gap:16px">
+    <h1 style="margin:0;font-family:var(--serif);font-size:36px">Page not found</h1>
+    <p style="margin:0">The page you asked for isn't here.</p>
+    <a href="/">Go to Groundwork</a>
+  </main>
+</Base>

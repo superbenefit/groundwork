@@ -1,0 +1,10 @@
+.gw-page { min-height: 100dvh; }
+.gw-topbar { height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 var(--side); border-bottom: 1px solid var(--rule); }
+@media (min-width: 761px) { .gw-topbar { height: 64px; } }
+.gw-topbar-left { display: flex; align-items: center; gap: 16px; }
+.gw-topbar-group { font-size: 14px; font-weight: 600; }
+.gw-topbar-link { font-size: 14px; font-weight: 600; color: var(--red-deep); min-height: 44px; display: inline-flex; align-items: center; }
+.gw-page-loading { min-height: 100dvh; display: flex; align-items: center; justify-content: center; color: var(--muted); }
+.gw-missing main { max-width: 720px; margin: 0 auto; padding: 56px var(--side); display: flex; flex-direction: column; gap: 16px; }
+.gw-missing h1 { margin: 0; font-family: var(--serif); font-size: 36px; }
+.gw-missing p { margin: 0; color: var(--charcoal); line-height: 1.6; }
