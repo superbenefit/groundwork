@@ -55,7 +55,7 @@ export const PERSONAS = [
     id: "seed-library",
     question: "A seed-saving network wants a shared catalogue that any member group can host a copy of.",
     profile: { name: "Open Seed Commons", purpose: "Keep heirloom seeds in circulation", scale: "network", reach: "other",
-      other: { reach: "Members in four countries, mostly rural" },
+      decision: "consensus", other: { reach: "Members in four countries, mostly rural" },
       leans: { speedSay: 4, stableAdapt: 4, autoJudge: 2 }, limits: ["crypto", "export"], setup: "guided", legal: "unsure" },
   },
   {
