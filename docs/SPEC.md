@@ -535,14 +535,15 @@ Version preview URLs are not generated for Workers with Durable Objects. Use bra
 
 ## 13. Milestones (refines PRD §17)
 
-| | Exit criteria |
-|---|---|
-| **M0 Spike** (1–2 days) | Worker deployed to a preview: BriefingAgent connected to OpenHaven MCP; one `generateText` structured call on each candidate model; the **VERIFY** items resolved; models chosen from the evals |
-| **M1 Pipeline** (3–4 days) | Snapshot cron, all five steps, validator, fallback; golden test for Riverside passes |
-| **M2 Flow UI** (4–5 days) | Astro islands match the mockups (mobile and desktop): 9 questions with Other fields, progress bar, check screen, research screen, briefing blocks, Powered by badge |
-| **M3 Follow-up** (2–3 days) | Think chat panel, context blocks, MCP and fallback tools, `addToBriefing`, `highlight` |
-| **M4 Groups and polish** (2–3 days) | WorkspaceAgent, switch group, returning flow with follow-on chips, Save as PDF, motion and reduced motion, accessibility pass |
-| **M5 Deploy** (1 day) | §11 pre-flight done; production on `groundwork.superbenefit.dev`; release checklist complete |
+Status as of Nov 24, 2026. Each milestone is one stacked pull request; each was checked in a real browser at 390 px and 1280 px on its branch Preview.
+
+| | Pull request | Status |
+|---|---|---|
+| **M0 Spike** and **M1 Pipeline** | #1 (`m0-spike` → `main`) | Done. Models chosen from two eval rounds (docs/model-eval.md). Riverside golden test passes; 11 personas run end to end. |
+| **M2 Flow UI** | #2 (`m2-ui` → `m0-spike`) | Done. Onboarding, research screen and briefing match the mockups on mobile and desktop. |
+| **M3 Follow-up** | #3 (`m3-followup` → `m2-ui`) | Done. Chat through `ask()` only; answers cite review dates and say what is unknown; Add to briefing; highlight. |
+| **M4 Groups and caps** | #4 (`m4-groups` → `m3-followup`) | Done. Turnstile + signed cookie, agent gate, WorkspaceAgent, weekly caps, returning screen, switch group, 30-day retention (scheduled; not observed firing). |
+| **M5 Deploy readiness** | #5 (`m5-deploy` → `m4-groups`) | Done in code: axe WCAG 2.2 AA clean on 28 screen checks, reduced motion, keyboard, print/PDF, security headers. Production needs the dashboard steps in docs/RELEASE.md, then merge to `main`. |
 
 ## 14. Open technical questions
 

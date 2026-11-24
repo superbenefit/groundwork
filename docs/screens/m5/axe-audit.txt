@@ -1,0 +1,30 @@
+desktop welcome: 0 violations, 20 passes
+desktop q1 text: 0 violations, 24 passes
+desktop q2 choice: 0 violations, 23 passes
+desktop q2 other: 0 violations, 25 passes
+desktop q5 scales: 0 violations, 25 passes
+desktop q6 limits: 0 violations, 23 passes
+desktop q9 question: 0 violations, 24 passes
+desktop check: 0 violations, 24 passes
+desktop research: 0 violations, 18 passes
+desktop research done: 0 violations, 18 passes
+desktop briefing: 0 violations, 27 passes
+desktop follow-up: 0 violations, 29 passes
+desktop returning: 0 violations, 19 passes
+desktop switch group: 0 violations, 22 passes
+mobile welcome: 0 violations, 20 passes
+mobile q1 text: 0 violations, 23 passes
+mobile q2 choice: 0 violations, 22 passes
+mobile q2 other: 0 violations, 24 passes
+mobile q5 scales: 0 violations, 24 passes
+mobile q6 limits: 0 violations, 22 passes
+mobile q9 question: 0 violations, 23 passes
+mobile check: 0 violations, 23 passes
+mobile research: 0 violations, 18 passes
+mobile research done: 0 violations, 18 passes
+mobile briefing: 0 violations, 21 passes
+mobile follow-up: 0 violations, 27 passes
+mobile returning: 0 violations, 19 passes
+mobile switch group: 0 violations, 22 passes
+
+UNIQUE VIOLATIONS:
