@@ -12,11 +12,19 @@ const isProduction = (url: URL, env: Env) => url.hostname === env.PRODUCTION_HOS
 const b64u = (buf: ArrayBuffer | Uint8Array) => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 const fromB64u = (s: string) => Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0));
 
+// Cloudflare's always-pass test site keys start with 1x, 2x or 3x and only verify with a test secret.
+const isTestSiteKey = (key: string | undefined) => /^[123]x0{20}A[AB]$/.test(key ?? "");
+
 function secrets(env: Env, url: URL): { cookie: string; turnstile: string } | null {
   const e = env as Env & { COOKIE_SECRET?: string; TURNSTILE_SECRET?: string };
-  if (e.COOKIE_SECRET && e.TURNSTILE_SECRET) return { cookie: e.COOKIE_SECRET, turnstile: e.TURNSTILE_SECRET };
-  if (isProduction(url, env)) return null; // production never runs without real secrets
-  return { cookie: e.COOKIE_SECRET ?? `preview-only:${env.AI_GATEWAY_ID}`, turnstile: e.TURNSTILE_SECRET ?? TEST_SECRET };
+  if (isProduction(url, env)) {
+    // Production never runs without real secrets or with a test site key.
+    if (!e.COOKIE_SECRET || !e.TURNSTILE_SECRET || isTestSiteKey(env.TURNSTILE_SITE_KEY)) return null;
+    return { cookie: e.COOKIE_SECRET, turnstile: e.TURNSTILE_SECRET };
+  }
+  // Previews: a test site key must pair with the test secret, even if a real secret is configured.
+  const turnstile = isTestSiteKey(env.TURNSTILE_SITE_KEY) ? TEST_SECRET : (e.TURNSTILE_SECRET ?? TEST_SECRET);
+  return { cookie: e.COOKIE_SECRET ?? `preview-only:${env.AI_GATEWAY_ID}`, turnstile };
 }
 
 async function hmac(key: string, data: string): Promise<string> {
