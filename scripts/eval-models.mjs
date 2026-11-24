@@ -25,12 +25,26 @@ const affordances = await (await fetch(`${OH}/affordances.json`)).json();
 const tools = await (await fetch(`${OH}/protocols.json`)).json();
 const AFF_IDS = affordances.map((a) => a.id);
 
+// Global pacing: the groundwork gateway rate-limits, so starts are spaced and 2003 errors back off.
+const GAP_MS = Number(process.env.GAP_MS ?? 1500);
+let nextSlot = 0;
+async function slot() {
+  const now = Date.now();
+  const at = Math.max(now, nextSlot);
+  nextSlot = at + GAP_MS;
+  if (at > now) await new Promise((r) => setTimeout(r, at - now));
+}
+let rateLimited = 0;
 async function run(model, input) {
-  for (let attempt = 0; attempt < 2; attempt++) {
+  for (let attempt = 0; attempt < 6; attempt++) {
+    await slot();
     const r = await fetch(`${BASE}/api/m0/run`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ model, input }) });
     const j = await r.json().catch(() => ({ ok: false, error: `HTTP ${r.status}` }));
-    if (j.ok || attempt === 1) return j;
+    if (j.ok) return j;
+    if (/2003|rate limit/i.test(j.error ?? "")) { rateLimited++; await new Promise((res) => setTimeout(res, 15000 * (attempt + 1))); continue; }
+    if (attempt >= 1) return j;
   }
+  return { ok: false, error: "rate limited after retries" };
 }
 function cost(model, usage = {}) {
   const p = PRICE[model];
@@ -42,6 +56,8 @@ const noThink = (model) =>
   model.includes("deepseek") ? { reasoning_effort: "none" } : { chat_template_kwargs: { enable_thinking: false } };
 const thinkLow = (model) => ({ reasoning_effort: "low" });
 
+const LIMIT_TEXT = { crypto: "no crypto or tokens", cost: "must be free", server: "no server to run", mobile: "must work on phones", offline: "must work offline", export: "data must be exportable" };
+const SETUP_TEXT = { none: "no technical setup", guided: "can follow a setup guide", developer: "has a developer", other: "see free text" };
 function profileText(p, q) {
   const P = p.profile;
   const other = Object.entries(P.other ?? {}).map(([k, v]) => `${k}: ${v}`).join("; ");
@@ -49,7 +65,7 @@ function profileText(p, q) {
     `Group: ${P.name}. Purpose: ${P.purpose}.`,
     `Size: ${P.scale}. Reach: ${P.reach}. Decisions: ${P.decision}.`,
     `Leanings (1-5): quick decisions by a few (1) vs everyone has a say (5): ${P.leans.speedSay}; rules that stay put (1) vs rules that change (5): ${P.leans.stableAdapt}; software enforces (1) vs people use judgement (5): ${P.leans.autoJudge}.`,
-    `Rules out: ${P.limits.length ? P.limits.join(", ") : "nothing"}. Setup ability: ${P.setup}. Legal form: ${P.legal}.`,
+    `Hard requirements: ${P.limits.length ? P.limits.map((l) => LIMIT_TEXT[l]).join("; ") : "none"}. Setup ability: ${SETUP_TEXT[P.setup]}. Legal form: ${P.legal}.`,
     other ? `Free-text answers: ${other}.` : "",
     `Question: ${q}`,
   ].filter(Boolean).join("\n");
@@ -261,6 +277,7 @@ await Promise.all([
     console.error(`writing ${short(m)} done`);
   }),
 ]);
+console.error(`rate-limit retries: ${rateLimited}`);
 await writeFile(`${OUT}/raw.json`, JSON.stringify({ picks, writing, price: PRICE }, null, 2));
 
 // ---------- Summaries ----------
