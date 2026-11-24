@@ -1,5 +1,7 @@
 # Groundwork: technical specification (proof of concept)
 
+> **Design record (Nov 24, 2026).** This is the technical spec the app was built from, including the questions it left open at the time (marked VERIFY) and the original model choices. Those were settled during the build; for the system as it is now, see [ARCHITECTURE.md](../ARCHITECTURE.md) and [evals/models.md](../evals/models.md).
+
 Companion to [PRD.md](PRD.md). Mockups: https://claude.ai/artifact/6siUWLy1Hriz8YZMhF9nyN
 Status: draft · Nov 24, 2026 · Target: `groundwork.superbenefit.dev` on the SuperBenefit Cloudflare account
 
@@ -356,7 +358,7 @@ When a cap is hit, the UI says so in plain words, for example "This demo allows 
   - Ids are fixed by the question keys, so no repair step is needed. The p values are stored on the plan for the research screen and the eval.
 - **Writing call (`MODEL_WRITE`, DeepSeek, reasoning off):** `generateText` with `Output.object` writes `plain` (≤ 10 words, specific to the question) and `why` for each picked need, and a ≤ 25-word `note` for each "Other" answer. On failure the affordance name and a template note are used.
 - **Fallback:** if the decision call fails twice, `MODEL_FALLBACK` (Gemma) picks with a JSON schema whose ids are an enum.
-- Structured writing calls are non-streaming because Workers AI rejects JSON Schema when streaming. Confirmed in M0: ai 7.0.181 deprecates `generateObject`; use `generateText({ output: Output.object({ schema }) })` and read `result.output`. Reasoning must be off for every structured call: `ai(model, { reasoningEffort: null, chatTemplateKwargs: { enable_thinking: false } })` (64–93 s down to about 3 s; see docs/model-eval.md). Timeout of about 20 s with one retry, because about 1 call in 10 queues for 26–40 s.
+- Structured writing calls are non-streaming because Workers AI rejects JSON Schema when streaming. Confirmed in M0: ai 7.0.181 deprecates `generateObject`; use `generateText({ output: Output.object({ schema }) })` and read `result.output`. Reasoning must be off for every structured call: `ai(model, { reasoningEffort: null, chatTemplateKwargs: { enable_thinking: false } })` (64–93 s down to about 3 s; see docs/evals/models.md). Timeout of about 20 s with one retry, because about 1 call in 10 queues for 26–40 s.
 - **State text:** the profile written as plain requirements ("must be free", "data must be exportable"), every `other.*` text, and the question.
 - **Output:** 2–5 `needs` (`plain`, `why`, `affordanceId`, `p`), `otherMappings` (`{ field, mappedTo?, note }`), `wantsOrgModels`, `wantsMoney`.
 
@@ -539,11 +541,12 @@ Status as of Nov 24, 2026. Each milestone is one stacked pull request; each was 
 
 | | Pull request | Status |
 |---|---|---|
-| **M0 Spike** and **M1 Pipeline** | #1 (`m0-spike` → `main`) | Done. Models chosen from two eval rounds (docs/model-eval.md). Riverside golden test passes; 11 personas run end to end. |
+| **M0 Spike** and **M1 Pipeline** | #1 (`m0-spike` → `main`) | Done. Models chosen from two eval rounds (docs/evals/models.md). Riverside golden test passes; 11 personas run end to end. |
 | **M2 Flow UI** | #2 (`m2-ui` → `m0-spike`) | Done. Onboarding, research screen and briefing match the mockups on mobile and desktop. |
 | **M3 Follow-up** | #3 (`m3-followup` → `m2-ui`) | Done. Chat through `ask()` only; answers cite review dates and say what is unknown; Add to briefing; highlight. |
 | **M4 Groups and caps** | #4 (`m4-groups` → `m3-followup`) | Done. Turnstile + signed cookie, agent gate, WorkspaceAgent, weekly caps, returning screen, switch group, 30-day retention (scheduled; not observed firing). |
-| **M5 Deploy readiness** | #5 (`m5-deploy` → `m4-groups`) | Done in code: axe WCAG 2.2 AA clean on 28 screen checks, reduced motion, keyboard, print/PDF, security headers. Production needs the dashboard steps in docs/RELEASE.md, then merge to `main`. |
+| **M5 Deploy readiness** | #5 (`m5-deploy` → `m4-groups`) | Done in code: axe WCAG 2.2 AA clean on 28 screen checks, reduced motion, keyboard, print/PDF, security headers. Production needs the dashboard steps (now in docs/OPERATIONS.md), then merge to `main`. Merged and deployed Nov 24, 2026. |
+| **Onboarding fixes** | #7 (`m6-onboarding-fixes` → `m5-deploy`) | Back button and browser/phone back; several answers for who benefits and how decisions are made. |
 
 ## 14. Open technical questions
 

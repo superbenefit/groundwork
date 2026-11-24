@@ -142,7 +142,7 @@ export class WorkspaceAgent extends Agent<Env, WorkspaceState> {
     return { ok: true as const };
   }
 
-  /** Preview-only test hook (reached through /api/m0, never from a browser): set this week's counters. */
+  /** Preview-only test hook (POST /api/dev/usage/:workspace, never from a browser): set this week's counters. */
   async setUsageForTest(runs: number, chatTurns: number) {
     this.sql`INSERT OR REPLACE INTO usage (week, runs, chat_turns) VALUES (${isoWeek()}, ${runs}, ${chatTurns})`;
     this.refresh();

@@ -62,16 +62,12 @@ export class BriefingAgent extends Think<Env, BriefingState> {
   initialState: BriefingState = { phase: "idle", steps: freshSteps() };
 
   private _model?: ReturnType<ReturnType<typeof createAI>>;
-  /** DeepSeek through the groundwork gateway, reasoning off (docs/model-eval.md). */
+  /** DeepSeek through the groundwork gateway, reasoning off (docs/evals/models.md). */
   getModel() {
     this._model ??= createAI({ binding: this.env.AI, gateway: { id: this.env.AI_GATEWAY_ID, skipCache: true } })(this.env.MODEL_WRITE as `@cf/${string}`, {
       reasoningEffort: null,
     });
     return this._model;
-  }
-
-  getGateway(_model: string) {
-    return { id: this.env.AI_GATEWAY_ID, skipCache: true };
   }
 
   classifyChatError(err: unknown): ChatErrorClassification | void {
@@ -237,7 +233,7 @@ export class BriefingAgent extends Think<Env, BriefingState> {
     return this.state;
   }
 
-  /** M0 probe: confirms the MCP connection and lists the tools it exposes. */
+  /** Diagnostic (GET /api/dev/mcp): confirms the MCP connection and lists the tools it exposes. */
   @callable()
   async mcpProbe() {
     await this.mcp.waitForConnections({ timeout: 8_000 });

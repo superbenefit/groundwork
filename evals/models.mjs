@@ -1,9 +1,9 @@
 // M0 model eval, round 2: picks (capability selection) and writing (queries, notes, chat).
-// Calls the preview's /api/m0/run passthrough, which runs env.AI.run through the groundwork gateway.
-// Usage: node scripts/eval-models.mjs [previewBase] [outDir]
+// Calls the preview's /api/dev/run passthrough, which runs env.AI.run through the groundwork gateway.
+// Usage: node evals/models.mjs [previewBase] [outDir]
 import { readFile, writeFile, mkdir } from "node:fs/promises";
-import { PERSONAS } from "../src/eval/personas.ts";
-import { GOLD } from "./eval-gold.mjs";
+import { PERSONAS } from "./personas.ts";
+import { GOLD } from "./gold.mjs";
 
 const BASE = process.argv[2] ?? "https://m0-spike-groundwork.superbenefit.workers.dev";
 const OUT = process.argv[3] ?? "eval-out";
@@ -38,7 +38,7 @@ let rateLimited = 0;
 async function run(model, input) {
   for (let attempt = 0; attempt < 6; attempt++) {
     await slot();
-    const r = await fetch(`${BASE}/api/m0/run`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ model, input }) });
+    const r = await fetch(`${BASE}/api/dev/run`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ model, input }) });
     const j = await r.json().catch(() => ({ ok: false, error: `HTTP ${r.status}` }));
     if (j.ok) return j;
     if (/2003|rate limit/i.test(j.error ?? "")) { rateLimited++; await new Promise((res) => setTimeout(res, 15000 * (attempt + 1))); continue; }

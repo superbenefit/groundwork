@@ -1,8 +1,8 @@
 // Runs the full pipeline for every eval persona (plus the mockup's Riverside) on a Preview and
 // writes a report: timing, validator outcome, picks and the composed text for review.
-// Usage: node scripts/run-briefings.mjs [previewBase] [outFile]
+// Usage: node evals/briefings.mjs [previewBase] [outFile]
 import { writeFile } from "node:fs/promises";
-import { PERSONAS } from "../src/eval/personas.ts";
+import { PERSONAS } from "./personas.ts";
 
 const BASE = process.argv[2] ?? "https://m0-spike-groundwork.superbenefit.workers.dev";
 const OUT = process.argv[3] ?? "briefings.md";
@@ -14,11 +14,11 @@ const RIVERSIDE = {
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function runOne(p) {
-  const start = await (await fetch(`${BASE}/api/m0/brief`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ profile: p.profile, question: p.question }) })).json();
+  const start = await (await fetch(`${BASE}/api/dev/brief`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ profile: p.profile, question: p.question }) })).json();
   if (!start.name) return { persona: p.id, error: JSON.stringify(start).slice(0, 300) };
   for (let i = 0; i < 120; i++) {
     await sleep(2000);
-    const s = await (await fetch(`${BASE}/api/m0/brief/${encodeURIComponent(start.name)}`)).json();
+    const s = await (await fetch(`${BASE}/api/dev/brief/${encodeURIComponent(start.name)}`)).json();
     if (s.phase === "done" || s.phase === "failed") return { persona: p.id, ...s };
   }
   return { persona: p.id, error: "timed out" };
