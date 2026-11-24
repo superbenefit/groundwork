@@ -15,6 +15,8 @@ export type BriefingState = {
   error?: string;
   startedAt?: number;
   finishedAt?: number;
+  /** Run diagnostics for evals and logs: compose attempts with validator errors, model usage. */
+  diagnostics?: { composeAttempts: { errors: string[] }[]; usage: { model: string; ms: number; inTokens: number; outTokens: number }[]; ms: number };
 };
 
 const freshSteps = (): BriefingState["steps"] => STEPS.map((s) => ({ key: s.key, label: s.label, status: "pending" as const }));
@@ -122,7 +124,8 @@ export class BriefingAgent extends Think<Env, BriefingState> {
           if (data.plan) update({ plan: data.plan });
         },
       }, resume);
-      update({ phase: "done", steps: [...steps], plan: result.plan, briefing: result.briefing, counts: result.counts, finishedAt: Date.now() });
+      const ms = Date.now() - (this.state.startedAt ?? Date.now());
+      update({ phase: "done", steps: [...steps], plan: result.plan, briefing: result.briefing, counts: result.counts, finishedAt: Date.now(), diagnostics: { composeAttempts: result.composeAttempts, usage: result.usage, ms } });
       console.log(JSON.stringify({ event: "briefing.done", ms: Date.now() - (this.state.startedAt ?? Date.now()), composedBy: result.briefing.composedBy, composeAttempts: result.composeAttempts, usage: result.usage, counts: result.counts }));
     } catch (e) {
       update({ phase: "failed", error: String((e as Error)?.message ?? e).slice(0, 300) });
