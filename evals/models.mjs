@@ -5,7 +5,8 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { PERSONAS } from "./personas.ts";
 import { GOLD } from "./gold.mjs";
 
-const BASE = process.argv[2] ?? "https://m0-spike-groundwork.superbenefit.workers.dev";
+const BASE = process.argv[2];
+if (!BASE) { console.error("Usage: node " + process.argv[1].split("/").pop() + " <preview url> [out file]"); process.exit(1); }
 const OUT = process.argv[3] ?? "eval-out";
 const OH = "https://openhaven.net/api";
 
