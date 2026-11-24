@@ -4,6 +4,7 @@
   "main": "src/server.ts",
   "compatibility_date": "2026-11-17",
   "compatibility_flags": ["nodejs_compat"],
+  "build": { "command": "npx astro build" },
   "workers_dev": false,
   "routes": [{ "pattern": "groundwork.superbenefit.dev", "custom_domain": true }],
   "assets": {
