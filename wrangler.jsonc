@@ -10,6 +10,8 @@
     "command": "npx astro build"
   },
   "workers_dev": false,
+  // Preview URLs follow workers_dev unless set, so keep them on explicitly for branch Previews.
+  "preview_urls": true,
   "routes": [
     {
       "pattern": "groundwork.superbenefit.dev",
