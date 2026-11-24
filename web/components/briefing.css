@@ -93,3 +93,8 @@
 .gw-grid-kept { gap: 24px; }
 @media (min-width: 761px) { .gw-grid-kept { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .gw-tool-card, .gw-tr { scroll-margin: 96px; }
+@media print {
+  .gw-brief { padding-bottom: 24px; }
+  .gw-tr, .gw-card, .gw-ruled, .gw-need, .gw-aside-row, .gw-qrow { break-inside: avoid; }
+  .gw-brief h2 { break-after: avoid; }
+}

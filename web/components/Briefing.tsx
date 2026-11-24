@@ -17,6 +17,11 @@ const monthYear = (iso: string) => new Date(iso).toLocaleDateString("en-GB", { m
 const get = <K extends Block["kind"]>(b: BriefingT, kind: K) => b.blocks.find((x) => x.kind === kind) as Extract<Block, { kind: K }> | undefined;
 const riskLower = (t: ToolView) => t.takeoverRiskPlain.replace(" risk", "").toLowerCase();
 
+/** repeat(0, …) is invalid CSS and would drop the whole template, so empty groups are left out. */
+export function gridColumns(needs: number, limits: number): string {
+  return ["minmax(180px, 2.2fr)", needs ? `repeat(${needs}, minmax(0, 1fr))` : "", limits ? `repeat(${limits}, minmax(0, 0.9fr))` : "", "minmax(150px, 1.6fr)"].filter(Boolean).join(" ");
+}
+
 export function Briefing({ briefing: b, profile }: Props) {
   const tools = new Map(b.tools.map((t) => [t.id, t]));
   const leanings = get(b, "leanings");
@@ -83,7 +88,7 @@ export function Briefing({ briefing: b, profile }: Props) {
         {compared.length === 0 && <p className="gw-small">No ready-made option meets these needs without breaking your limits. The questions and set-aside list below show what came closest.</p>}
         {compared.length > 0 && comparison && (
           <>
-            <div role="table" aria-label="Options compared" className="gw-table" style={{ ["--cols" as string]: `minmax(180px, 2.2fr) repeat(${needCols.length}, minmax(0, 1fr)) repeat(${limitCols.length}, minmax(0, 0.9fr)) minmax(150px, 1.6fr)` }}>
+            <div role="table" aria-label="Options compared" className="gw-table" style={{ ["--cols" as string]: gridColumns(needCols.length, limitCols.length) }}>
               <div role="row" className="gw-tr gw-th">
                 <span role="columnheader" className="gw-td gw-td-tool">Tool</span>
                 {needCols.map((c) => <span key={c.id} role="columnheader" className="gw-td">{c.label}</span>)}

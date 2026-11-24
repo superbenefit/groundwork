@@ -34,7 +34,7 @@
 .gw-ob-frame.gw-down { animation: gw-q-down 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 .gw-grow { animation: gw-grow 0.3s ease-out both; }
 .gw-fade { animation: gw-fade 0.5s ease-out both; }
-@media (prefers-reduced-motion: reduce) { .gw-ob-frame.gw-up, .gw-ob-frame.gw-down, .gw-grow, .gw-fade, .gw-spin { animation: none !important; } .gw-seg { transition: none; } }
+
 
 .gw-ob-foot { flex-shrink: 0; display: flex; justify-content: center; padding: 0 var(--obside) 20px; }
 @media (min-width: 761px) { .gw-ob-foot { justify-content: flex-end; } }
@@ -136,3 +136,5 @@ a.gw-btn:hover { color: var(--cream); }
 .gw-run-detail { font-size: 13px; color: var(--muted); }
 .gw-run-fail { display: flex; flex-direction: column; gap: 10px; }
 .gw-run-fail p { margin: 0; font-size: 14px; color: var(--red-deep); }
+
+@media (prefers-reduced-motion: reduce) { .gw-up, .gw-ob-frame.gw-down, .gw-grow, .gw-fade, .gw-spin { animation: none !important; } .gw-seg, .gw-dot, .gw-dot span, .gw-opt { transition: none; } }
