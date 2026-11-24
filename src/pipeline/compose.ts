@@ -45,6 +45,18 @@ export type ComposeInput = {
   snapshot: Snapshot;
 };
 
+/** Record fields that answer common practical questions (install, phone, cost, offline, export). */
+const DETAIL_FIELDS: [string, string][] = [
+  ["webSupport", "Web"],
+  ["mobileSupport", "Phone"],
+  ["nativeApps", "Apps"],
+  ["deploymentOptions", "Hosting"],
+  ["terms", "Terms"],
+  ["offlineCapabilities", "Offline"],
+  ["dataPortability", "Data portability"],
+  ["governanceDecisionMaking", "Decision-making"],
+];
+
 /** The facts the model writes from. Everything it may say about a tool is in here. */
 export function factSheet(input: ComposeInput): string {
   const { assessment: a, snapshot, plan, profile } = input;
@@ -58,6 +70,7 @@ export function factSheet(input: ComposeInput): string {
       `- ${t.name} (id ${id}). ${clean(t.description).slice(0, 360)}`,
       `  Maturity: ${v.maturityPlain}. Takeover risk: ${v.takeoverRiskPlain} — ${clean(t.captureRiskReasoning ?? "").slice(0, 220)}`,
       `  Reviewed ${v.reviewed}${v.stale ? " (over six months ago)" : ""}. Checks: ${cells}.`,
+      ...DETAIL_FIELDS.filter(([k]) => t.entityAttributes?.[k]).map(([k, label]) => `  ${label}: ${clean(String(t.entityAttributes[k])).slice(0, 180)}`),
     ].join("\n");
   });
   const leans = (["speedSay", "stableAdapt", "autoJudge"] as const).map((k) => `${k} = ${profile.leans[k]} (${leanLabel(k, profile.leans[k])})`).join("; ");
