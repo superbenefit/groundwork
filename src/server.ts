@@ -53,6 +53,20 @@ app.get("/api/m0/plan", async (c) => {
   }
 });
 
+/** M0 eval passthrough: POST { model, input } runs env.AI.run through the gateway and returns the raw result. */
+const RUN_ALLOWED = /^@cf\/(cloudflare\/(clef|clef-flash|clairic)|google\/gemma-4-26b-a4b-it|qwen\/qwen3\.8-27b|deepseek-ai\/deepseek-v4\.1-flash-1017|thinkingmachines\/inkling-2-small)$/;
+app.post("/api/m0/run", async (c) => {
+  const { model, input } = await c.req.json<{ model: string; input: Record<string, unknown> }>();
+  if (!RUN_ALLOWED.test(model)) return c.json({ error: "model not allowed" }, 400);
+  const t = Date.now();
+  try {
+    const result = await c.env.AI.run(model as keyof AiModels, input as never, { gateway: { id: c.env.AI_GATEWAY_ID, skipCache: true } });
+    return c.json({ ok: true, ms: Date.now() - t, result });
+  } catch (e) {
+    return c.json({ ok: false, ms: Date.now() - t, error: String((e as Error)?.message ?? e) });
+  }
+});
+
 app.use("/agents/*", (c, next) => {
   // M0: agents are reachable on previews only. The cookie gate (SPEC §5) lands in M1.
   const deny = (req: Request) => (isProduction(req, c.env) ? new Response("Forbidden", { status: 403 }) : undefined);
