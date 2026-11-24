@@ -2,7 +2,7 @@ import { plainFallback, runPlan, wordNeeds } from "./plan";
 import { weigh } from "./weigh";
 import { retrieveMechanisms, retrieveOrgTypes, retrieveTools } from "./retrieve";
 import { assess } from "./assess";
-import { compose } from "./compose";
+import { compose, factSheet } from "./compose";
 import type { ModelEnv, Usage } from "./ai";
 import type { Snapshot } from "../openhaven/snapshot";
 import type { Briefing, Plan, Profile } from "../shared/schema";
@@ -32,6 +32,8 @@ export type RunResult = {
   counts: { tools: number; options: number; setAside: number };
   /** Top capability probabilities from the decision call (diagnostics). */
   topProbabilities: Record<string, number>;
+  /** The facts the briefing was written from; the follow-up chat answers from the same facts. */
+  facts: string;
 };
 
 export async function runPipeline(
@@ -99,6 +101,7 @@ export async function runPipeline(
   const counts = { tools: candidates.length, options: assessment.comparison.length, setAside: assessment.excluded.filter((e) => e.why !== "notReady").length };
   hooks.step("assess", "done", `${counts.options} options, ${assessment.setAside.length} set aside`);
 
+  const facts = factSheet({ profile, question, plan, assessment, orgTypes, mechanisms, snapshot });
   hooks.step("compose", "active");
   let briefing = resume.briefing;
   let composeAttempts: { errors: string[] }[] = [];
@@ -112,5 +115,5 @@ export async function runPipeline(
   }
   hooks.step("compose", "done");
 
-  return { plan, briefing, usage, composeAttempts, counts, topProbabilities };
+  return { plan, briefing, usage, composeAttempts, counts, topProbabilities, facts };
 }

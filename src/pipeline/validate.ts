@@ -33,6 +33,7 @@ function prose(b: Briefing): [string, string][] {
       blk.paragraphs.forEach((p, i) => out.push([`${at}.paragraphs[${i}]`, p]));
       blk.related.forEach((r, i) => out.push([`${at}.related[${i}]`, r.note]));
     }
+    if (blk.kind === "fromQuestions") blk.items.forEach((x, i) => out.push([`${at}[${i}]`, x.answer]));
     if (blk.kind === "testReview") out.push([`${at}.steps`, blk.steps], ...blk.review.map((r, i) => [`${at}.review[${i}]`, r] as [string, string]));
   }
   return out;

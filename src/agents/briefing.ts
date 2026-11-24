@@ -2,7 +2,11 @@ import { callable, type Connection, type FiberContext, type WSMessage } from "ag
 import { Think, type ChatErrorClassification } from "@cloudflare/think";
 import { loadSnapshot } from "../openhaven/cache";
 import { runPipeline, STEPS, type RunStash, type StepKey } from "../pipeline/run";
+import { createAI } from "agents/models/ai-sdk";
+import { z } from "zod";
 import { Profile, Question, type Briefing, type Plan, type RunPhase } from "../shared/schema";
+import { BANNED } from "../pipeline/style";
+import { chatTools, followUpPrompt } from "./chat";
 
 export type BriefingState = {
   phase: RunPhase | "idle";
@@ -15,6 +19,10 @@ export type BriefingState = {
   error?: string;
   startedAt?: number;
   finishedAt?: number;
+  /** Facts the briefing was written from; the follow-up chat answers from them. */
+  chatFacts?: string;
+  /** Set by the chat's highlight tool; the page scrolls to and pulses that option. */
+  highlight?: { toolId: string; at: number };
   /** Run diagnostics for evals and logs: compose attempts with validator errors, model usage. */
   diagnostics?: { composeAttempts: { errors: string[] }[]; usage: { model: string; ms: number; inTokens: number; outTokens: number }[]; ms: number; topProbabilities: Record<string, number> };
 };
@@ -52,8 +60,13 @@ export class BriefingAgent extends Think<Env, BriefingState> {
   waitForMcpConnections = { timeout: 8_000 };
   initialState: BriefingState = { phase: "idle", steps: freshSteps() };
 
+  private _model?: ReturnType<ReturnType<typeof createAI>>;
+  /** DeepSeek through the groundwork gateway, reasoning off (docs/model-eval.md). */
   getModel() {
-    return this.env.MODEL_WRITE as `@cf/${string}`;
+    this._model ??= createAI({ binding: this.env.AI, gateway: { id: this.env.AI_GATEWAY_ID, skipCache: true } })(this.env.MODEL_WRITE as `@cf/${string}`, {
+      reasoningEffort: null,
+    });
+    return this._model;
   }
 
   getGateway(_model: string) {
@@ -65,7 +78,56 @@ export class BriefingAgent extends Think<Env, BriefingState> {
   }
 
   getSystemPrompt() {
-    return "Answer questions about this group's briefing. Address the reader as you. Never use we, our or us.";
+    return followUpPrompt(this.state.chatFacts, this.state.briefing?.title);
+  }
+
+  getTools() {
+    return chatTools(this.env, (toolId) => this.setState({ ...this.state, highlight: { toolId, at: Date.now() } }));
+  }
+
+  /**
+   * The only way a follow-up message enters the chat (SPEC §7.3). Checks length, the burst
+   * limit and the weekly cap before any model call; a refusal makes no model call.
+   */
+  @callable()
+  async ask(textIn: unknown): Promise<{ ok: true } | { refused: "not_ready" | "too_long" | "rate" | "weekly_cap"; resetsAt?: string }> {
+    const parsed = z.string().trim().min(1).max(1000).safeParse(textIn);
+    if (!parsed.success) return { refused: "too_long" };
+    if (this.state.phase !== "done") return { refused: "not_ready" };
+    const workspace = this.name.split(":")[0] ?? this.name;
+    const burst = await this.env.RL_CHAT.limit({ key: workspace });
+    if (!burst.success) return { refused: "rate" };
+    const cap = await this.admitChatTurn(workspace);
+    if (!cap.ok) return { refused: "weekly_cap", resetsAt: cap.resetsAt };
+    await this.submitMessages([{ id: crypto.randomUUID(), role: "user", parts: [{ type: "text", text: parsed.data }] }]);
+    return { ok: true };
+  }
+
+  /** Weekly follow-up cap. M4 replaces this with the workspace's counter. */
+  protected async admitChatTurn(_workspace: string): Promise<{ ok: boolean; resetsAt?: string }> {
+    return { ok: true };
+  }
+
+  /** Keeps one assistant answer in the briefing under "From your questions". */
+  @callable()
+  async addAnswer(messageId: string): Promise<{ ok: true } | { refused: string }> {
+    const b = this.state.briefing;
+    if (!b) return { refused: "no briefing" };
+    const msgs = this.messages;
+    const i = msgs.findIndex((m) => m.id === messageId && m.role === "assistant");
+    if (i < 0) return { refused: "answer not found" };
+    const textOf = (m: (typeof msgs)[number]) => m.parts.filter((p) => p.type === "text").map((p) => (p as { text: string }).text).join("\n").trim();
+    const answer = textOf(msgs[i]!);
+    const question = [...msgs.slice(0, i)].reverse().find((m) => m.role === "user");
+    if (!answer || !question) return { refused: "answer not found" };
+    const banned = BANNED.find(({ re }) => re.test(answer));
+    if (banned) return { refused: `The answer uses ${banned.label}, which briefings don't allow.` };
+    const blocks = [...b.blocks];
+    let block = blocks.find((x) => x.kind === "fromQuestions");
+    if (!block) blocks.push((block = { kind: "fromQuestions", items: [] }));
+    if (block.kind === "fromQuestions" && !block.items.some((x) => x.answer === answer)) block.items.push({ question: textOf(question), answer, at: Date.now() });
+    this.setState({ ...this.state, briefing: { ...b, blocks } });
+    return { ok: true };
   }
 
   async onStart() {
@@ -125,7 +187,7 @@ export class BriefingAgent extends Think<Env, BriefingState> {
         },
       }, resume);
       const ms = Date.now() - (this.state.startedAt ?? Date.now());
-      update({ phase: "done", steps: [...steps], plan: result.plan, briefing: result.briefing, counts: result.counts, finishedAt: Date.now(), diagnostics: { composeAttempts: result.composeAttempts, usage: result.usage, ms, topProbabilities: result.topProbabilities } });
+      update({ phase: "done", steps: [...steps], plan: result.plan, briefing: result.briefing, counts: result.counts, chatFacts: result.facts, finishedAt: Date.now(), diagnostics: { composeAttempts: result.composeAttempts, usage: result.usage, ms, topProbabilities: result.topProbabilities } });
       console.log(JSON.stringify({ event: "briefing.done", ms: Date.now() - (this.state.startedAt ?? Date.now()), composedBy: result.briefing.composedBy, composeAttempts: result.composeAttempts, usage: result.usage, counts: result.counts }));
     } catch (e) {
       update({ phase: "failed", error: String((e as Error)?.message ?? e).slice(0, 300) });

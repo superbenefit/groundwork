@@ -95,9 +95,11 @@ export const Block = z.discriminatedUnion("kind", [
     related: z.array(z.object({ kind: z.enum(["orgModel", "mechanism"]), id: z.string(), name: z.string(), note: z.string() })),
   }),
   z.object({ kind: z.literal("testReview"), steps: z.string(), review: z.array(z.string()) }),
+  /** Answers the group chose to keep from the follow-up chat. */
+  z.object({ kind: z.literal("fromQuestions"), items: z.array(z.object({ question: z.string(), answer: z.string(), at: z.number() })) }),
 ]);
 export type Block = z.infer<typeof Block>;
-export const BLOCK_ORDER = ["leanings", "needs", "comparison", "howToChoose", "safeguards", "questions", "setAside", "legal", "testReview"] as const;
+export const BLOCK_ORDER = ["leanings", "needs", "comparison", "howToChoose", "safeguards", "questions", "setAside", "legal", "testReview", "fromQuestions"] as const;
 
 export const Briefing = z.object({
   title: z.string(),

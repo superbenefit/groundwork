@@ -28,6 +28,7 @@ export function Briefing({ briefing: b, profile }: Props) {
   const setAside = get(b, "setAside");
   const legal = get(b, "legal");
   const test = get(b, "testReview");
+  const kept = get(b, "fromQuestions");
   const compared = comparison ? comparison.toolIds.map((id) => tools.get(id)!).filter(Boolean) : [];
   const stale = compared.filter((t) => t.stale);
   const kind = (t: ToolView) => b.kinds[t.id] ?? t.kindPlain;
@@ -90,7 +91,7 @@ export function Briefing({ briefing: b, profile }: Props) {
                 <span role="columnheader" className="gw-td gw-rule">Maturity · takeover risk · reviewed</span>
               </div>
               {compared.map((t) => (
-                <div key={t.id} role="row" className="gw-tr">
+                <div key={t.id} id={`opt-${t.id}`} role="row" className="gw-tr">
                   <span role="cell" className="gw-td gw-td-tool"><a href={t.url} target="_blank" rel="noreferrer" className="gw-tool-name">{t.name}</a><span className="gw-tool-kind">{kind(t)}</span></span>
                   {[...needCols, ...limitCols].map((c, i) => {
                     const m = MARK[cell(t.id, c.id)];
@@ -102,7 +103,7 @@ export function Briefing({ briefing: b, profile }: Props) {
             </div>
             <div className="gw-cards">
               {compared.map((t) => (
-                <article key={t.id} className="gw-card gw-tool-card">
+                <article key={t.id} id={`card-${t.id}`} className="gw-card gw-tool-card">
                   <div className="gw-tool-card-head"><h3><a href={t.url} target="_blank" rel="noreferrer">{t.name}</a></h3><span className="gw-tool-kind">{kind(t)}</span></div>
                   <div className="gw-tool-card-cells">
                     {[...needCols, ...limitCols].map((c) => {
@@ -197,6 +198,20 @@ export function Briefing({ briefing: b, profile }: Props) {
           </section>
         )}
       </div>
+
+      {kept && kept.items.length > 0 && (
+        <section className="gw-up" aria-labelledby="fq-h">
+          <h2 id="fq-h">From your questions</h2>
+          <div className="gw-grid gw-grid-kept">
+            {kept.items.map((k) => (
+              <div key={k.at} className="gw-ruled">
+                <h3>{k.question}</h3>
+                {k.answer.split(/\n{2,}/).map((p, i) => <p key={i} className="gw-small">{p.replace(/\*\*/g, "")}</p>)}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <footer className="gw-brief-foot"><PoweredBy /></footer>
     </article>
