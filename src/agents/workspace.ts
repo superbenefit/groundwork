@@ -1,6 +1,6 @@
 import { Agent, callable } from "agents";
 import { z } from "zod";
-import { Profile, Question } from "../shared/schema";
+import { allReach, Profile, Question } from "../shared/schema";
 import { isoWeek, weekResetsAt, WEEKLY_CHAT_TURNS, WEEKLY_RUNS } from "../limits";
 
 /** Groups, sessions and weekly caps for one browser (SPEC §7.2). Named by the workspace id. */
@@ -16,7 +16,8 @@ type Refusal = { refused: "weekly_cap" | "rate" | "not_found"; resetsAt?: string
 const SCALE_SHORT: Record<string, string> = { solo: "Just me", team: "2 to 10 people", teams: "10 to 50 people", community: "50 to 500 people", network: "500+ or several groups" };
 const REACH_SHORT: Record<string, string> = { members: "members only", local: "one neighbourhood", regional: "a city or region", national: "a whole country", global: "several countries", online: "online" };
 function shortOf(p: Profile, briefings: number): string {
-  const parts = [p.scale === "other" ? p.other?.scale : SCALE_SHORT[p.scale], p.reach === "other" ? p.other?.reach : REACH_SHORT[p.reach]].filter(Boolean);
+  const reach = allReach(p).map((r) => (r === "other" ? p.other?.reach : REACH_SHORT[r])).filter(Boolean).join(", ");
+  const parts = [p.scale === "other" ? p.other?.scale : SCALE_SHORT[p.scale], reach].filter(Boolean);
   return `${parts.join(" · ")} · ${briefings} ${briefings === 1 ? "briefing" : "briefings"}`;
 }
 

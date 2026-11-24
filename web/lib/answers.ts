@@ -3,6 +3,8 @@ import type { Limit, OtherField, Profile } from "../../src/shared/schema";
 /** Onboarding questions, copy from the approved mockups (Main.dc.html). */
 export type ChoiceQ = {
   step: number;
+  /** Several answers can be true at once: toggles, then OK. */
+  multi?: boolean;
   field: "scale" | "reach" | "decision" | "setup" | "legal";
   title: string;
   help: string;
@@ -13,9 +15,9 @@ export type ChoiceQ = {
 export const CHOICES: Record<number, ChoiceQ> = {
   2: { step: 2, field: "scale", title: "How many people do the work?", help: "Count the people actively involved, not the people you serve.", otherHint: "e.g. 3 staff and about 40 volunteers",
     opts: [{ value: "solo", label: "Just me" }, { value: "team", label: "2 to 10" }, { value: "teams", label: "10 to 50" }, { value: "community", label: "50 to 500" }, { value: "network", label: "More than 500, or several groups" }] },
-  3: { step: 3, field: "reach", title: "Who benefits from it?", help: "Some tools and ways of funding only work at a certain size.", otherHint: "e.g. tenants of one building",
+  3: { step: 3, multi: true, field: "reach", title: "Who benefits from it?", help: "Choose all that apply. Some tools and ways of funding only work at a certain size.", otherHint: "e.g. tenants of one building",
     opts: [{ value: "members", label: "Only its own members" }, { value: "local", label: "One neighbourhood or town" }, { value: "regional", label: "A city or region" }, { value: "national", label: "A whole country" }, { value: "global", label: "People in several countries" }, { value: "online", label: "People online, anywhere" }] },
-  4: { step: 4, field: "decision", title: "How are decisions made today?", help: "Tools are matched to the way your group already works.", otherHint: "e.g. a monthly meeting votes on anything over $100",
+  4: { step: 4, multi: true, field: "decision", title: "How are decisions made today?", help: "Choose all that apply. Tools are matched to the way your group already works.", otherHint: "e.g. a monthly meeting votes on anything over $100",
     opts: [{ value: "single", label: "One person decides" }, { value: "consensus", label: "Discussion until everyone agrees" }, { value: "vote", label: "A vote" }, { value: "roles", label: "Each role decides its own area" }, { value: "board", label: "A board decides" }, { value: "unsettled", label: "It isn't settled yet" }] },
   7: { step: 7, field: "setup", title: "Who will set it up?", help: "Some tools work straight away. Others need a developer.", otherHint: "e.g. a volunteer who manages our website",
     opts: [{ value: "none", label: "No one technical", sub: "It has to work straight away" }, { value: "guided", label: "Someone who can follow a guide", sub: "An afternoon of setup is fine" }, { value: "developer", label: "A developer", sub: "Can build on an existing tool" }] },
@@ -47,8 +49,9 @@ export const EXAMPLES = [
 export type Answers = {
   purpose: string;
   scale?: string;
-  reach?: string;
-  decision?: string;
+  /** Multi-select questions keep every chosen value, in the order chosen. */
+  reach: string[];
+  decision: string[];
   leans: { speedSay: number; stableAdapt: number; autoJudge: number };
   leanNote: string;
   limits: Limit[];
@@ -62,6 +65,8 @@ export type Answers = {
 
 export const emptyAnswers = (): Answers => ({
   purpose: "",
+  reach: [],
+  decision: [],
   leans: { speedSay: 3, stableAdapt: 3, autoJudge: 3 },
   leanNote: "",
   limits: [],
@@ -71,16 +76,25 @@ export const emptyAnswers = (): Answers => ({
   name: "",
 });
 
+/** Answers saved before reach and decision took several values held a single string. */
+export function normalizeAnswers(raw: Partial<Answers> & { reach?: unknown; decision?: unknown }): Answers {
+  const list = (v: unknown) => (Array.isArray(v) ? (v as string[]) : typeof v === "string" && v ? [v] : []);
+  return { ...emptyAnswers(), ...raw, reach: list(raw.reach), decision: list(raw.decision) } as Answers;
+}
+
 export function toProfile(a: Answers): Profile {
   const other: Partial<Record<OtherField, string>> = {};
-  for (const f of ["scale", "reach", "decision", "setup", "legal"] as const) if (a[f] === "other" && a.other[f]?.trim()) other[f] = a.other[f]!.trim().slice(0, 280);
+  for (const f of ["scale", "setup", "legal"] as const) if (a[f] === "other" && a.other[f]?.trim()) other[f] = a.other[f]!.trim().slice(0, 280);
+  for (const f of ["reach", "decision"] as const) if (a[f].includes("other") && a.other[f]?.trim()) other[f] = a.other[f]!.trim().slice(0, 280);
   if (a.limitsOther && a.other.limits?.trim()) other.limits = a.other.limits.trim().slice(0, 280);
   return {
     name: a.name.trim().slice(0, 80) || "My group",
     purpose: a.purpose.trim().slice(0, 500),
     scale: (a.scale ?? "other") as Profile["scale"],
-    reach: (a.reach ?? "other") as Profile["reach"],
-    decision: (a.decision ?? "other") as Profile["decision"],
+    reach: (a.reach[0] ?? "other") as Profile["reach"],
+    reachAlso: a.reach.slice(1) as Profile["reachAlso"],
+    decision: (a.decision[0] ?? "other") as Profile["decision"],
+    decisionAlso: a.decision.slice(1) as Profile["decisionAlso"],
     leans: a.leans,
     leanNote: a.leanNote.trim() ? a.leanNote.trim().slice(0, 280) : undefined,
     limits: a.limits,
@@ -94,7 +108,7 @@ export function toProfile(a: Answers): Profile {
 const KEY = "gw.draft";
 export const storage = {
   load(): Answers | null {
-    try { const v = localStorage.getItem(KEY); return v ? { ...emptyAnswers(), ...JSON.parse(v) } : null; } catch { return null; }
+    try { const v = localStorage.getItem(KEY); return v ? normalizeAnswers(JSON.parse(v)) : null; } catch { return null; }
   },
   save(a: Answers) {
     try { localStorage.setItem(KEY, JSON.stringify(a)); } catch { /* private mode */ }

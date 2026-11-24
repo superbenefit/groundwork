@@ -6,6 +6,10 @@
 @media (min-width: 761px) { .gw-ob-bar { height: 64px; } }
 .gw-ob-bar-left { display: flex; align-items: center; gap: 8px; }
 .gw-ob-saved { font-size: 13px; color: var(--muted); }
+.gw-back { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; margin-left: -10px; padding: 0 12px 0 6px; border: none; border-radius: 50px; background: transparent; color: var(--black); font-size: 15px; font-weight: 600; }
+.gw-back:hover { background: var(--cream-deep); }
+.gw-key-multi { border-radius: 50%; }
+.gw-other-solo { max-width: var(--opts); }
 .gw-icon-btn { width: 44px; height: 44px; margin-left: -12px; border: none; background: transparent; display: inline-flex; align-items: center; justify-content: center; color: var(--black); border-radius: 12px; }
 .gw-desktop-only { display: none; }
 @media (min-width: 761px) { .gw-desktop-only { display: inline-flex; } div.gw-desktop-only { display: flex; } }

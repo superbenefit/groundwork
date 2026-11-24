@@ -1,4 +1,4 @@
-import type { Limit, OtherField, Profile } from "../shared/schema";
+import { allDecisions, allReach, type Limit, type OtherField, type Profile } from "../shared/schema";
 
 /** Plain-language labels. Nothing on screen uses OpenHaven's own vocabulary. */
 
@@ -83,7 +83,7 @@ export function profileText(p: Profile, question: string, opts: { limits?: boole
   const opt = (f: OtherField, v: string) => (v === "other" ? `other (${(p.other as Record<string, string | undefined>)?.[f] ?? "see free text"})` : OPTIONS[f][v] ?? v);
   return [
     `Group: ${p.name}. What it does: ${p.purpose || "not given"}.`,
-    `People doing the work: ${opt("scale", p.scale)}. Who benefits: ${opt("reach", p.reach)}. Decisions today: ${opt("decision", p.decision)}.`,
+    `People doing the work: ${opt("scale", p.scale)}. Who benefits: ${allReach(p).map((r) => opt("reach", r)).join("; ")}. Decisions today: ${allDecisions(p).map((d) => opt("decision", d)).join("; ")}.`,
     `Leanings, 1 to 5: ${SCALE_POLES.speedSay.join(" (1) vs ")} (5): ${p.leans.speedSay}; ${SCALE_POLES.stableAdapt.join(" (1) vs ")} (5): ${p.leans.stableAdapt}; ${SCALE_POLES.autoJudge.join(" (1) vs ")} (5): ${p.leans.autoJudge}.${p.leanNote ? ` Note: ${p.leanNote}` : ""}`,
     opts.limits === false ? "" : `Hard requirements: ${p.limits.length ? p.limits.map((l) => LIMIT_REQUIREMENT[l]).join("; ") : "none"}.`,
     `Who sets it up: ${opt("setup", p.setup)}. Legal form: ${opt("legal", p.legal)}.`,

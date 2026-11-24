@@ -43,7 +43,38 @@ export function Onboarding({ workspace, groupId, initial, startAt, onRun, onCanc
     if (saved) setA(saved);
   }, [initial]);
   const update = (patch: Partial<Answers>) => setA((prev) => { const next = { ...prev, ...patch }; if (!editing) storage.save(next); return next; });
-  const go = (n: number) => { clearTimeout(timer.current); setDir(n < step ? "down" : "up"); setStep(n); window.scrollTo(0, 0); };
+  const first = startAt ?? 0;
+  const stepRef = useRef(step);
+  stepRef.current = step;
+
+  // Each step is a browser history entry, so the phone back gesture and the browser
+  // back button step back through the questions instead of leaving the page.
+  useEffect(() => {
+    history.replaceState({ ...(history.state ?? {}), gwStep: first }, "");
+    const onPop = (e: PopStateEvent) => {
+      clearTimeout(timer.current);
+      const target = typeof e.state?.gwStep === "number" ? (e.state.gwStep as number) : null;
+      if (target === null || target < first) { if (onCancel) onCancel(); else { setDir("down"); setStep(first); } return; }
+      setDir(target < stepRef.current ? "down" : "up");
+      setStep(target);
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [first, onCancel]);
+
+  const go = (n: number) => {
+    clearTimeout(timer.current);
+    setDir(n < step ? "down" : "up");
+    setStep(n);
+    history.pushState({ ...(history.state ?? {}), gwStep: n }, "");
+    window.scrollTo(0, 0);
+  };
+  const back = () => {
+    clearTimeout(timer.current);
+    if (step > first) history.back();
+    else onCancel?.();
+  };
 
   const canNext = useMemo(() => {
     if (step === 1) return a.purpose.trim().length > 0;
@@ -74,9 +105,10 @@ export function Onboarding({ workspace, groupId, initial, startAt, onRun, onCanc
     <div className="gw-ob">
       <div className="gw-ob-bar">
         <div className="gw-ob-bar-left">
-          {(step > 0 || onCancel) && (
-            <button type="button" className="gw-icon-btn" aria-label="Previous question" onClick={() => go(step - 1)}>
-              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 6l-6 6 6 6" /></svg>
+          {(step > first || (onCancel && step === first)) && (
+            <button type="button" className="gw-back" onClick={back}>
+              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 6l-6 6 6 6" /></svg>
+              Back
             </button>
           )}
           <span className={step === 0 ? "" : "gw-desktop-only"}><Brand /></span>
@@ -107,9 +139,15 @@ export function Onboarding({ workspace, groupId, initial, startAt, onRun, onCanc
           {[2, 3, 4, 7, 8].includes(step) && (
             <ChoiceQuestion q={CHOICES[step]!} value={a[CHOICES[step]!.field]} other={a.other[CHOICES[step]!.field] ?? ""}
               onPick={(v) => {
-                update({ [CHOICES[step]!.field]: v } as Partial<Answers>);
+                const q = CHOICES[step]!;
+                if (q.multi) {
+                  const cur = a[q.field] as string[];
+                  update({ [q.field]: cur.includes(v) ? cur.filter((x) => x !== v) : [...cur, v] } as Partial<Answers>);
+                  return;
+                }
+                update({ [q.field]: v } as Partial<Answers>);
                 clearTimeout(timer.current);
-                if (v !== "other") timer.current = setTimeout(() => go(step + 1), 320);
+                if (v !== "other") timer.current = setTimeout(() => go(step + 1), 450);
               }}
               onOther={(t) => update({ other: { ...a.other, [CHOICES[step]!.field]: t } })}
               onNext={() => go(step + 1)} />
@@ -245,35 +283,48 @@ function TextQ(p: { num: number; title: string; help: string; label: string; val
   );
 }
 
-function ChoiceQuestion({ q, value, other, onPick, onOther, onNext }: { q: ChoiceQ; value?: string; other: string; onPick: (v: string) => void; onOther: (t: string) => void; onNext: () => void }) {
+function ChoiceQuestion({ q, value, other, onPick, onOther, onNext }: { q: ChoiceQ; value?: string | string[]; other: string; onPick: (v: string) => void; onOther: (t: string) => void; onNext: () => void }) {
   const opts = [...q.opts, { value: "other", label: "Other", sub: "" }];
+  const chosen = Array.isArray(value) ? value : value ? [value] : [];
+  const otherOn = chosen.includes("other");
+  const canGo = q.multi ? chosen.length > 0 && (!otherOn || other.trim().length > 0) : !!other.trim();
   return (
     <div className="gw-q">
       <p className="gw-qnum">{q.step} →</p>
       <h1 className="gw-qtitle">{q.title}</h1>
       <p className="gw-qhelp">{q.help}</p>
-      <div className="gw-opts" role="radiogroup" aria-label={q.title}>
-        {opts.map((o, i) => (
-          <button key={o.value} type="button" role="radio" aria-checked={value === o.value} className={`gw-opt gw-up${value === o.value ? " on" : ""}${o.sub ? " tall" : ""}`} style={{ animationDelay: `${0.04 * i + 0.05}s` }} onClick={() => onPick(o.value)}>
-            <span aria-hidden="true" className="gw-key">{KEYS[i]}</span>
-            <span className="gw-opt-label">{o.label}{o.sub && <span className="gw-opt-sub">{o.sub}</span>}</span>
-          </button>
-        ))}
+      <div className="gw-opts" role={q.multi ? "group" : "radiogroup"} aria-label={q.title}>
+        {opts.map((o, i) => {
+          const on = chosen.includes(o.value);
+          return (
+            <button key={o.value} type="button" role={q.multi ? "checkbox" : "radio"} aria-checked={on} className={`gw-opt gw-up${on ? " on" : ""}${o.sub ? " tall" : ""}`} style={{ animationDelay: `${0.04 * i + 0.05}s` }} onClick={() => onPick(o.value)}>
+              <span aria-hidden="true" className={`gw-key${q.multi ? " gw-key-multi" : ""}`}>{q.multi && on ? "✓" : KEYS[i]}</span>
+              <span className="gw-opt-label">{o.label}{o.sub && <span className="gw-opt-sub">{o.sub}</span>}</span>
+            </button>
+          );
+        })}
       </div>
-      {value === "other" && (
-        <div className="gw-other-row gw-grow">
+      {otherOn && (
+        <div className={`gw-other-row gw-grow${q.multi ? " gw-other-solo" : ""}`}>
           <label className="gw-other-label">Describe it
-            <input className="gw-other" autoFocus value={other} onChange={(e) => onOther(e.target.value)} placeholder={q.otherHint} maxLength={280} onKeyDown={(e) => e.key === "Enter" && other.trim() && onNext()} />
+            <input className="gw-other" autoFocus value={other} onChange={(e) => onOther(e.target.value)} placeholder={q.otherHint} maxLength={280} onKeyDown={(e) => e.key === "Enter" && canGo && onNext()} />
           </label>
-          <button type="button" className="gw-btn gw-btn-small" disabled={!other.trim()} onClick={onNext}>OK ✓</button>
+          {!q.multi && <button type="button" className="gw-btn gw-btn-small" disabled={!canGo} onClick={onNext}>OK ✓</button>}
         </div>
+      )}
+      {q.multi && (
+        <>
+          <div className="gw-flex" />
+          <button type="button" className="gw-btn" disabled={!canGo} onClick={onNext}>OK ✓</button>
+        </>
       )}
     </div>
   );
 }
 
 function summary(a: Answers) {
-  const label = (step: number, v?: string) => (v === "other" ? a.other[CHOICES[step]!.field] || "Other" : CHOICES[step]!.opts.find((o) => o.value === v)?.label ?? "Not answered");
+  const one = (step: number, v?: string) => (v === "other" ? a.other[CHOICES[step]!.field] || "Other" : CHOICES[step]!.opts.find((o) => o.value === v)?.label ?? "Not answered");
+  const label = (step: number, v?: string | string[]) => (Array.isArray(v) ? (v.length ? v.map((x) => one(step, x)).join("; ") : "Not answered") : one(step, v));
   const lean = (k: (typeof SCALES)[number]) => (a.leans[k.key] === 3 ? "Balanced" : a.leans[k.key] < 3 ? k.left : k.right.replace(", even if slower", "").replace(" as you learn", ""));
   const limits = [...a.limits.map((l) => LIMIT_OPTS.find((o) => o.value === l)!.label.toLowerCase()), ...(a.limitsOther && a.other.limits ? [a.other.limits] : [])];
   return [

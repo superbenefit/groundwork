@@ -7,7 +7,11 @@ export const Profile = z.object({
   purpose: z.string().max(500),
   scale: z.enum(["solo", "team", "teams", "community", "network", "other"]),
   reach: z.enum(["members", "local", "regional", "national", "global", "online", "other"]),
+  /** Further answers to "Who benefits?" (the question takes several). */
+  reachAlso: z.array(z.enum(["members", "local", "regional", "national", "global", "online", "other"])).default([]),
   decision: z.enum(["single", "consensus", "vote", "roles", "board", "unsettled", "other"]),
+  /** Further answers to "How are decisions made today?" (the question takes several). */
+  decisionAlso: z.array(z.enum(["single", "consensus", "vote", "roles", "board", "unsettled", "other"])).default([]),
   leans: z.object({
     speedSay: z.number().int().min(1).max(5),
     stableAdapt: z.number().int().min(1).max(5),
@@ -23,6 +27,8 @@ export const Profile = z.object({
     .default({}),
 });
 export type Profile = z.infer<typeof Profile>;
+export const allReach = (p: Pick<Profile, "reach"> & { reachAlso?: Profile["reachAlso"] }) => [...new Set([p.reach, ...(p.reachAlso ?? [])])];
+export const allDecisions = (p: Pick<Profile, "decision"> & { decisionAlso?: Profile["decisionAlso"] }) => [...new Set([p.decision, ...(p.decisionAlso ?? [])])];
 
 export const Question = z.string().min(1).max(400);
 

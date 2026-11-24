@@ -1,4 +1,4 @@
-import type { Plan, Profile } from "../shared/schema";
+import { allDecisions, allReach, type Plan, type Profile } from "../shared/schema";
 import type { Snapshot } from "../openhaven/snapshot";
 import type { Mechanism, OrgType, Tool } from "../openhaven/types";
 import type { Weights } from "./weigh";
@@ -55,11 +55,11 @@ export function retrieveOrgTypes(snapshot: Snapshot, profile: Profile): OrgType[
     .map((o) => ({
       o,
       s:
-        (DECISION[profile.decision]?.includes(o.decisionMaking) ? 2 : 0) +
+        (allDecisions(profile).some((d) => DECISION[d]?.includes(o.decisionMaking)) ? 2 : 0) +
         (LEGAL[profile.legal]?.includes(o.legalPersonhood) ? 2 : 0) +
         (CAPITAL[profile.legal]?.includes(o.capitalModel) ? 1 : 0) +
         (PURPOSE[profile.legal]?.includes(o.purposeOrientation) ? 1 : 0) +
-        (SCALE[profile.reach]?.includes(o.scale) ? 1 : 0),
+        (allReach(profile).some((r) => SCALE[r]?.includes(o.scale)) ? 1 : 0),
     }))
     .filter((x) => x.s >= 3)
     .sort((a, b) => b.s - a.s || a.o.id.localeCompare(b.o.id))
@@ -76,7 +76,7 @@ export function retrieveMechanisms(snapshot: Snapshot, profile: Profile): Mechan
   return snapshot.mechanisms
     .filter((m) => !(noCrypto && (m.systemType === "crypto-native-incumbent" || CRYPTO_MECH.test(`${m.name} ${m.desc ?? ""}`))))
     .filter((m) => m.systemType !== "legacy-incumbent" && m.systemType !== "prototype-conceptual")
-    .map((m) => ({ m, s: (MECH_SCALE[profile.reach]?.includes(m.scale) ? 2 : 0) + (m.systemType === "established-alternative" ? 1 : 0) + (m.coordination === "deliberative" || m.coordination === "trust" ? 1 : 0) }))
+    .map((m) => ({ m, s: (allReach(profile).some((r) => MECH_SCALE[r]?.includes(m.scale)) ? 2 : 0) + (m.systemType === "established-alternative" ? 1 : 0) + (m.coordination === "deliberative" || m.coordination === "trust" ? 1 : 0) }))
     .filter((x) => x.s >= 2)
     .sort((a, b) => b.s - a.s || a.m.id.localeCompare(b.m.id))
     .slice(0, 2)

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import type { WorkspaceState } from "../../src/agents/workspace";
 import type { Profile } from "../../src/shared/schema";
-import { CHOICES, emptyAnswers, type Answers } from "../lib/answers";
+import { CHOICES, emptyAnswers, normalizeAnswers, type Answers } from "../lib/answers";
+import { allDecisions, allReach } from "../../src/shared/schema";
 import { Brand } from "./Brand";
 import { PoweredBy } from "./PoweredBy";
 import type { View, Workspace } from "./App";
@@ -17,17 +18,17 @@ export function shape(p: Profile): string {
   const limits = p.limits.map((l) => ({ crypto: "no crypto", cost: "no cost", server: "no server", mobile: "phone app needed", offline: "works on poor internet", export: "exportable data needed" })[l]);
   return [
     label(2, p.scale, "scale")?.replace(/^2 to 10$/, "2 to 10 people"),
-    label(3, p.reach, "reach")?.toLowerCase(),
-    p.decision === "other" ? p.other?.decision : DECIDE[p.decision],
+    allReach(p).map((r) => label(3, r, "reach")?.toLowerCase()).filter(Boolean).join(" and "),
+    allDecisions(p).map((d) => (d === "other" ? p.other?.decision : DECIDE[d])).filter(Boolean).join(" or "),
     ...limits,
     p.setup === "other" ? p.other?.setup : SETUP[p.setup],
   ].filter(Boolean).join(", ");
 }
 
 function answersFrom(g: WorkspaceState["groups"][number]): Answers {
-  if (g.answers && typeof g.answers === "object") return { ...emptyAnswers(), ...(g.answers as Answers), name: g.name };
+  if (g.answers && typeof g.answers === "object") return { ...normalizeAnswers(g.answers as Partial<Answers>), name: g.name };
   const p = g.profile;
-  return { ...emptyAnswers(), name: p.name, purpose: p.purpose, scale: p.scale, reach: p.reach, decision: p.decision, leans: p.leans, leanNote: p.leanNote ?? "", limits: p.limits, limitsOther: !!p.other?.limits, setup: p.setup, legal: p.legal, other: { ...p.other } };
+  return { ...emptyAnswers(), name: p.name, purpose: p.purpose, scale: p.scale, reach: allReach(p), decision: allDecisions(p), leans: p.leans, leanNote: p.leanNote ?? "", limits: p.limits, limitsOther: !!p.other?.limits, setup: p.setup, legal: p.legal, other: { ...p.other } };
 }
 
 const REFUSED: Record<string, (resetsAt?: string) => string> = {
