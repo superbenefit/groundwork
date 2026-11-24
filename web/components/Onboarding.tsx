@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { CHOICES, EXAMPLES, LIMIT_OPTS, SCALES, emptyAnswers, storage, toProfile, type Answers, type ChoiceQ } from "../lib/answers";
 import { Brand } from "./Brand";
 import { PoweredBy } from "./PoweredBy";
-import type { WorkspaceState } from "../../src/agents/workspace";
 import type { Workspace } from "./App";
 import "./onboarding.css";
 import "./returning.css";
@@ -12,8 +11,8 @@ const PART = (step: number) => (step <= 4 ? "Your group" : step <= 8 ? "How you 
 const clip = (s: string, n: number) => (s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s);
 
 type Props = {
-  workspace: Workspace;
-  state: WorkspaceState;
+  /** Resolves once the session and workspace connection are up; only starting a briefing waits for it. */
+  ready: () => Promise<Workspace>;
   /** Editing an existing group: its id and saved answers. */
   groupId?: string;
   initial?: Answers;
@@ -28,10 +27,11 @@ const REFUSED: Record<string, string> = {
   not_found: "That group isn't here any more.",
 };
 
-export function Onboarding({ workspace, groupId, initial, startAt, onRun, onCancel }: Props) {
+export function Onboarding({ ready, groupId, initial, startAt, onRun, onCancel }: Props) {
   const [a, setA] = useState<Answers>(() => initial ?? emptyAnswers());
   const [step, setStep] = useState(startAt ?? 0);
-  const [dir, setDir] = useState<"up" | "down">("up");
+  // No entrance animation on the first screen, so the prerendered welcome paints at full strength.
+  const [dir, setDir] = useState<"up" | "down" | "none">("none");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -88,6 +88,7 @@ export function Onboarding({ workspace, groupId, initial, startAt, onRun, onCanc
     setBusy(true);
     setNotice(null);
     try {
+      const workspace = await ready();
       const { groupId: id } = await workspace.stub.saveGroup(toProfile(a), a, groupId);
       const r = await workspace.stub.startSession(id, a.question.trim());
       if ("name" in r) {
@@ -128,7 +129,7 @@ export function Onboarding({ workspace, groupId, initial, startAt, onRun, onCanc
       )}
 
       <main className="gw-ob-col gw-ob-main">
-        <div key={step} className={`gw-ob-frame gw-${dir}`}>
+        <div key={step} className={dir === "none" ? "gw-ob-frame" : `gw-ob-frame gw-${dir}`}>
           {step === 0 && <Welcome onStart={() => go(1)} />}
 
           {step === 1 && (
