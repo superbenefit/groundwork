@@ -14,7 +14,7 @@ const DECIDE: Record<string, string> = { single: "one person decides", consensus
 /** One line summing up a group's saved answers (mockup NewSession.dc.html). */
 export function shape(p: Profile): string {
   const label = (step: number, v: string, f: keyof Profile["other"]) => (v === "other" ? p.other?.[f] : CHOICES[step]?.opts.find((o) => o.value === v)?.label);
-  const limits = p.limits.map((l) => ({ crypto: "no crypto", cost: "no cost", server: "no server", mobile: "phone app needed", offline: "works offline", export: "data export" })[l]);
+  const limits = p.limits.map((l) => ({ crypto: "no crypto", cost: "no cost", server: "no server", mobile: "phone app needed", offline: "works on poor internet", export: "exportable data needed" })[l]);
   return [
     label(2, p.scale, "scale")?.replace(/^2 to 10$/, "2 to 10 people"),
     label(3, p.reach, "reach")?.toLowerCase(),

@@ -63,7 +63,7 @@ app.get("/api/m0/brief/:name", async (c) => c.json(await c.env.BriefingAgent.get
 app.get("/api/config", (c) => c.json({ turnstileSiteKey: c.env.TURNSTILE_SITE_KEY }));
 app.get("/api/session", async (c) => {
   const w = await sessionWorkspace(c.req.raw, c.env);
-  return w ? c.json({ workspaceId: w }) : c.json({ error: "No session" }, 401);
+  return c.json({ workspaceId: w }); // null when there is no valid cookie yet
 });
 app.post("/api/session", (c) => startSession(c.req.raw, c.env));
 

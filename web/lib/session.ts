@@ -40,11 +40,10 @@ async function turnstileToken(container: HTMLElement): Promise<string> {
 
 /** Returns the workspace id for this browser, running the Turnstile check only if the cookie is missing or expired. */
 export async function ensureSession(container: HTMLElement): Promise<string> {
-  const existing = await fetch("/api/session", { credentials: "same-origin" });
-  if (existing.ok) {
-    const { workspaceId } = (await existing.json()) as { workspaceId: string };
-    writeWs(workspaceId);
-    return workspaceId;
+  const existing = (await (await fetch("/api/session", { credentials: "same-origin" })).json()) as { workspaceId: string | null };
+  if (existing.workspaceId) {
+    writeWs(existing.workspaceId);
+    return existing.workspaceId;
   }
   const token = await turnstileToken(container);
   const r = await fetch("/api/session", { method: "POST", credentials: "same-origin", headers: { "content-type": "application/json" }, body: JSON.stringify({ token, workspaceId: readWs() }) });
