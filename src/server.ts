@@ -44,8 +44,10 @@ app.get("/api/m0/plan", async (c) => {
   const gatewayId = c.req.query("gateway") ?? c.env.AI_GATEWAY_ID; // M0 diagnostic: ?gateway=none skips the gateway
   const ai = gatewayId === "none" ? createAI({ binding: c.env.AI }) : createAI({ binding: c.env.AI, gateway: { id: gatewayId, skipCache: true } });
   try {
-    const r = await runPlan(ai(modelId as `@cf/${string}`), Profile.parse(persona.profile), persona.question, affordances);
-    return c.json({ ok: true, model: modelId, persona: persona.id, gateway: gatewayId, ...r });
+    const think = c.req.query("think") === "1";
+    const model = think ? ai(modelId as `@cf/${string}`) : ai(modelId as `@cf/${string}`, { reasoningEffort: null, chatTemplateKwargs: { enable_thinking: false } });
+    const r = await runPlan(model, Profile.parse(persona.profile), persona.question, affordances);
+    return c.json({ ok: true, model: modelId, persona: persona.id, gateway: gatewayId, think, ...r });
   } catch (e) {
     return c.json({ ok: false, model: modelId, persona: persona.id, error: String((e as Error)?.message ?? e) });
   }
