@@ -20,7 +20,9 @@ export function planPrompt(profile: Profile, question: string, affordances: Affo
     "",
     "Group:",
     JSON.stringify({ ...profile, other: undefined }),
-    other ? `Free-text answers:\n${other}` : "",
+    other
+      ? `Free-text answers (return exactly one otherMappings entry for each, using its field name: ${Object.keys(profile.other ?? {}).filter((k) => (profile.other as Record<string, string | undefined>)[k]).join(", ")}):\n${other}`
+      : "There are no free-text answers, so otherMappings is an empty list.",
     "",
     `Question: ${question}`,
   ].join("\n");

@@ -48,7 +48,7 @@ export const Plan = z.object({
         note: z.string().describe("What the free-text answer means for tool choice, in plain words"),
       }),
     )
-    .default([]),
+    .describe("One entry per free-text answer; empty only when there are none"),
   wantsOrgModels: z.boolean(),
   wantsMoney: z.boolean(),
 });
