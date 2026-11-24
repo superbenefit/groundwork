@@ -59,7 +59,7 @@ a.gw-btn:hover { color: var(--cream); }
 .gw-btn-big { height: 56px; padding: 0 40px; font-size: 17px; align-self: stretch; }
 @media (min-width: 761px) { .gw-btn-big { align-self: flex-start; } }
 .gw-btn-small { height: 44px; padding: 0 20px; font-size: 15px; }
-.gw-btn-red { background: var(--red); color: #fffaf2; }
+.gw-btn-red, a.gw-btn-red:hover { background: var(--red); color: #fffaf2; } /* #fffaf2 on red: 4.9:1; cream would be 4.4:1 */
 .gw-link-btn { border: none; background: none; color: var(--red-deep); text-decoration: underline; font-size: 14px; padding: 8px 0; align-self: flex-start; }
 
 /* Questions */
