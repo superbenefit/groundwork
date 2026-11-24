@@ -17,6 +17,7 @@
   "dependencies": {
     "@ai-sdk/provider": "4.0.39",
     "@ai-sdk/react": "4.0.186",
+    "@cloudflare/computer": "0.10.0",
     "@cloudflare/think": "0.24.0",
     "@modelcontextprotocol/client": "2.4.0",
     "agents": "0.34.0",
