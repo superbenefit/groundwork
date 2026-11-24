@@ -2,7 +2,7 @@ import { z } from "zod";
 import { decide, writeJson, type DecisionQuestion, type ModelEnv, type Usage } from "./ai";
 import { OPTIONS, profileText } from "./vocab";
 import { STYLE_RULES } from "./style";
-import { OTHER_FIELDS, type Limit, type OtherField, type Plan, type Profile } from "../shared/schema";
+import { OTHER_FIELDS, type OtherField, type Plan, type Profile } from "../shared/schema";
 import type { Affordance } from "../openhaven/types";
 
 const MAX_NEEDS = 5;
@@ -15,18 +15,19 @@ export function otherAnswers(profile: Profile): { field: OtherField; text: strin
 }
 
 /** Questions for the decision model: one per capability, two flags, one choice per free-text answer. */
-/** Capabilities that duplicate a limit the group chose; the limit column already covers them. */
-const LIMIT_AFFORDANCES: Partial<Record<Limit, string[]>> = { export: ["data-portability"], offline: ["offline-mesh", "local-first-storage"] };
-
-export function needCandidates(profile: Profile, affordances: Affordance[]): Affordance[] {
-  const skip = new Set(profile.limits.flatMap((l) => LIMIT_AFFORDANCES[l] ?? []));
-  return affordances.filter((a) => !skip.has(a.id));
+export function needCandidates(_profile: Profile, affordances: Affordance[]): Affordance[] {
+  // Every capability stays a candidate: a festival with no internet needs offline tools as a need,
+  // not only as a limit. Limits stay out of the decision state instead (runPlan).
+  return affordances;
 }
 
 export function decisionQuestions(profile: Profile, affordances: Affordance[]): Record<string, DecisionQuestion> {
   const q: Record<string, DecisionQuestion> = {};
   for (const a of needCandidates(profile, affordances)) {
-    q[`aff.${a.id}`] = { type: "noul", instructions: `Does the group's question need this capability? Judge from the question and what the group does. ${a.name}: ${a.description}` };
+    // Name + description alone under-scores some needs (voting scored 0.30 for Riverside); the first
+    // sentence of whatItEnables lifts it to 0.51 for about 4k more input tokens.
+    const enables = (a.whatItEnables ?? "").split(/(?<=\.)\s/)[0] ?? "";
+    q[`aff.${a.id}`] = { type: "noul", instructions: `Does this group need this capability to act on its question? ${a.name}: ${a.description}. ${enables}`.trim() };
   }
   q["flag.orgModels"] = { type: "noul", instructions: "Does the question or the group's legal answer touch how the group is structured, governed as an organization, or incorporated?" };
   q["flag.money"] = { type: "noul", instructions: "Does the question touch money: budgets, dues, funding, spending, pooling or payments?" };

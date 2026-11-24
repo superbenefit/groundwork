@@ -162,8 +162,15 @@ export function assess(candidates: Candidate[], profile: Profile, plan: Plan, we
     eligible.push(c);
   }
 
-  // Cap by score, then show alphabetically.
-  const shown = eligible.slice(0, COMPARISON_CAP).map((c) => c.tool).sort((a, b) => a.name.localeCompare(b.name));
+  // Ready-made apps fill the comparison first; with a developer, at most 2 building blocks join.
+  // Within each lane the score decides who makes the cap. Shown alphabetically.
+  const apps = eligible.filter((c) => APP_TYPES.has(c.tool.entityType));
+  const blocksEligible = eligible.filter((c) => !APP_TYPES.has(c.tool.entityType));
+  // Apps keep all but 2 slots when building blocks compete; blocks may take more only if apps are few.
+  const appSlots = Math.min(apps.length, COMPARISON_CAP - Math.min(2, blocksEligible.length));
+  const blockSlots = Math.min(blocksEligible.length, COMPARISON_CAP - appSlots);
+  const picked = [...apps.slice(0, appSlots), ...blocksEligible.slice(0, blockSlots)];
+  const shown = picked.map((c) => c.tool).sort((a, b) => a.name.localeCompare(b.name));
   const comparison = shown.map((t) => t.id);
 
   const cells: Cell[] = [];
@@ -205,7 +212,7 @@ export function assess(candidates: Candidate[], profile: Profile, plan: Plan, we
   const views: Record<string, ToolView> = {};
   for (const c of candidates) if (comparison.includes(c.tool.id) || setAside.some((s) => s.toolId === c.tool.id)) views[c.tool.id] = toolView(c.tool, now);
 
-  return { columns: [...needCols, ...limitCols], comparison, moreCount: Math.max(0, eligible.length - COMPARISON_CAP), cells, setAside, excluded, notReady, questions, needCounts, views };
+  return { columns: [...needCols, ...limitCols], comparison, moreCount: Math.max(0, eligible.length - shown.length), cells, setAside, excluded, notReady, questions, needCounts, views };
 }
 
 export function joinList(xs: string[]): string {

@@ -30,6 +30,8 @@ export type RunResult = {
   usage: Usage[];
   composeAttempts: { errors: string[] }[];
   counts: { tools: number; options: number; setAside: number };
+  /** Top capability probabilities from the decision call (diagnostics). */
+  topProbabilities: Record<string, number>;
 };
 
 export async function runPipeline(
@@ -45,9 +47,11 @@ export async function runPipeline(
 
   hooks.step("plan", "active");
   let plan = resume.plan;
+  let topProbabilities: Record<string, number> = {};
   if (!plan) {
     const r = await runPlan(env, profile, question, snapshot.affordances);
     plan = r.plan;
+    topProbabilities = Object.fromEntries(Object.entries(r.probabilities).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([k, v]) => [k, Math.round(v * 1000) / 1000]));
     usage.push(...r.usage);
     saved.plan = plan;
     hooks.stash(saved);
@@ -65,7 +69,24 @@ export async function runPipeline(
   hooks.step("retrieve", "done", `${candidates.length} tools`);
 
   hooks.step("assess", "active");
-  const assessment = assess(candidates, profile, plan, weights);
+  let assessment = assess(candidates, profile, plan, weights);
+  // Too few options: widen with the next most likely needs and look again (once).
+  if (assessment.comparison.length < 2 && !resume.plan) {
+    const have = new Set(plan.needs.map((n) => n.affordanceId));
+    const extra = Object.entries(topProbabilities).filter(([id, p]) => !have.has(id) && p >= 0.3).slice(0, Math.max(0, 5 - plan.needs.length)).slice(0, 2);
+    if (extra.length) {
+      plan = {
+        ...plan,
+        needs: [...plan.needs, ...extra.map(([id, p]) => ({ affordanceId: id, plain: snapshot.affordanceById.get(id)?.name ?? id, why: "Added because few tools meet the main needs.", p }))],
+      };
+      const w2 = weigh(profile, plan);
+      const c2 = retrieveTools(snapshot, plan, w2);
+      assessment = assess(c2, profile, plan, w2);
+      candidates.splice(0, candidates.length, ...c2);
+      saved.plan = plan;
+      hooks.stash(saved);
+    }
+  }
   const counts = { tools: candidates.length, options: assessment.comparison.length, setAside: assessment.excluded.filter((e) => e.why !== "notReady").length };
   hooks.step("assess", "done", `${counts.options} options, ${assessment.setAside.length} set aside`);
 
@@ -82,5 +103,5 @@ export async function runPipeline(
   }
   hooks.step("compose", "done");
 
-  return { plan, briefing, usage, composeAttempts, counts };
+  return { plan, briefing, usage, composeAttempts, counts, topProbabilities };
 }
