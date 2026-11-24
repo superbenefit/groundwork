@@ -25,7 +25,7 @@ It is a public demo with no accounts. Abuse is held off by Turnstile, rate limit
 |---|---|---|
 | Runtime | Cloudflare Workers, **Workers Paid** plan | Free plan's 10 ms CPU and 50 subrequests are too tight for Think plus MCP |
 | HTTP router | `hono` + `hono-agents` (`agentsMiddleware`) | hono-agents 3.0.12 |
-| Agents | `agents` (Agent, `@callable`, `startFiber`, `schedule`) | ≥ 0.34.1 (Think's peer range; **VERIFY**, since npm showed 0.34.0) |
+| Agents | `agents` (Agent, `@callable`, `startFiber`, `schedule`) | 0.34.0 (Think 0.24.0's peer range is `>=0.34.0 <1.0.0`; confirmed M0) |
 | Chat agent | `@cloudflare/think` | 0.24.0, labelled experimental; pin the exact version |
 | AI SDK | `ai` v7, `@ai-sdk/provider` v4, `zod` v4 | `createAI` from `agents/models/ai-sdk` replaces `workers-ai-provider` |
 | MCP client | `@modelcontextprotocol/client` | 2.4.0 (Think peer) |
@@ -85,7 +85,8 @@ groundwork/
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "groundwork",
   "main": "src/server.ts",
-  "compatibility_date": "2026-06-11",           // matches agents examples; test before moving past 2026-11-17
+  "compatibility_date": "2026-11-17",           // confirmed in M0 (local workerd 1.20261123 and Workers Builds)
+  "build": { "command": "npx astro build" },   // wrangler builds dist/ itself, so Workers Builds needs no build-command setting
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": false,
   "routes": [{ "pattern": "groundwork.superbenefit.dev", "custom_domain": true }],
@@ -291,10 +292,10 @@ export class BriefingAgent extends Think<Env, BriefingState> {
 ```
 
 - **Chat admission.** Think 0.24 has no hook to refuse a user message: `beforeTurn` can reshape a turn but not cancel it. So the client never uses `useAgentChat`'s `sendMessage` to start a turn. It calls `agent.stub.ask(text)`. It still uses `useAgentChat` to render `messages` and the stream.
-  - **VERIFY in M0:** that Think's built-in WebSocket chat-request path can be closed to clients, for example by overriding the chat request handler or rejecting that message type in `onMessage`.
-  - If it can't be closed: `beforeTurn` checks the same weekly counter. If it is over, it returns `{ activeTools: [], maxSteps: 1, instructions: CAP_REACHED_PROMPT }` with the cheapest model, so the reply is a one-line cap notice and the abuse cost is bounded.
+  - **Closed (confirmed in M0).** Think installs its protocol wrapper on `this.onMessage` before calling the subclass `onStart`. `BriefingAgent.onStart` wraps it once more and drops `cf_agent_use_chat_request`, `cf_agent_chat_clear`, `cf_agent_tool_result` and `cf_agent_tool_approval`, replying `{ type: "gw_refused" }`. Stream-resume frames and RPC pass. Tested over a local WebSocket: the chat frame is refused, no message is persisted, RPC still answers.
+  - Because client tool results are blocked, `highlight(sectionId)` is a server tool that sets `state.highlight`; the client reacts to state.
 - **Fallback tools.** `localOpenHavenTools` registers the same tools under an `oh_` prefix, implemented over the KV snapshot. The prompt says to prefer MCP tools and use `oh_` ones only if MCP errors.
-- **Client tool.** `highlight(sectionId)` is declared on the client: a tool with no `execute`, as in Think's client-tools pattern. It scrolls the page and pulses a card.
+- **Highlight.** `highlight(sectionId)` is a server tool that writes `state.highlight = { sectionId, at }`. The client scrolls to the card and pulses it.
 
 ## 8. Abuse controls and budgets
 
@@ -348,7 +349,7 @@ When a cap is hit, the UI says so in plain words, for example "This demo allows 
 | Writing your briefing | `compose.ts` + `validate.ts` | 1 model call, up to 1 retry | Assessed data → `Briefing` |
 
 **Plan**
-- **Call:** `generateText({ model: ai(MODEL_PLAN), output: Output.object({ schema: PlanSchema }), prompt })`, non-streaming because Workers AI rejects JSON Schema when streaming. **VERIFY** the ai v7 `output` / `Output.object` shape in M0.
+- **Call:** `generateText({ model: ai(MODEL_PLAN), output: Output.object({ schema: PlanSchema }), prompt })`, non-streaming because Workers AI rejects JSON Schema when streaming. Confirmed in M0: ai 7.0.181 deprecates `generateObject`; use `generateText({ output: Output.object({ schema }) })` and read `result.output`.
 - **Prompt input:** a compact affordance list (id, name, description, domain), the domain list, the profile with every `other.*` text, and the question.
 - **Output:** 2–5 `needs` (plain wording plus `affordanceId`), mappings for any "Other" answers (`{ field, mappedTo?, note }`), `wantsOrgModels`, `wantsMoney`.
 - **Repair:** drop any `affordanceId` not in the vocabulary and retry once. Then fall back to keyword overlap between the question and affordance descriptions.
@@ -462,7 +463,8 @@ CPU time is low; wall time is mostly model latency, and Durable Object requests 
    - production branch `main`;
    - build `npm ci && npm run build`;
    - deploy `npx wrangler deploy`;
-   - preview `npx wrangler preview`.
+   - preview `npx wrangler preview`;
+   - Preview custom domain: `groundwork.superbenefit.dev`, so branch Previews are `<branch>.groundwork.superbenefit.dev`.
 
 ### 11.2 Environments
 
@@ -521,6 +523,6 @@ Version preview URLs are not generated for Workers with Durable Objects. Use bra
 ## 14. Open technical questions
 
 1. ~~Plan~~: confirmed. The account is on Workers Paid.
-2. **ai v7 structured output:** the exact API (`Output.object` vs `generateObject`) needs confirming in M0.
-3. **Think chat admission:** whether the built-in WebSocket chat path can be closed so that `ask()` is the only way in (§7.3).
+2. ~~ai v7 structured output~~: `generateText` + `Output.object` (§9.2).
+3. ~~Think chat admission~~: closed in `onStart` (§7.3).
 4. **Shared auth:** whether to reuse `sb-auth` later for named accounts; it is out of scope for the PoC.
