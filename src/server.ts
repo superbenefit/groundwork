@@ -41,10 +41,11 @@ app.get("/api/m0/plan", async (c) => {
   if (!c.env.MODEL_CANDIDATES.split(",").includes(modelId)) return c.json({ error: "unknown model" }, 400);
   const persona = PERSONAS.find((p) => p.id === c.req.query("persona")) ?? PERSONAS[0];
   const affordances = (await (await fetch(`${c.env.OPENHAVEN_API}/affordances.json`)).json()) as Affordance[];
-  const ai = createAI({ binding: c.env.AI, gateway: { id: c.env.AI_GATEWAY_ID, skipCache: true } });
+  const gatewayId = c.req.query("gateway") ?? c.env.AI_GATEWAY_ID; // M0 diagnostic: ?gateway=none skips the gateway
+  const ai = gatewayId === "none" ? createAI({ binding: c.env.AI }) : createAI({ binding: c.env.AI, gateway: { id: gatewayId, skipCache: true } });
   try {
     const r = await runPlan(ai(modelId as `@cf/${string}`), Profile.parse(persona.profile), persona.question, affordances);
-    return c.json({ ok: true, model: modelId, persona: persona.id, ...r });
+    return c.json({ ok: true, model: modelId, persona: persona.id, gateway: gatewayId, ...r });
   } catch (e) {
     return c.json({ ok: false, model: modelId, persona: persona.id, error: String((e as Error)?.message ?? e) });
   }
