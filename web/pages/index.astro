@@ -3,5 +3,7 @@ import Base from "../layouts/Base.astro";
 import { App } from "../components/App";
 ---
 <Base title="Groundwork">
-  <App client:only="react" />
+  <!-- A browser with saved groups goes to the returning screen, so hide the prerendered welcome until the app takes over. -->
+  <script is:inline>try { if (localStorage.getItem("gw.returning") === "1") document.documentElement.setAttribute("data-gw-returning", ""); } catch {}</script>
+  <App client:load />
 </Base>

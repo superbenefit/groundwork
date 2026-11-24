@@ -142,3 +142,4 @@ a.gw-btn:hover { color: var(--cream); }
 .gw-run-fail p { margin: 0; font-size: 14px; color: var(--red-deep); }
 
 @media (prefers-reduced-motion: reduce) { .gw-up, .gw-ob-frame.gw-down, .gw-grow, .gw-fade, .gw-spin { animation: none !important; } .gw-seg, .gw-dot, .gw-dot span, .gw-opt { transition: none; } }
+html[data-gw-returning] .gw-ob { visibility: hidden; }
