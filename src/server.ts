@@ -14,6 +14,12 @@ const app = new Hono<{ Bindings: Env }>();
 
 const isProduction = (req: Request, env: Env) => new URL(req.url).hostname === env.PRODUCTION_HOST;
 
+app.onError((err, c) => {
+  console.error(err);
+  if (isProduction(c.req.raw, c.env)) return c.text("Internal Server Error", 500);
+  return c.json({ error: String(err?.message ?? err), stack: err?.stack?.split("\n").slice(0, 8) }, 500);
+});
+
 app.get("/api/health", (c) => c.json({ ok: true, preview: !isProduction(c.req.raw, c.env) }));
 
 // M0 diagnostics: never served on the production host.
