@@ -76,6 +76,43 @@ const WORDING_SCHEMA = {
   required: ["needs", "notes"],
 };
 
+/** A capability's own name is OpenHaven vocabulary; its one-line description is plain language. */
+export const plainFallback = (a: Affordance) => a.description.replace(/[.\s]+$/, "");
+
+/** DeepSeek wording for needs and free-text notes. Never throws; returns undefined wording on failure. */
+export async function wordNeeds(
+  env: ModelEnv,
+  profile: Profile,
+  question: string,
+  ids: string[],
+  affordances: Affordance[],
+  others: { field: OtherField; text: string }[] = [],
+): Promise<{ wording?: z.infer<typeof Wording>; usage?: Usage }> {
+  const byId = new Map(affordances.map((a) => [a.id, a]));
+  try {
+    const r = await writeJson(env, {
+      system: [
+        "Write short plain wording for a group's needs and free-text answers.",
+        "For each capability id: `plain` is the need as this group would say it, at most 10 words, specific to the question (for example \"Members propose and decide on purchases\"). Never reuse the capability's own name. `why` is one sentence on why the question needs it.",
+        "For each free-text answer: `note` is at most 25 words on what the answer means for choosing software. Address the group as \"your group\".",
+        STYLE_RULES,
+      ].join("\n"),
+      user: [
+        profileText(profile, question),
+        "",
+        "Capabilities to word:",
+        ...ids.map((id) => `- ${id}: ${byId.get(id)?.name}. ${byId.get(id)?.description}`),
+        others.length ? "\nFree-text answers:\n" + others.map((o) => `- ${o.field}: ${o.text}`).join("\n") : "\nNo free-text answers; return an empty notes list.",
+      ].join("\n"),
+      schema: Wording,
+      jsonSchema: WORDING_SCHEMA,
+    });
+    return { wording: r.value, usage: r.usage };
+  } catch {
+    return {};
+  }
+}
+
 export type PlanResult = { plan: Plan; usage: Usage[]; probabilities: Record<string, number> };
 
 export async function runPlan(env: ModelEnv, profile: Profile, question: string, affordances: Affordance[]): Promise<PlanResult> {
@@ -113,30 +150,9 @@ export async function runPlan(env: ModelEnv, profile: Profile, question: string,
 
   // 2. Wording.
   const others = otherAnswers(profile);
-  let wording: z.infer<typeof Wording> | undefined;
-  try {
-    const r = await writeJson(env, {
-      system: [
-        "Write short plain wording for a group's needs and free-text answers.",
-        "For each capability id: `plain` is the need as this group would say it, at most 10 words, specific to the question (for example \"Members propose and decide on purchases\"). `why` is one sentence on why the question needs it.",
-        "For each free-text answer: `note` is at most 25 words on what the answer means for choosing software. Address the group as \"your group\".",
-        STYLE_RULES,
-      ].join("\n"),
-      user: [
-        profileText(profile, question),
-        "",
-        "Capabilities to word:",
-        ...picked.map((n) => `- ${n.id}: ${byId.get(n.id)?.name}. ${byId.get(n.id)?.description}`),
-        others.length ? "\nFree-text answers:\n" + others.map((o) => `- ${o.field}: ${o.text}`).join("\n") : "\nNo free-text answers; return an empty notes list.",
-      ].join("\n"),
-      schema: Wording,
-      jsonSchema: WORDING_SCHEMA,
-    });
-    wording = r.value;
-    usage.push(r.usage);
-  } catch {
-    // fall through to templates
-  }
+  const w = await wordNeeds(env, profile, question, picked.map((n) => n.id), affordances, others);
+  if (w.usage) usage.push(w.usage);
+  const wording = w.wording;
 
   const plan: Plan = {
     needs: picked.map((n) => {
@@ -144,7 +160,7 @@ export async function runPlan(env: ModelEnv, profile: Profile, question: string,
       const a = byId.get(n.id)!;
       return {
         affordanceId: n.id,
-        plain: clip(w?.plain || a.name, 80),
+        plain: clip(w?.plain || plainFallback(a), 80),
         why: w?.why ? clip(w.why, 200) : undefined,
         p: Math.round(n.p * 1000) / 1000,
       };

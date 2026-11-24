@@ -1,4 +1,4 @@
-import { runPlan } from "./plan";
+import { plainFallback, runPlan, wordNeeds } from "./plan";
 import { weigh } from "./weigh";
 import { retrieveMechanisms, retrieveOrgTypes, retrieveTools } from "./retrieve";
 import { assess } from "./assess";
@@ -75,9 +75,18 @@ export async function runPipeline(
     const have = new Set(plan.needs.map((n) => n.affordanceId));
     const extra = Object.entries(topProbabilities).filter(([id, p]) => !have.has(id) && p >= 0.3).slice(0, Math.max(0, 5 - plan.needs.length)).slice(0, 2);
     if (extra.length) {
+      const w = await wordNeeds(env, profile, question, extra.map(([id]) => id), snapshot.affordances);
+      if (w.usage) usage.push(w.usage);
       plan = {
         ...plan,
-        needs: [...plan.needs, ...extra.map(([id, p]) => ({ affordanceId: id, plain: snapshot.affordanceById.get(id)?.name ?? id, why: "Added because few tools meet the main needs.", p }))],
+        needs: [
+          ...plan.needs,
+          ...extra.map(([id, p]) => {
+            const worded = w.wording?.needs.find((n) => n.affordanceId === id)?.plain;
+            const a = snapshot.affordanceById.get(id);
+            return { affordanceId: id, plain: (worded || (a ? plainFallback(a) : id)).slice(0, 80), why: "Added because few tools meet the main needs.", p };
+          }),
+        ],
       };
       const w2 = weigh(profile, plan);
       const c2 = retrieveTools(snapshot, plan, w2);
