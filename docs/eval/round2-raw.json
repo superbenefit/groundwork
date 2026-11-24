@@ -1,0 +1,2278 @@
+{
+  "picks": {
+    "@cf/google/gemma-4-26b-a4b-it": [
+      {
+        "persona": "riverside",
+        "picks": [
+          "transparent-resource-governance",
+          "consent-governance",
+          "self-hostable",
+          "local-first-storage"
+        ],
+        "ms": 1520,
+        "tin": 1093,
+        "tout": 33,
+        "usd": 0.00011920000000000001,
+        "mustRecall": 1,
+        "precision": 0.5,
+        "offTarget": [
+          "self-hostable",
+          "local-first-storage"
+        ]
+      },
+      {
+        "persona": "repair-network",
+        "picks": [
+          "decentralized-calendar",
+          "data-portability",
+          "protocol-federation",
+          "cross-instance-federation"
+        ],
+        "ms": 1129,
+        "tin": 1096,
+        "tout": 33,
+        "usd": 0.00011950000000000002,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "solo-researcher",
+        "picks": [
+          "local-first-storage",
+          "data-portability",
+          "offline-mesh"
+        ],
+        "ms": 595,
+        "tin": 1089,
+        "tout": 39,
+        "usd": 0.0001206,
+        "mustRecall": 0.5,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "housing-coop",
+        "picks": [
+          "consent-governance",
+          "slow-deliberation",
+          "dissent-pathways",
+          "composable-groups"
+        ],
+        "ms": 21177,
+        "tin": 1081,
+        "tout": 31,
+        "usd": 0.00011740000000000001,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "grants-dao",
+        "picks": [
+          "transparent-resource-governance",
+          "consent-governance",
+          "provenance-tracking"
+        ],
+        "ms": 1132,
+        "tin": 1098,
+        "tout": 26,
+        "usd": 0.00011760000000000001,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "mutual-aid",
+        "picks": [
+          "private-need-expression",
+          "relational-matching",
+          "consent-audience"
+        ],
+        "ms": 1372,
+        "tin": 1090,
+        "tout": 24,
+        "usd": 0.0001162,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "worker-coop",
+        "picks": [
+          "consent-governance",
+          "transparent-resource-governance",
+          "self-hostable"
+        ],
+        "ms": 703,
+        "tin": 1108,
+        "tout": 26,
+        "usd": 0.00011860000000000001,
+        "mustRecall": 1,
+        "precision": 0.6666666666666666,
+        "offTarget": [
+          "self-hostable"
+        ]
+      },
+      {
+        "persona": "festival",
+        "picks": [
+          "offline-mesh",
+          "local-first-storage",
+          "decentralized-calendar"
+        ],
+        "ms": 1886,
+        "tin": 1105,
+        "tout": 25,
+        "usd": 0.000118,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "seed-library",
+        "picks": [
+          "knowledge-commons",
+          "self-hostable",
+          "data-portability",
+          "interoperable-formats"
+        ],
+        "ms": 2581,
+        "tin": 1112,
+        "tout": 47,
+        "usd": 0.0001253,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "startup-team",
+        "picks": [
+          "data-portability",
+          "version-controlled-memory",
+          "knowledge-commons",
+          "interoperable-formats"
+        ],
+        "ms": 1544,
+        "tin": 1084,
+        "tout": 48,
+        "usd": 0.0001228,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      }
+    ],
+    "@cf/qwen/qwen3.8-27b": [
+      {
+        "persona": "riverside",
+        "picks": [
+          "consent-governance",
+          "transparent-resource-governance",
+          "slow-deliberation",
+          "non-gamified-tracking"
+        ],
+        "ms": 4659,
+        "tin": 1067,
+        "tout": 48,
+        "usd": 0.00063375,
+        "mustRecall": 1,
+        "precision": 0.75,
+        "offTarget": [
+          "non-gamified-tracking"
+        ]
+      },
+      {
+        "persona": "repair-network",
+        "picks": [
+          "decentralized-calendar",
+          "data-portability",
+          "cross-instance-federation",
+          "local-first-storage"
+        ],
+        "ms": 1844,
+        "tin": 1070,
+        "tout": 43,
+        "usd": 0.0006191,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "solo-researcher",
+        "picks": [
+          "local-first-storage",
+          "data-portability",
+          "offline-mesh"
+        ],
+        "ms": 1161,
+        "tin": 1062,
+        "tout": 34,
+        "usd": 0.0005867,
+        "mustRecall": 0.5,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "housing-coop",
+        "picks": [
+          "consent-governance",
+          "slow-deliberation",
+          "dissent-pathways",
+          "incremental-decentralization"
+        ],
+        "ms": 1544,
+        "tin": 1053,
+        "tout": 47,
+        "usd": 0.00062425,
+        "mustRecall": 1,
+        "precision": 0.75,
+        "offTarget": [
+          "incremental-decentralization"
+        ]
+      },
+      {
+        "persona": "grants-dao",
+        "picks": [
+          "transparent-resource-governance",
+          "consent-governance",
+          "provenance-tracking",
+          "version-controlled-memory"
+        ],
+        "ms": 7625,
+        "tin": 1068,
+        "tout": 46,
+        "usd": 0.0006278000000000001,
+        "mustRecall": 1,
+        "precision": 0.75,
+        "offTarget": [
+          "version-controlled-memory"
+        ]
+      },
+      {
+        "persona": "mutual-aid",
+        "picks": [
+          "private-need-expression",
+          "relational-matching",
+          "non-monetary-exchange",
+          "incremental-decentralization"
+        ],
+        "ms": 1589,
+        "tin": 1064,
+        "tout": 47,
+        "usd": 0.0006292,
+        "mustRecall": 1,
+        "precision": 0.75,
+        "offTarget": [
+          "incremental-decentralization"
+        ]
+      },
+      {
+        "persona": "worker-coop",
+        "picks": [
+          "consent-governance",
+          "provenance-tracking",
+          "version-controlled-memory",
+          "self-hostable"
+        ],
+        "ms": 2041,
+        "tin": 1077,
+        "tout": 44,
+        "usd": 0.00062545,
+        "mustRecall": 0.5,
+        "precision": 0.75,
+        "offTarget": [
+          "self-hostable"
+        ]
+      },
+      {
+        "persona": "festival",
+        "picks": [
+          "offline-mesh",
+          "decentralized-calendar",
+          "local-first-storage",
+          "self-hostable"
+        ],
+        "ms": 1489,
+        "tin": 1076,
+        "tout": 42,
+        "usd": 0.0006186000000000001,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "seed-library",
+        "picks": [
+          "knowledge-commons",
+          "cross-instance-federation",
+          "data-portability",
+          "self-hostable"
+        ],
+        "ms": 1458,
+        "tin": 1084,
+        "tout": 42,
+        "usd": 0.0006222,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "startup-team",
+        "picks": [
+          "data-portability",
+          "knowledge-commons",
+          "interoperable-formats",
+          "self-hostable"
+        ],
+        "ms": 3620,
+        "tin": 1057,
+        "tout": 43,
+        "usd": 0.00061325,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      }
+    ],
+    "@cf/cloudflare/clef": [
+      {
+        "persona": "riverside",
+        "picks": [
+          "transparent-resource-governance",
+          "consent-governance",
+          "slow-deliberation"
+        ],
+        "ms": 849,
+        "tin": 4683,
+        "tout": 0,
+        "usd": 0.0011239199999999998,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "repair-network",
+        "picks": [
+          "data-portability",
+          "decentralized-calendar",
+          "composable-groups",
+          "nested-coordination",
+          "interoperable-formats"
+        ],
+        "ms": 727,
+        "tin": 4686,
+        "tout": 0,
+        "usd": 0.0011246399999999999,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "solo-researcher",
+        "picks": [
+          "data-portability",
+          "local-first-storage",
+          "interoperable-formats",
+          "offline-mesh",
+          "e2e-encryption"
+        ],
+        "ms": 644,
+        "tin": 4678,
+        "tout": 0,
+        "usd": 0.00112272,
+        "mustRecall": 0.5,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "housing-coop",
+        "picks": [
+          "slow-deliberation",
+          "consent-governance",
+          "dissent-pathways",
+          "incremental-decentralization",
+          "version-controlled-memory"
+        ],
+        "ms": 527,
+        "tin": 4669,
+        "tout": 0,
+        "usd": 0.00112056,
+        "mustRecall": 1,
+        "precision": 0.8,
+        "offTarget": [
+          "incremental-decentralization"
+        ]
+      },
+      {
+        "persona": "grants-dao",
+        "picks": [
+          "transparent-resource-governance",
+          "consent-governance",
+          "slow-deliberation",
+          "provenance-tracking"
+        ],
+        "ms": 527,
+        "tin": 4684,
+        "tout": 0,
+        "usd": 0.00112416,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "mutual-aid",
+        "picks": [
+          "private-need-expression",
+          "relational-matching",
+          "e2e-encryption",
+          "consent-audience",
+          "incremental-decentralization"
+        ],
+        "ms": 610,
+        "tin": 4680,
+        "tout": 0,
+        "usd": 0.0011232,
+        "mustRecall": 1,
+        "precision": 0.8,
+        "offTarget": [
+          "incremental-decentralization"
+        ]
+      },
+      {
+        "persona": "worker-coop",
+        "picks": [
+          "consent-governance",
+          "transparent-resource-governance",
+          "provenance-tracking",
+          "version-controlled-memory",
+          "slow-deliberation"
+        ],
+        "ms": 604,
+        "tin": 4693,
+        "tout": 0,
+        "usd": 0.0011263199999999999,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "festival",
+        "picks": [
+          "offline-mesh",
+          "local-first-storage",
+          "self-hostable",
+          "local-network-routing"
+        ],
+        "ms": 883,
+        "tin": 4692,
+        "tout": 0,
+        "usd": 0.00112608,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "seed-library",
+        "picks": [
+          "data-portability",
+          "interoperable-formats",
+          "self-hostable",
+          "knowledge-commons",
+          "provenance-tracking"
+        ],
+        "ms": 538,
+        "tin": 4700,
+        "tout": 0,
+        "usd": 0.001128,
+        "mustRecall": 1,
+        "precision": 0.8,
+        "offTarget": [
+          "provenance-tracking"
+        ]
+      },
+      {
+        "persona": "startup-team",
+        "picks": [
+          "data-portability",
+          "interoperable-formats",
+          "knowledge-commons",
+          "version-controlled-memory",
+          "self-hostable"
+        ],
+        "ms": 1009,
+        "tin": 4673,
+        "tout": 0,
+        "usd": 0.00112152,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      }
+    ],
+    "@cf/cloudflare/clef-flash": [
+      {
+        "persona": "riverside",
+        "picks": [
+          "transparent-resource-governance",
+          "consent-governance"
+        ],
+        "ms": 311,
+        "tin": 4683,
+        "tout": 0,
+        "usd": 0.000177954,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "repair-network",
+        "picks": [
+          "decentralized-calendar",
+          "data-portability",
+          "interoperable-formats",
+          "nested-coordination"
+        ],
+        "ms": 948,
+        "tin": 4686,
+        "tout": 0,
+        "usd": 0.00017806799999999998,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "solo-researcher",
+        "picks": [
+          "local-first-storage",
+          "data-portability",
+          "offline-mesh",
+          "interoperable-formats"
+        ],
+        "ms": 320,
+        "tin": 4678,
+        "tout": 0,
+        "usd": 0.000177764,
+        "mustRecall": 0.5,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "housing-coop",
+        "picks": [
+          "slow-deliberation",
+          "consent-governance"
+        ],
+        "ms": 311,
+        "tin": 4669,
+        "tout": 0,
+        "usd": 0.000177422,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "grants-dao",
+        "picks": [
+          "transparent-resource-governance",
+          "consent-governance"
+        ],
+        "ms": 313,
+        "tin": 4684,
+        "tout": 0,
+        "usd": 0.000177992,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "mutual-aid",
+        "picks": [
+          "private-need-expression",
+          "relational-matching",
+          "e2e-encryption"
+        ],
+        "ms": 351,
+        "tin": 4680,
+        "tout": 0,
+        "usd": 0.00017784,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "worker-coop",
+        "picks": [
+          "transparent-resource-governance",
+          "consent-governance",
+          "provenance-tracking",
+          "version-controlled-memory"
+        ],
+        "ms": 408,
+        "tin": 4693,
+        "tout": 0,
+        "usd": 0.000178334,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "festival",
+        "picks": [
+          "offline-mesh",
+          "self-hostable"
+        ],
+        "ms": 333,
+        "tin": 4692,
+        "tout": 0,
+        "usd": 0.000178296,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "seed-library",
+        "picks": [
+          "interoperable-formats",
+          "data-portability",
+          "self-hostable",
+          "knowledge-commons",
+          "cross-instance-federation"
+        ],
+        "ms": 329,
+        "tin": 4700,
+        "tout": 0,
+        "usd": 0.0001786,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "startup-team",
+        "picks": [
+          "interoperable-formats",
+          "data-portability",
+          "knowledge-commons"
+        ],
+        "ms": 343,
+        "tin": 4673,
+        "tout": 0,
+        "usd": 0.00017757399999999998,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      }
+    ],
+    "@cf/cloudflare/clairic": [
+      {
+        "persona": "riverside",
+        "picks": [
+          "transparent-resource-governance",
+          "consent-audience",
+          "consent-governance",
+          "provenance-tracking",
+          "dissent-pathways"
+        ],
+        "ms": 16271,
+        "tin": 14202,
+        "tout": 86,
+        "usd": 0.00340848,
+        "mustRecall": 1,
+        "precision": 0.6,
+        "offTarget": [
+          "consent-audience",
+          "provenance-tracking"
+        ]
+      },
+      {
+        "persona": "repair-network",
+        "picks": [
+          "decentralized-calendar",
+          "composable-groups",
+          "interoperable-formats",
+          "data-portability",
+          "knowledge-commons"
+        ],
+        "ms": 2270,
+        "tin": 14331,
+        "tout": 86,
+        "usd": 0.00343944,
+        "mustRecall": 1,
+        "precision": 0.8,
+        "offTarget": [
+          "knowledge-commons"
+        ]
+      },
+      {
+        "persona": "solo-researcher",
+        "picks": [
+          "local-first-storage",
+          "offline-mesh",
+          "data-portability",
+          "e2e-encryption"
+        ],
+        "ms": 2237,
+        "tin": 13987,
+        "tout": 86,
+        "usd": 0.0033568799999999996,
+        "mustRecall": 0.5,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "housing-coop",
+        "picks": [
+          "slow-deliberation",
+          "dissent-pathways",
+          "consent-governance",
+          "consent-audience",
+          "offline-mesh"
+        ],
+        "ms": 1963,
+        "tin": 13600,
+        "tout": 86,
+        "usd": 0.003264,
+        "mustRecall": 1,
+        "precision": 0.6,
+        "offTarget": [
+          "consent-audience",
+          "offline-mesh"
+        ]
+      },
+      {
+        "persona": "grants-dao",
+        "picks": [
+          "transparent-resource-governance",
+          "consent-governance",
+          "dissent-pathways"
+        ],
+        "ms": 2041,
+        "tin": 14245,
+        "tout": 86,
+        "usd": 0.0034187999999999996,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "mutual-aid",
+        "picks": [
+          "private-need-expression",
+          "privacy-preserving-ai",
+          "e2e-encryption",
+          "consent-audience",
+          "relational-matching"
+        ],
+        "ms": 7279,
+        "tin": 14073,
+        "tout": 86,
+        "usd": 0.00337752,
+        "mustRecall": 1,
+        "precision": 0.8,
+        "offTarget": [
+          "privacy-preserving-ai"
+        ]
+      },
+      {
+        "persona": "worker-coop",
+        "picks": [
+          "transparent-resource-governance",
+          "ephemeral-archival",
+          "consent-governance",
+          "version-controlled-memory",
+          "provenance-tracking"
+        ],
+        "ms": 2379,
+        "tin": 14632,
+        "tout": 86,
+        "usd": 0.0035116799999999997,
+        "mustRecall": 1,
+        "precision": 0.8,
+        "offTarget": [
+          "ephemeral-archival"
+        ]
+      },
+      {
+        "persona": "festival",
+        "picks": [
+          "offline-mesh",
+          "local-first-storage",
+          "local-network-routing",
+          "privacy-preserving-ai",
+          "self-hostable"
+        ],
+        "ms": 2311,
+        "tin": 14589,
+        "tout": 86,
+        "usd": 0.00350136,
+        "mustRecall": 1,
+        "precision": 0.8,
+        "offTarget": [
+          "privacy-preserving-ai"
+        ]
+      },
+      {
+        "persona": "seed-library",
+        "picks": [
+          "self-hostable",
+          "knowledge-commons",
+          "conflict-free-editing",
+          "interoperable-formats",
+          "data-portability"
+        ],
+        "ms": 2483,
+        "tin": 14933,
+        "tout": 86,
+        "usd": 0.00358392,
+        "mustRecall": 1,
+        "precision": 1,
+        "offTarget": []
+      },
+      {
+        "persona": "startup-team",
+        "picks": [
+          "data-portability",
+          "interoperable-formats",
+          "local-first-storage"
+        ],
+        "ms": 1987,
+        "tin": 13772,
+        "tout": 86,
+        "usd": 0.00330528,
+        "mustRecall": 0.5,
+        "precision": 1,
+        "offTarget": []
+      }
+    ]
+  },
+  "writing": {
+    "@cf/deepseek-ai/deepseek-v4.1-flash-1017": {
+      "queries": [
+        {
+          "persona": "riverside",
+          "text": "{ \"restatement\": \"Your group needs a free, no-setup tool for member voting on purchases and shared spending records.\", \"queries\": [\"open source voting tool\", \"participatory budgeting software\", \"community group decision tool\"] }",
+          "ms": 1213,
+          "tin": 275,
+          "tout": 50,
+          "usd": 0.0001425,
+          "out": {
+            "restatement": "Your group needs a free, no-setup tool for member voting on purchases and shared spending records.",
+            "queries": [
+              "open source voting tool",
+              "participatory budgeting software",
+              "community group decision tool"
+            ]
+          },
+          "hitRate": 0.42857142857142855,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "repair-network",
+          "text": "{ \"restatement\": \"Your group needs shared volunteer scheduling across repair cafés with no single owner and phone access.\", \"queries\": [\"decentralized volunteer scheduling\", \"shared calendar no owner\", \"open source shift scheduling\"] }",
+          "ms": 1578,
+          "tin": 278,
+          "tout": 49,
+          "usd": 0.0001422,
+          "out": {
+            "restatement": "Your group needs shared volunteer scheduling across repair cafés with no single owner and phone access.",
+            "queries": [
+              "decentralized volunteer scheduling",
+              "shared calendar no owner",
+              "open source shift scheduling"
+            ]
+          },
+          "hitRate": 0.7333333333333333,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "solo-researcher",
+          "text": "{ \"restatement\": \"Your group needs offline research note tools with sync and data export.\", \"queries\": [\"offline note taking sync\", \"encrypted notes local storage\", \"open source field notes app\"] }",
+          "ms": 1175,
+          "tin": 269,
+          "tout": 46,
+          "usd": 0.0001359,
+          "out": {
+            "restatement": "Your group needs offline research note tools with sync and data export.",
+            "queries": [
+              "offline note taking sync",
+              "encrypted notes local storage",
+              "open source field notes app"
+            ]
+          },
+          "hitRate": 0.7666666666666667,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "housing-coop",
+          "text": "{\n  \"restatement\": \"Your group needs simple tools for members to propose and approve house rule changes between meetings.\",\n  \"queries\": [\n    \"cooperative decision making software\",\n    \"online voting for co-ops\",\n    \"member proposal approval tools\"\n  ]\n}",
+          "ms": 1274,
+          "tin": 261,
+          "tout": 58,
+          "usd": 0.0001479,
+          "out": {
+            "restatement": "Your group needs simple tools for members to propose and approve house rule changes between meetings.",
+            "queries": [
+              "cooperative decision making software",
+              "online voting for co-ops",
+              "member proposal approval tools"
+            ]
+          },
+          "hitRate": 0.4,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "grants-dao",
+          "text": "{ \"restatement\": \"Your group needs a transparent way to allocate a grants budget and track payouts on-chain.\", \"queries\": [\"on-chain grants allocation\", \"quadratic funding grants\", \"treasury payout tracking\"] }",
+          "ms": 1339,
+          "tin": 277,
+          "tout": 48,
+          "usd": 0.00014069999999999998,
+          "out": {
+            "restatement": "Your group needs a transparent way to allocate a grants budget and track payouts on-chain.",
+            "queries": [
+              "on-chain grants allocation",
+              "quadratic funding grants",
+              "treasury payout tracking"
+            ]
+          },
+          "hitRate": 0.7666666666666667,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "mutual-aid",
+          "text": "{ \"restatement\": \"Your group needs free phone tools for private help requests and neighbour matching with no technical setup.\", \"queries\": [\"mutual aid request matching app\", \"private help request board\", \"neighbour matching community tool\"] }",
+          "ms": 1521,
+          "tin": 273,
+          "tout": 51,
+          "usd": 0.00014309999999999998,
+          "out": {
+            "restatement": "Your group needs free phone tools for private help requests and neighbour matching with no technical setup.",
+            "queries": [
+              "mutual aid request matching app",
+              "private help request board",
+              "neighbour matching community tool"
+            ]
+          },
+          "hitRate": 0.43333333333333335,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "worker-coop",
+          "text": "{ \"restatement\": \"Your group needs tools to record and audit profit-sharing decisions that every worker-owner can see.\", \"queries\": [\"profit sharing ledger coop\", \"worker cooperative governance software\", \"sociocracy decision records tool\"] }",
+          "ms": 1443,
+          "tin": 285,
+          "tout": 51,
+          "usd": 0.0001467,
+          "out": {
+            "restatement": "Your group needs tools to record and audit profit-sharing decisions that every worker-owner can see.",
+            "queries": [
+              "profit sharing ledger coop",
+              "worker cooperative governance software",
+              "sociocracy decision records tool"
+            ]
+          },
+          "hitRate": 0.5384615384615384,
+          "emptyQueries": 0,
+          "rules": [
+            "jargon"
+          ]
+        },
+        {
+          "persona": "festival",
+          "text": "{\n  \"restatement\": \"Your group needs offline phone tools for volunteer shift coordination at a festival with no internet.\",\n  \"queries\": [\n    \"offline volunteer shift scheduling\",\n    \"self-hosted festival crew coordination\",\n    \"offline mobile team messaging\"\n  ]\n}",
+          "ms": 1316,
+          "tin": 283,
+          "tout": 59,
+          "usd": 0.0001557,
+          "out": {
+            "restatement": "Your group needs offline phone tools for volunteer shift coordination at a festival with no internet.",
+            "queries": [
+              "offline volunteer shift scheduling",
+              "self-hosted festival crew coordination",
+              "offline mobile team messaging"
+            ]
+          },
+          "hitRate": 0.5,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "seed-library",
+          "text": "{ \"restatement\": \"Your group needs a shared seed catalogue that any member group can host a copy of.\", \"queries\": [\"federated seed catalogue software\", \"open source seed library database\", \"decentralized community catalogue export\"] }",
+          "ms": 1556,
+          "tin": 292,
+          "tout": 52,
+          "usd": 0.00015,
+          "out": {
+            "restatement": "Your group needs a shared seed catalogue that any member group can host a copy of.",
+            "queries": [
+              "federated seed catalogue software",
+              "open source seed library database",
+              "decentralized community catalogue export"
+            ]
+          },
+          "hitRate": 0.6666666666666666,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "startup-team",
+          "text": "{\n  \"restatement\": \"Your group needs an internal knowledge base that stays portable for employees who leave.\",\n  \"queries\": [\n    \"portable knowledge base export\",\n    \"self-hosted wiki data export\",\n    \"open source team wiki\"\n  ]\n}",
+          "ms": 1220,
+          "tin": 265,
+          "tout": 56,
+          "usd": 0.0001467,
+          "out": {
+            "restatement": "Your group needs an internal knowledge base that stays portable for employees who leave.",
+            "queries": [
+              "portable knowledge base export",
+              "self-hosted wiki data export",
+              "open source team wiki"
+            ]
+          },
+          "hitRate": 0.7333333333333333,
+          "emptyQueries": 0,
+          "rules": []
+        }
+      ],
+      "notes": [
+        {
+          "persona": "grants-dao",
+          "field": "legal",
+          "text": "Your group's Wyoming DAO LLC is in progress, so choose software that fits that legal wrapper and lets your group change rules as the LLC forms.",
+          "ms": 1809,
+          "tin": 270,
+          "tout": 31,
+          "usd": 0.00011819999999999999,
+          "rules": [
+            "long(26)"
+          ]
+        },
+        {
+          "persona": "worker-coop",
+          "field": "decision",
+          "text": "Your group needs software that logs circle and general meeting decisions for every worker-owner to review, with no server to run.",
+          "ms": 1024,
+          "tin": 282,
+          "tout": 26,
+          "usd": 0.0001158,
+          "rules": []
+        },
+        {
+          "persona": "festival",
+          "field": "setup",
+          "text": "Your group has one volunteer who can run a Raspberry Pi, so self-hosted offline tools are an option; weigh that against takeover risk if that volunteer leaves.",
+          "ms": 1009,
+          "tin": 277,
+          "tout": 33,
+          "usd": 0.0001227,
+          "rules": [
+            "long(27)"
+          ]
+        },
+        {
+          "persona": "seed-library",
+          "field": "reach",
+          "text": "Your group spans four countries with rural members, so pick software that works offline and syncs later.",
+          "ms": 1078,
+          "tin": 286,
+          "tout": 21,
+          "usd": 0.000111,
+          "rules": []
+        }
+      ],
+      "chat": [
+        {
+          "q": "Can we use Moss without running our own server?",
+          "text": "Yes, with one condition: each group and each Tool forms its own private peer-to-peer network on Holochain, so no central server is needed. Evidence: Moss is described as composable peer-to-peer groupware built on Holochain, with downloadable releases for macOS, Windows and Linux. Reviewed 2026-07-01. Unknown from the briefing: whether setup needs skills beyond installing the app, and whether voting and open spending tools exist in its library.",
+          "ms": 1810,
+          "tin": 1250,
+          "tout": 96,
+          "usd": 0.0004902,
+          "rules": [
+            "not-answer-first",
+            "other-tools(Holochain)"
+          ]
+        },
+        {
+          "q": "Which of these work on a phone?",
+          "text": "Not known from the briefing. The briefing does not say which options run on a phone. It lists desktop and platform details only: Moss has downloadable releases for macOS, Windows and Linux, and Group Income and Hypha list web frontends (Vue.js) with no phone statement. Bonfire lists a stack (Elixir, Phoenix, LiveView) with no phone statement. All four were reviewed between 2026-03-09 and 2026-07-01. Check each project's own install page for phone support before your group decides.",
+          "ms": 2262,
+          "tin": 1248,
+          "tout": 114,
+          "usd": 0.0005112,
+          "rules": []
+        },
+        {
+          "q": "Is Group Income free to use?",
+          "text": "Yes. Group Income is released under AGPL-3.0, an open-source license, and is developed by the okTurtles Foundation, a US non-profit. Reviewed 2026-07-01. The briefing does not state whether hosting or any related service carries a cost.",
+          "ms": 1736,
+          "tin": 1247,
+          "tout": 60,
+          "usd": 0.00044609999999999995,
+          "rules": [
+            "banned"
+          ]
+        },
+        {
+          "q": "What is the takeover risk for Hypha, and why?",
+          "text": "Moderate (3/5). The briefing says Hypha is an open DAO platform tied to blockchain ecosystems and a token, with token-based governance and regulatory exposure from the Hypha token and EOS. Reviewed 2026-07-01. Not known from the briefing: the full funding and key-org dependency details.",
+          "ms": 1658,
+          "tin": 1252,
+          "tout": 68,
+          "usd": 0.00045719999999999995,
+          "rules": []
+        },
+        {
+          "q": "Which tool is best for us?",
+          "text": "No single tool is best for your group. The briefing gives no ranking.\n\n- **Bonfire Networks:** low takeover risk (2/5), reviewed 2026-03-09. Needs building a custom community; no setup skills is a problem.\n- **Group Income:** low takeover risk (2/5), reviewed 2026-07-01. Has polls and group governance; funding includes crypto donations.\n- **Hypha:** moderate takeover risk (3/5), reviewed 2026-07-01. Tied to blockchain and a token, which your group rules out.\n- **Moss:** low takeover risk (2/5), reviewed 2026-07-01. Beta, tied to Holochain and a key founder.\n\nUnknown from the briefing: which fits one neighbourhood, agreement-based decisions, or no-server running.",
+          "ms": 2755,
+          "tin": 1247,
+          "tout": 174,
+          "usd": 0.0005829,
+          "rules": [
+            "banned",
+            "other-tools(Holochain)"
+          ]
+        },
+        {
+          "q": "Does Bonfire support secret ballots?",
+          "text": "Not known from the briefing. The Bonfire entry lists its maturity (released beta, active development), takeover risk (low, 2/5), license (AGPL-3.0) and stack (Elixir, Phoenix, LiveView), reviewed 2026-03-09. It describes a modular federated toolkit for custom communities with fine-grained governance, but says nothing about secret or anonymous ballots. The briefing does not state whether any option supports secret ballots.",
+          "ms": 2317,
+          "tin": 1247,
+          "tout": 98,
+          "usd": 0.0004917,
+          "rules": []
+        }
+      ],
+      "chatLow": [
+        {
+          "q": "Can we use Moss without running our own server?",
+          "text": "Yes. Moss is peer-to-peer groupware built on Holochain, and each group and Tool forms its own private peer-to-peer network. It has downloadable releases for macOS, Windows and Linux. Reviewed 2026-07-01. It is not known from the briefing whether your group needs any hosting, relay or technical setup beyond installing those releases.",
+          "ms": 3492,
+          "tin": 1275,
+          "tout": 330,
+          "usd": 0.0007785,
+          "rules": [
+            "other-tools(Holochain)"
+          ]
+        },
+        {
+          "q": "Which of these work on a phone?",
+          "text": "It is not known from the briefing whether any of these work on a phone. The briefing lists desktop releases for Moss (macOS, Windows, Linux) and web stacks for Bonfire Networks, Group Income and Hypha, but gives no phone support facts. Reviewed dates: Bonfire Networks 2026-03-09; Group Income, Hypha and Moss 2026-07-01. Unknown: phone browser or app support for your group.",
+          "ms": 3960,
+          "tin": 1273,
+          "tout": 241,
+          "usd": 0.0006710999999999999,
+          "rules": [
+            "not-answer-first"
+          ]
+        },
+        {
+          "q": "Is Group Income free to use?",
+          "text": "Not known from the briefing whether Group Income is free to use. The briefing says it is a non-profit, copyleft application with no token, developed by the okTurtles Foundation under AGPL-3.0, and funded by donations. Reviewed 2026-07-01. The briefing does not state fees, hosting costs, or any paid plan.",
+          "ms": 1751,
+          "tin": 1272,
+          "tout": 214,
+          "usd": 0.0006384,
+          "rules": [
+            "not-answer-first"
+          ]
+        },
+        {
+          "q": "What is the takeover risk for Hypha, and why?",
+          "text": "Moderate (3/5). The briefing says Hypha is an open DAO platform tied to blockchain ecosystems and a token. It gives governance and legal control about 3/5 because the Hypha DAO develops it and governance is token-based. It gives regulatory and jurisdictional exposure about 3/5 because of the Hypha token and EOS. Reviewed 2026-07-01. The briefing does not give the full funding and key-organisation dependency details, so your group cannot know those from it.",
+          "ms": 2966,
+          "tin": 1277,
+          "tout": 270,
+          "usd": 0.0007070999999999999,
+          "rules": []
+        },
+        {
+          "q": "Which tool is best for us?",
+          "text": "Not known from the briefing. The briefing does not rank tools or call any best. Bonfire Networks has low takeover risk and is released beta, reviewed 2026-03-09. Group Income has low takeover risk, is production, and includes polls, reviewed 2026-07-01. Hypha has moderate takeover risk, is beta, and is tied to token and blockchain systems, reviewed 2026-07-01. Moss has low takeover risk and is beta, reviewed 2026-07-01. Your group rules out crypto, cost, running a server, and has no setup skills. The briefing does not say whether any option meets those rules.",
+          "ms": 3925,
+          "tin": 1272,
+          "tout": 381,
+          "usd": 0.0008388,
+          "rules": [
+            "banned"
+          ]
+        },
+        {
+          "q": "Does Bonfire support secret ballots?",
+          "text": "Not known from the briefing. Bonfire is described as an open-source, modular, federated social networking toolkit and framework for building custom digital communities and social applications with fine-grained governance. The briefing does not mention secret ballots or any voting method. Reviewed 2026-03-09. Whether Bonfire supports secret ballots is unknown from the briefing.",
+          "ms": 3134,
+          "tin": 1272,
+          "tout": 234,
+          "usd": 0.0006624,
+          "rules": []
+        }
+      ]
+    },
+    "@cf/thinkingmachines/inkling-2-small": {
+      "queries": [
+        {
+          "persona": "riverside",
+          "text": "{\"restatement\":\"Your group needs free, no-server tools that let neighbours vote on tool buys and see where the money goes.\",\"queries\":[\"decentralized member voting\",\"free budget transparency\",\"no server group poll\"]}",
+          "ms": 3429,
+          "tin": 314,
+          "tout": 1004,
+          "usd": 0.0010982000000000001,
+          "out": {
+            "restatement": "Your group needs free, no-server tools that let neighbours vote on tool buys and see where the money goes.",
+            "queries": [
+              "decentralized member voting",
+              "free budget transparency",
+              "no server group poll"
+            ]
+          },
+          "hitRate": 0.1,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "repair-network",
+          "text": "{\"restatement\":\"Your group needs phone-friendly, exportable scheduling tools for repair cafés to share volunteer rosters without one owner.\",\"queries\":[\"open source volunteer scheduling\",\"decentralized shared roster\",\"self-hosted scheduling export\"]}",
+          "ms": 3174,
+          "tin": 321,
+          "tout": 932,
+          "usd": 0.0010283,
+          "out": {
+            "restatement": "Your group needs phone-friendly, exportable scheduling tools for repair cafés to share volunteer rosters without one owner.",
+            "queries": [
+              "open source volunteer scheduling",
+              "decentralized shared roster",
+              "self-hosted scheduling export"
+            ]
+          },
+          "hitRate": 0.6666666666666666,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "solo-researcher",
+          "text": "{\"restatement\":\"Your group needs offline field notes that sync between laptop and phone, with exportable data and solo control.\",\"queries\":[\"offline notes sync\",\"local first notes\",\"markdown notes export\"]}",
+          "ms": 2539,
+          "tin": 306,
+          "tout": 698,
+          "usd": 0.0007898,
+          "out": {
+            "restatement": "Your group needs offline field notes that sync between laptop and phone, with exportable data and solo control.",
+            "queries": [
+              "offline notes sync",
+              "local first notes",
+              "markdown notes export"
+            ]
+          },
+          "hitRate": 0.7407407407407407,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "housing-coop",
+          "text": "{\"restatement\":\"Your group needs simple no-crypto tools for members to propose and vote on house rule changes between meetings.\",\"queries\":[\"between meetings voting\",\"member proposal approval\",\"housing co-op governance\"]}",
+          "ms": 3818,
+          "tin": 301,
+          "tout": 945,
+          "usd": 0.0010352999999999998,
+          "out": {
+            "restatement": "Your group needs simple no-crypto tools for members to propose and vote on house rule changes between meetings.",
+            "queries": [
+              "between meetings voting",
+              "member proposal approval",
+              "housing co-op governance"
+            ]
+          },
+          "hitRate": 0.4,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "grants-dao",
+          "text": "{\"restatement\":\"Your group needs open tools to vote on grants, allocate a budget, and track payouts on-chain publicly.\",\"queries\":[\"DAO grants allocation\",\"on-chain payout tracking\",\"quadratic funding grants\"]}",
+          "ms": 2664,
+          "tin": 321,
+          "tout": 793,
+          "usd": 0.0008893,
+          "out": {
+            "restatement": "Your group needs open tools to vote on grants, allocate a budget, and track payouts on-chain publicly.",
+            "queries": [
+              "DAO grants allocation",
+              "on-chain payout tracking",
+              "quadratic funding grants"
+            ]
+          },
+          "hitRate": 0.7777777777777778,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "mutual-aid",
+          "text": "{\"restatement\":\"Your group needs free, phone-friendly, no-setup tools that let neighbours ask privately and match with nearby offers.\",\"queries\":[\"mutual aid matching\",\"private help requests\",\"neighbour offer matching\"]}",
+          "ms": 1937,
+          "tin": 315,
+          "tout": 535,
+          "usd": 0.0006295,
+          "out": {
+            "restatement": "Your group needs free, phone-friendly, no-setup tools that let neighbours ask privately and match with nearby offers.",
+            "queries": [
+              "mutual aid matching",
+              "private help requests",
+              "neighbour offer matching"
+            ]
+          },
+          "hitRate": 0.391304347826087,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "worker-coop",
+          "text": "{\"restatement\":\"Your group needs open decentralized tools to log profit-sharing decisions for worker-owner audit, no server to run.\",\"queries\":[\"profit sharing ledger\",\"auditable profit sharing\",\"cooperative decision log\"]}",
+          "ms": 5370,
+          "tin": 326,
+          "tout": 1707,
+          "usd": 0.0018047999999999999,
+          "out": {
+            "restatement": "Your group needs open decentralized tools to log profit-sharing decisions for worker-owner audit, no server to run.",
+            "queries": [
+              "profit sharing ledger",
+              "auditable profit sharing",
+              "cooperative decision log"
+            ]
+          },
+          "hitRate": 0.36666666666666664,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "festival",
+          "text": "{\"restatement\":\"Your group needs offline, phone-friendly volunteer shift coordination for a festival site on a Raspberry Pi.\",\"queries\":[\"offline volunteer scheduling\",\"self-hosted roster phones\",\"local shift coordination\"]}",
+          "ms": 2548,
+          "tin": 327,
+          "tout": 750,
+          "usd": 0.0008481000000000001,
+          "out": {
+            "restatement": "Your group needs offline, phone-friendly volunteer shift coordination for a festival site on a Raspberry Pi.",
+            "queries": [
+              "offline volunteer scheduling",
+              "self-hosted roster phones",
+              "local shift coordination"
+            ]
+          },
+          "hitRate": 0.5333333333333333,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "seed-library",
+          "text": "{\"restatement\":\"Your group needs an open, exportable shared seed catalogue that member groups can host and update.\",\"queries\":[\"self hosted seed catalog\",\"federated inventory database\",\"open source catalogue software\"]}",
+          "ms": 2274,
+          "tin": 332,
+          "tout": 590,
+          "usd": 0.0006896000000000001,
+          "out": {
+            "restatement": "Your group needs an open, exportable shared seed catalogue that member groups can host and update.",
+            "queries": [
+              "self hosted seed catalog",
+              "federated inventory database",
+              "open source catalogue software"
+            ]
+          },
+          "hitRate": 0.7333333333333333,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "startup-team",
+          "text": "{\"restatement\":\"Your group needs an internal knowledge base for Brightline that employees can export and carry when they leave.\",\"queries\":[\"open source knowledge base\",\"self hosted wiki export\",\"portable team documentation\"]}",
+          "ms": 1916,
+          "tin": 303,
+          "tout": 544,
+          "usd": 0.0006349,
+          "out": {
+            "restatement": "Your group needs an internal knowledge base for Brightline that employees can export and carry when they leave.",
+            "queries": [
+              "open source knowledge base",
+              "self hosted wiki export",
+              "portable team documentation"
+            ]
+          },
+          "hitRate": 0.6666666666666666,
+          "emptyQueries": 0,
+          "rules": []
+        }
+      ],
+      "notes": [
+        {
+          "persona": "grants-dao",
+          "field": "legal",
+          "text": "Your group’s Wyoming DAO LLC is in progress, so software should stay adaptable. On-chain payouts aid transparency; flexible rules and human review fit your votes.",
+          "ms": 3463,
+          "tin": 313,
+          "tout": 1095,
+          "usd": 0.0011889000000000001,
+          "rules": []
+        },
+        {
+          "persona": "worker-coop",
+          "field": "decision",
+          "text": "Your group’s sociocracy circles plus general-meeting big calls point to hosted tools with shared audit trails for profit-sharing decisions. Trade-off: strict enforcement versus judgement-based logging.",
+          "ms": 3118,
+          "tin": 322,
+          "tout": 923,
+          "usd": 0.0010196,
+          "rules": []
+        },
+        {
+          "persona": "festival",
+          "field": "setup",
+          "text": "Your group can consider software running on a Raspberry Pi offline for phones. Trade-off: one volunteer holds setup, so plan takeover risk and reviewed handover.",
+          "ms": 2477,
+          "tin": 321,
+          "tout": 741,
+          "usd": 0.0008372999999999999,
+          "rules": []
+        },
+        {
+          "persona": "seed-library",
+          "field": "reach",
+          "text": "Your group spans four countries, mostly rural. Software must run on low bandwidth, host copies, export data. Trade-off: simpler travels better; richer needs support.",
+          "ms": 4250,
+          "tin": 324,
+          "tout": 1401,
+          "usd": 0.0014982,
+          "rules": []
+        }
+      ],
+      "chat": [
+        {
+          "q": "Can we use Moss without running our own server?",
+          "text": "Yes, as far as the briefing shows.\n\nMoss is peer-to-peer groupware built on Holochain. Each group and each Tool forms its own private P2P network. Downloadable releases are available for macOS, Windows and Linux. Maturity is Beta, with group-onboarding beta and active development. Takeover risk is low (2/5). License is CAL-1.0. Reviewed: 2026-07-01.\n\nWhat is unknown: the briefing does not say whether you need any always-on node, relay, bootstrap service or setup work. Your group has no setup skills, so that gap matters. It also does not state hosting costs or offline behavior.",
+          "ms": 2294,
+          "tin": 1391,
+          "tout": 517,
+          "usd": 0.0009343,
+          "rules": [
+            "other-tools(Holochain)"
+          ]
+        },
+        {
+          "q": "Which of these work on a phone?",
+          "text": "Not known from the briefing.\n\nNone of the four options states phone or mobile support. Bonfire Networks lists Elixir, Phoenix, LiveView and Surface UI, reviewed 2026-03-09. Group Income lists Vue.js, Hapi.js, Chelonia, chat, polls and file sharing, reviewed 2026-07-01. Hypha lists a TypeScript and Vue.js web client, reviewed 2026-07-01. Moss lists downloadable releases for macOS, Windows and Linux and a Tauri desktop stack, reviewed 2026-07-01.\n\nWhat is unknown: whether any of these run in a phone browser, have iOS or Android apps, or are usable on a phone at all. You would need to check each project directly before deciding.",
+          "ms": 1937,
+          "tin": 1388,
+          "tout": 407,
+          "usd": 0.0008234,
+          "rules": []
+        },
+        {
+          "q": "Is Group Income free to use?",
+          "text": "Not known from the briefing.\n\nThe briefing does not state a price or whether a hosted version is free for you. It says Group Income is open source under AGPL-3.0, developed by the okTurtles Foundation, a US 501(c)(3) non-profit, funded by donations, with no token. Maturity is Released production, v2.8 in April 2026. Takeover risk is low (2/5). Reviewed: 2026-07-01.\n\nUnknown: any subscription, hosting, setup, or support costs, and whether you would need to run infrastructure yourself. Your group rules out cost and running a server, so those points are not answered here.",
+          "ms": 2392,
+          "tin": 1387,
+          "tout": 490,
+          "usd": 0.0009061,
+          "rules": [
+            "banned"
+          ]
+        },
+        {
+          "q": "What is the takeover risk for Hypha, and why?",
+          "text": "Moderate (3/5).\n\nHypha is an open DAO platform tied to blockchain ecosystems and a token. It is developed by the Hypha DAO and open-sourced, with token-based governance. The briefing also flags regulatory and jurisdictional exposure around the Hypha token and EOS, but the text is cut off there. Maturity is Beta: Beta Program launched 2023, dao.hypha.earth operational, active development, EOS home chain, Cardano and Substrate in progress. License is open source, GPL/unspecified per repos. Reviewed: 2026-07-01.\n\nFor your group, the token and blockchain basis conflicts with your rule against crypto. The full regulatory detail is not known from the briefing because the entry is truncated.",
+          "ms": 2382,
+          "tin": 1393,
+          "tout": 604,
+          "usd": 0.0010219,
+          "rules": [
+            "other-tools(Cardano)"
+          ]
+        },
+        {
+          "q": "Which tool is best for us?",
+          "text": "I can’t call one best.\n\nYour group rules out crypto, cost, running a server, and has no setup skills. Hypha is tied to tokens and EOS/Cardano/Substrate, so it conflicts with the crypto rule; maturity Beta; takeover risk moderate (3/5); reviewed 2026-07-01. Bonfire is a modular toolkit for building custom communities, so setup burden is unclear and likely needs skills; maturity v1.0.0-beta/v1.0.1 alpha; takeover risk low (2/5); reviewed 2026-03-09. Group Income is production v2.8, with polls and group governance, AGPL-3.0, non-profit, no token; takeover risk low (2/5); reviewed 2026-07-01. Moss is Beta with downloadable desktop releases and group tools; takeover risk low (2/5); reviewed 2026-07-01.\n\nUnknown: exact costs, hosting needs, and whether Group Income’s BTC/XMR/ZEC donations matter to your crypto rule.",
+          "ms": 3126,
+          "tin": 1387,
+          "tout": 679,
+          "usd": 0.0010951,
+          "rules": [
+            "banned",
+            "other-tools(Cardano)"
+          ]
+        },
+        {
+          "q": "Does Bonfire support secret ballots?",
+          "text": "Not known from the briefing.\n\nThe briefing says Bonfire Networks is an open-source, modular, federated social networking toolkit and framework for building custom digital communities and social applications with fine-grained governance. Its maturity is listed as Released (v1.0.0-beta / v1.0.1 social alpha, active development). Takeover risk is low (2/5). It was reviewed on 2026-03-09.\n\nThe briefing does not say whether Bonfire supports secret ballots, voting at all, or ballot privacy as a built-in feature or extension. It also does not say what setup your group would need. You would need to check Bonfire’s current docs or ask the project before relying on it for member voting.",
+          "ms": 2200,
+          "tin": 1389,
+          "tout": 428,
+          "usd": 0.0008447000000000001,
+          "rules": []
+        }
+      ],
+      "chatLow": [
+        {
+          "q": "Can we use Moss without running our own server?",
+          "text": "Yes, with one condition: the briefing points to peer-to-peer use, not a stated server setup.\n\nMoss is described as composable peer-to-peer groupware built on Holochain. Each group and each Tool forms its own private P2P network. Downloadable releases are available for macOS, Windows and Linux. Maturity is Beta, with group-onboarding beta and active development. Takeover risk is low (2/5). Reviewed: 2026-07-01.\n\nWhat is unknown: the briefing does not say whether Moss needs any relay, bootstrap node, hosting account or technical setup. It also does not say how hard installation is for a group with no setup skills. So you can treat “no own server” as supported by the P2P design, but not fully confirmed.",
+          "ms": 1880,
+          "tin": 1393,
+          "tout": 468,
+          "usd": 0.0008859,
+          "rules": [
+            "not-answer-first",
+            "other-tools(Holochain)"
+          ]
+        },
+        {
+          "q": "Which of these work on a phone?",
+          "text": "Not known from the briefing.\n\nThe briefing does not state phone support for any option. It says Moss has downloadable releases for macOS, Windows and Linux, which points to desktop rather than phone. Bonfire Networks is described as a social networking toolkit with Elixir/Phoenix/LiveView components, but no phone app or mobile support is stated. Group Income lists chat, polls, file sharing and governance, but no phone platform is stated. Hypha lists a web client and blockchain-based governance, but no phone support is stated.\n\nFor your group, the phone question cannot be settled from these facts. You would need to check each project’s current app or browser support directly.\n\nReviewed dates: Bonfire Networks 2026-03-09; Group Income, Hypha and Moss 2026-07-01.",
+          "ms": 1827,
+          "tin": 1390,
+          "tout": 334,
+          "usd": 0.000751,
+          "rules": []
+        },
+        {
+          "q": "Is Group Income free to use?",
+          "text": "Not fully known from the briefing.\n\nGroup Income is open source under AGPL-3.0, with code at github.com/okTurtles/group-income. It is developed by the okTurtles Foundation, a US 501(c)(3) non-profit, and funded by donations. Maturity: Released (production), v2.8 in April 2026. Takeover risk: low (2/5). Reviewed: 2026-07-01.\n\nWhat is unknown: the briefing does not state a price, hosting fee, or whether a ready-to-use hosted version is free for your group. It also does not say what running it yourselves would cost, and your group rules out running a server. So the briefing supports “the code is open source,” not a clear answer on free day-to-day use.",
+          "ms": 1578,
+          "tin": 1389,
+          "tout": 366,
+          "usd": 0.0007827,
+          "rules": [
+            "banned"
+          ]
+        },
+        {
+          "q": "What is the takeover risk for Hypha, and why?",
+          "text": "Moderate (3/5).\n\nThe briefing says Hypha is an open DAO platform tied to blockchain ecosystems and a token. Governance and legal control are about 3 because it is developed by the Hypha DAO and open-sourced, with token-based governance. Regulatory and jurisdictional exposure is about 3 because of the Hypha token and EOS connection. It is in Beta, and it was reviewed on 2026-07-01. For you and your group, the crypto and token elements also sit against your stated rules.\n\nUnknown from the briefing: the full funding picture and the complete regulatory detail are cut off in the text provided.",
+          "ms": 1955,
+          "tin": 1395,
+          "tout": 435,
+          "usd": 0.0008535,
+          "rules": []
+        },
+        {
+          "q": "Which tool is best for us?",
+          "text": "No single best can be named from the briefing.\n\nFor your group, the trade-offs are: Group Income is the most mature option, production v2.8 in April 2026, low takeover risk, with polls, group governance and file sharing; reviewed 2026-07-01. Bonfire Networks is open-source and modular with fine-grained governance, but still v1.0.0-beta / v1.0.1 social alpha and likely needs more assembly; reviewed 2026-03-09. Moss is beta groupware with downloadable desktop releases and low takeover risk, but tied to Holochain and a key founder; reviewed 2026-07-01. Hypha is beta, token/EOS-based and moderate takeover risk, which clashes with your crypto rule; reviewed 2026-07-01.\n\nUnknown: exact cost, setup effort, and whether any option meets your no-server and no-setup-skills limits.",
+          "ms": 2511,
+          "tin": 1389,
+          "tout": 525,
+          "usd": 0.0009417000000000001,
+          "rules": [
+            "banned",
+            "other-tools(Holochain)"
+          ]
+        },
+        {
+          "q": "Does Bonfire support secret ballots?",
+          "text": "Not known from the briefing.\n\nThe Bonfire Networks entry says it is an open-source, modular, federated social networking toolkit and framework for building custom digital communities and social applications with fine-grained governance. It lists maturity as released in beta/alpha with active development, low takeover risk, AGPL-3.0 licensing, and an Elixir/Phoenix stack. Reviewed: 2026-03-09.\n\nThe briefing does not say whether Bonfire supports secret ballots, voting privacy, or ballot secrecy. You would need to check Bonfire’s documentation or ask the project before relying on it for secret voting.",
+          "ms": 1681,
+          "tin": 1391,
+          "tout": 373,
+          "usd": 0.0007903,
+          "rules": []
+        }
+      ]
+    },
+    "@cf/google/gemma-4-26b-a4b-it": {
+      "queries": [
+        {
+          "persona": "riverside",
+          "text": "{ \"restatement\": \"You and your group need software to manage local tool lending and community voting without technical setup.\", \"queries\": [ \"community voting tools\", \"shared expense tracker\", \"collaborative decision making\" ] }",
+          "ms": 2319,
+          "tin": 297,
+          "tout": 47,
+          "usd": 0.00004380000000000001,
+          "out": {
+            "restatement": "You and your group need software to manage local tool lending and community voting without technical setup.",
+            "queries": [
+              "community voting tools",
+              "shared expense tracker",
+              "collaborative decision making"
+            ]
+          },
+          "hitRate": 0.36666666666666664,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "repair-network",
+          "text": "{ \"restatement\": \"Your group needs decentralized software to share volunteer schedules without a single owner.\", \"queries\": [ \"decentralized scheduling tools\", \"peer to peer calendars\", \"distributed volunteer management\" ] }",
+          "ms": 2382,
+          "tin": 301,
+          "tout": 45,
+          "usd": 0.0000436,
+          "out": {
+            "restatement": "Your group needs decentralized software to share volunteer schedules without a single owner.",
+            "queries": [
+              "decentralized scheduling tools",
+              "peer to peer calendars",
+              "distributed volunteer management"
+            ]
+          },
+          "hitRate": 0.7666666666666667,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "solo-researcher",
+          "text": "{ \"restatement\": \"You and your group need decentralized tools for offline ethnographic note-taking with mobile and laptop synchronization.\" , \"queries\": [ \"offline markdown notes\", \"decentralized note sync\", \"distributed field notes\" ] }",
+          "ms": 1737,
+          "tin": 292,
+          "tout": 50,
+          "usd": 0.000044200000000000004,
+          "out": {
+            "restatement": "You and your group need decentralized tools for offline ethnographic note-taking with mobile and laptop synchronization.",
+            "queries": [
+              "offline markdown notes",
+              "decentralized note sync",
+              "distributed field notes"
+            ]
+          },
+          "hitRate": 0.8,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "housing-coop",
+          "text": "{ \"restatement\": \"You and your group need software to manage rule changes and voting for your housing cooperative.\", \"queries\": [ \"collaborative decision making tools\", \"community voting software\", \"cooperative governance tools\" ] }",
+          "ms": 1343,
+          "tin": 285,
+          "tout": 49,
+          "usd": 0.0000432,
+          "out": {
+            "restatement": "You and your group need software to manage rule changes and voting for your housing cooperative.",
+            "queries": [
+              "collaborative decision making tools",
+              "community voting software",
+              "cooperative governance tools"
+            ]
+          },
+          "hitRate": 0.3333333333333333,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "grants-dao",
+          "text": "{\n\"restatement\": \"Your group needs tools to manage grant distribution and track on-chain payments through transparent voting.\",\n\"queries\": [\n\"decentralized grant management\",\n\"on-chain treasury voting\",\n\"transparent fund distribution\"\n]\n}",
+          "ms": 1656,
+          "tin": 302,
+          "tout": 57,
+          "usd": 0.0000473,
+          "out": {
+            "restatement": "Your group needs tools to manage grant distribution and track on-chain payments through transparent voting.",
+            "queries": [
+              "decentralized grant management",
+              "on-chain treasury voting",
+              "transparent fund distribution"
+            ]
+          },
+          "hitRate": 0.6,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "mutual-aid",
+          "text": "{ \"restatement\": \"Your group needs tools to match neighbors for private help requests using mobile phones.\", \"queries\": [ \"mutual aid matching\", \"community help requests\", \"neighbor support tools\" ] }",
+          "ms": 1677,
+          "tin": 294,
+          "tout": 43,
+          "usd": 0.000042300000000000005,
+          "out": {
+            "restatement": "Your group needs tools to match neighbors for private help requests using mobile phones.",
+            "queries": [
+              "mutual aid matching",
+              "community help requests",
+              "neighbor support tools"
+            ]
+          },
+          "hitRate": 0.3793103448275862,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "worker-coop",
+          "text": "{ \"restatement\": \"You and your group need tools to track and audit profit-sharing decisions within a worker cooperative.\" , \"queries\": [ \"decentralized ledger cooperative\", \"distributed profit sharing\", \"peer to peer auditing\" ] }",
+          "ms": 1632,
+          "tin": 311,
+          "tout": 51,
+          "usd": 0.000046399999999999996,
+          "out": {
+            "restatement": "You and your group need tools to track and audit profit-sharing decisions within a worker cooperative.",
+            "queries": [
+              "decentralized ledger cooperative",
+              "distributed profit sharing",
+              "peer to peer auditing"
+            ]
+          },
+          "hitRate": 0.16666666666666666,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "festival",
+          "text": "{ \"restatement\": \"You and your group need offline mobile tools for volunteer shift coordination at a local festival.\", \"queries\": [ \"offline volunteer scheduling\", \"mobile mesh coordination\", \"decentralized task management\" ] }",
+          "ms": 1585,
+          "tin": 309,
+          "tout": 48,
+          "usd": 0.000045299999999999997,
+          "out": {
+            "restatement": "You and your group need offline mobile tools for volunteer shift coordination at a local festival.",
+            "queries": [
+              "offline volunteer scheduling",
+              "mobile mesh coordination",
+              "decentralized task management"
+            ]
+          },
+          "hitRate": 0.5,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "seed-library",
+          "text": "{ \"restatement\": \"Your group needs a shared seed catalogue that members can host and export independently.\", \"queries\": [ \"decentralized database software\", \"distributed catalog tools\", \"open source inventory management\" ] }",
+          "ms": 1609,
+          "tin": 316,
+          "tout": 46,
+          "usd": 0.0000454,
+          "out": {
+            "restatement": "Your group needs a shared seed catalogue that members can host and export independently.",
+            "queries": [
+              "decentralized database software",
+              "distributed catalog tools",
+              "open source inventory management"
+            ]
+          },
+          "hitRate": 0.7666666666666667,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "startup-team",
+          "text": "{ \"restatement\": \"You and your group need a decentralized knowledge base with portable data for a small company.\", \"queries\": [ \"decentralized wiki knowledge base\", \"open source documentation tool\", \"portable markdown knowledge base\" ] }",
+          "ms": 2550,
+          "tin": 288,
+          "tout": 50,
+          "usd": 0.000043799999999999994,
+          "out": {
+            "restatement": "You and your group need a decentralized knowledge base with portable data for a small company.",
+            "queries": [
+              "decentralized wiki knowledge base",
+              "open source documentation tool",
+              "portable markdown knowledge base"
+            ]
+          },
+          "hitRate": 0.6,
+          "emptyQueries": 0,
+          "rules": []
+        }
+      ],
+      "notes": [
+        {
+          "persona": "grants-dao",
+          "field": "legal",
+          "text": "Your group is forming a Wyoming DAO LLC. You must choose software that aligns with this legal structure and your preference for human judgment.",
+          "ms": 1219,
+          "tin": 295,
+          "tout": 27,
+          "usd": 0.0000376,
+          "rules": []
+        },
+        {
+          "persona": "worker-coop",
+          "field": "decision",
+          "text": "Your group needs software that supports circle structures and general meetings. You must choose tools that allow for transparent profit-sharing reviews.",
+          "ms": 1461,
+          "tin": 309,
+          "tout": 26,
+          "usd": 0.000038700000000000006,
+          "rules": []
+        },
+        {
+          "persona": "festival",
+          "field": "setup",
+          "text": "Your group can use a Raspberry Pi for offline coordination. This option requires one volunteer to manage the hardware.",
+          "ms": 1165,
+          "tin": 304,
+          "tout": 22,
+          "usd": 0.000037,
+          "rules": []
+        },
+        {
+          "persona": "seed-library",
+          "field": "reach",
+          "text": "Your group has members in rural areas across four countries. Choose software that works with low internet speeds and offline access.",
+          "ms": 1006,
+          "tin": 311,
+          "tout": 24,
+          "usd": 0.000038299999999999996,
+          "rules": []
+        }
+      ],
+      "chat": [
+        {
+          "q": "Can we use Moss without running our own server?",
+          "text": "No. The briefing does not state if you can use Moss without running a server. You and your group must consider that Moss uses a peer-to-peer network where each group forms its own private network. Moss is in beta and has downloadable releases for macOS, Windows, and Linux. The takeover risk is low (2/5) because it is tied to a founder and the Holochain ecosystem. It was reviewed on 2026-07-01.",
+          "ms": 2501,
+          "tin": 1315,
+          "tout": 99,
+          "usd": 0.0001612,
+          "rules": [
+            "other-tools(Holochain)"
+          ]
+        },
+        {
+          "q": "Which of these work on a phone?",
+          "text": "It is not known from the briefing if any of these options work on a phone.\n\nThe briefing provides the following information regarding software stacks and availability:\n* Bonfire Networks uses Elixir and Phoenix. Reviewed 2026-03-09.\n* Group Income uses Vue.js and Hapi.js. Reviewed 2026-07-01.\n* Hypha uses TypeScript, Vue.js, C++, Rust, and Java. Reviewed 2026-07-01.\n* Moss offers downloadable releases for macOS, Windows, and Linux. Reviewed 2026-07-01.\n\nThe briefing does not mention mobile operating systems or phone compatibility for you and your group.",
+          "ms": 3851,
+          "tin": 1313,
+          "tout": 158,
+          "usd": 0.0001787,
+          "rules": [
+            "not-answer-first"
+          ]
+        },
+        {
+          "q": "Is Group Income free to use?",
+          "text": "It is not known from the briefing if Group Income is free to use. The briefing states it is a non-profit application under the AGPL-3.0 license (Reviewed 2026-07-01). It mentions the okTurtles Foundation is funded by donations (Reviewed 2026-07-01). The briefing does not state whether users must pay to use the platform.",
+          "ms": 2470,
+          "tin": 1312,
+          "tout": 89,
+          "usd": 0.00015790000000000002,
+          "rules": [
+            "not-answer-first"
+          ]
+        },
+        {
+          "q": "What is the takeover risk for Hypha, and why?",
+          "text": "Yes, the takeover risk for Hypha is moderate (3/5). It is an open DAO platform tied to blockchain ecosystems and a token. Governance and legal control is a 3/5 because it is developed by the Hypha DAO and uses token-based governance. Regulatory and jurisdictional exposure is also a 3/5 due to the Hypha token and EOS. This information was reviewed on 2026-07-01. It is not known from the briefing how these factors specifically impact your group.",
+          "ms": 2919,
+          "tin": 1317,
+          "tout": 108,
+          "usd": 0.00016410000000000003,
+          "rules": []
+        },
+        {
+          "q": "Which tool is best for us?",
+          "text": "It is not known from the briefing which tool is best for you and your group.\n\nYou have options with different trade-offs. Bonfire Networks is a modular social networking toolkit with low takeover risk (reviewed 2026-03-09). Group Income is a coordination platform with chat, polls, and file sharing; it has low takeover risk (reviewed 2026-07-01). Hypha provides governance and treasury tools but has moderate takeover risk due to its tie to blockchain and a token (reviewed 2026-07-01). Moss allows you to assemble custom tool suites from a library; it has low takeover risk (reviewed 2026-07-01).\n\nThe briefing does not state if these tools require setup skills or running a server. It also does not mention if these tools use crypto.",
+          "ms": 4636,
+          "tin": 1312,
+          "tout": 183,
+          "usd": 0.00018610000000000002,
+          "rules": [
+            "banned",
+            "not-answer-first"
+          ]
+        },
+        {
+          "q": "Does Bonfire support secret ballots?",
+          "text": "It is not known from the briefing if Bonfire Networks supports secret ballots.\n\nThe briefing describes Bonfire Networks as an open-source, modular, federated social networking toolkit for building custom digital communities. It mentions fine-grained governance. It does not list specific voting features like secret ballots.\n\nThe briefing was reviewed on 2026-03-09.",
+          "ms": 2219,
+          "tin": 1312,
+          "tout": 78,
+          "usd": 0.00015460000000000002,
+          "rules": [
+            "not-answer-first"
+          ]
+        }
+      ],
+      "chatLow": []
+    },
+    "@cf/qwen/qwen3.8-27b": {
+      "queries": [
+        {
+          "persona": "riverside",
+          "text": "{\n  \"restatement\": \"Your group needs a simple, free, offline tool to vote on purchases and track spending.\",\n  \"queries\": [\n    \"offline voting tool\",\n    \"simple expense tracker\",\n    \"no server budget app\"\n  ]\n}",
+          "ms": 1720,
+          "tin": 300,
+          "tout": 60,
+          "usd": 0.000327,
+          "out": {
+            "restatement": "Your group needs a simple, free, offline tool to vote on purchases and track spending.",
+            "queries": [
+              "offline voting tool",
+              "simple expense tracker",
+              "no server budget app"
+            ]
+          },
+          "hitRate": 0.3181818181818182,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "repair-network",
+          "text": "{\n  \"restatement\": \"Your group needs shared volunteer scheduling where no single entity owns the data.\",\n  \"queries\": [\n    \"decentralized volunteer scheduling\",\n    \"peer to peer roster\",\n    \"open source shift planner\"\n  ]\n}",
+          "ms": 22038,
+          "tin": 303,
+          "tout": 59,
+          "usd": 0.00032514999999999996,
+          "out": {
+            "restatement": "Your group needs shared volunteer scheduling where no single entity owns the data.",
+            "queries": [
+              "decentralized volunteer scheduling",
+              "peer to peer roster",
+              "open source shift planner"
+            ]
+          },
+          "hitRate": 0.7666666666666667,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "solo-researcher",
+          "text": "{\n  \"restatement\": \"Your group needs offline-capable, exportable note software for solo ethnographic fieldwork.\",\n  \"queries\": [\n    \"offline field notes\",\n    \"sync research notes\",\n    \"exportable note app\"\n  ]\n}",
+          "ms": 1636,
+          "tin": 295,
+          "tout": 60,
+          "usd": 0.00032475,
+          "out": {
+            "restatement": "Your group needs offline-capable, exportable note software for solo ethnographic fieldwork.",
+            "queries": [
+              "offline field notes",
+              "sync research notes",
+              "exportable note app"
+            ]
+          },
+          "hitRate": 0.6521739130434783,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "housing-coop",
+          "text": "{\n  \"restatement\": \"Your group needs a simple tool for residents to propose and vote on house rule changes.\",\n  \"queries\": [\n    \"community rule voting\",\n    \"resident proposal approval\",\n    \"cooperative decision making\"\n  ]\n}",
+          "ms": 1671,
+          "tin": 286,
+          "tout": 59,
+          "usd": 0.0003175,
+          "out": {
+            "restatement": "Your group needs a simple tool for residents to propose and vote on house rule changes.",
+            "queries": [
+              "community rule voting",
+              "resident proposal approval",
+              "cooperative decision making"
+            ]
+          },
+          "hitRate": 0.25925925925925924,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "grants-dao",
+          "text": "{\n  \"restatement\": \"Your group needs a transparent on-chain tool to allocate grants and track payouts.\",\n  \"queries\": [\n    \"on-chain grant tracker\",\n    \"decentralized budget allocation tool\",\n    \"open source payout ledger\"\n  ]\n}",
+          "ms": 2548,
+          "tin": 301,
+          "tout": 61,
+          "usd": 0.00033065000000000004,
+          "out": {
+            "restatement": "Your group needs a transparent on-chain tool to allocate grants and track payouts.",
+            "queries": [
+              "on-chain grant tracker",
+              "decentralized budget allocation tool",
+              "open source payout ledger"
+            ]
+          },
+          "hitRate": 0.43333333333333335,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "mutual-aid",
+          "text": "{\n  \"restatement\": \"Your group needs a free, phone-based tool for private help requests and neighbour matching.\",\n  \"queries\": [\n    \"private help matching app\",\n    \"neighbourhood mutual aid tool\",\n    \"community request matching software\"\n  ]\n}",
+          "ms": 1658,
+          "tin": 297,
+          "tout": 63,
+          "usd": 0.00033525,
+          "out": {
+            "restatement": "Your group needs a free, phone-based tool for private help requests and neighbour matching.",
+            "queries": [
+              "private help matching app",
+              "neighbourhood mutual aid tool",
+              "community request matching software"
+            ]
+          },
+          "hitRate": 0.41379310344827586,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "worker-coop",
+          "text": "{\n  \"restatement\": \"Your group needs a serverless tool to record and audit profit-sharing decisions for all worker-owners.\",\n  \"queries\": [\n    \"decentralized ledger audit\",\n    \"serverless profit share\",\n    \"cooperative decision log\"\n  ]\n}",
+          "ms": 2128,
+          "tin": 310,
+          "tout": 65,
+          "usd": 0.0003475,
+          "out": {
+            "restatement": "Your group needs a serverless tool to record and audit profit-sharing decisions for all worker-owners.",
+            "queries": [
+              "decentralized ledger audit",
+              "serverless profit share",
+              "cooperative decision log"
+            ]
+          },
+          "hitRate": 0.2,
+          "emptyQueries": 0,
+          "rules": [
+            "jargon"
+          ]
+        },
+        {
+          "persona": "festival",
+          "text": "{\n  \"restatement\": \"Your group needs offline phone tools for volunteers to coordinate festival shifts.\",\n  \"queries\": [\n    \"offline shift scheduling\",\n    \"local mesh roster\",\n    \"pi volunteer tracker\"\n  ]\n}",
+          "ms": 5407,
+          "tin": 309,
+          "tout": 54,
+          "usd": 0.00031185,
+          "out": {
+            "restatement": "Your group needs offline phone tools for volunteers to coordinate festival shifts.",
+            "queries": [
+              "offline shift scheduling",
+              "local mesh roster",
+              "pi volunteer tracker"
+            ]
+          },
+          "hitRate": 0.64,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "seed-library",
+          "text": "{\n  \"restatement\": \"Your group needs a shared seed catalogue that any member can host and export.\",\n  \"queries\": [\n    \"decentralized seed database\",\n    \"open source seed catalog\",\n    \"federated seed registry\"\n  ]\n}",
+          "ms": 1633,
+          "tin": 317,
+          "tout": 60,
+          "usd": 0.00033465,
+          "out": {
+            "restatement": "Your group needs a shared seed catalogue that any member can host and export.",
+            "queries": [
+              "decentralized seed database",
+              "open source seed catalog",
+              "federated seed registry"
+            ]
+          },
+          "hitRate": 0.6333333333333333,
+          "emptyQueries": 0,
+          "rules": []
+        },
+        {
+          "persona": "startup-team",
+          "text": "{\n  \"restatement\": \"Your group needs a portable internal knowledge base for a small climate consultancy.\",\n  \"queries\": [\n    \"portable knowledge base\",\n    \"exportable team wiki\",\n    \"self hosted notes\"\n  ]\n}",
+          "ms": 1723,
+          "tin": 290,
+          "tout": 57,
+          "usd": 0.00031289999999999996,
+          "out": {
+            "restatement": "Your group needs a portable internal knowledge base for a small climate consultancy.",
+            "queries": [
+              "portable knowledge base",
+              "exportable team wiki",
+              "self hosted notes"
+            ]
+          },
+          "hitRate": 0.6153846153846154,
+          "emptyQueries": 0,
+          "rules": []
+        }
+      ],
+      "notes": [
+        {
+          "persona": "grants-dao",
+          "field": "legal",
+          "text": "Your group’s Wyoming DAO LLC status requires software that supports legal entity integration. Choose tools that align with your on-chain tracking needs and evolving governance rules.",
+          "ms": 1068,
+          "tin": 293,
+          "tout": 31,
+          "usd": 0.00023105,
+          "rules": [
+            "long(26)"
+          ]
+        },
+        {
+          "persona": "worker-coop",
+          "field": "decision",
+          "text": "Your group uses sociocracy circles. Choose software that supports distinct circle levels and general meeting votes. This structure ensures profit-sharing decisions remain auditable by every worker-owner.",
+          "ms": 1334,
+          "tin": 307,
+          "tout": 34,
+          "usd": 0.00024695,
+          "rules": [
+            "long(26)"
+          ]
+        },
+        {
+          "persona": "festival",
+          "field": "setup",
+          "text": "Your group needs software running on a single Raspberry Pi. This limits choices to lightweight tools that one volunteer can manage offline.",
+          "ms": 42123,
+          "tin": 303,
+          "tout": 25,
+          "usd": 0.00021635,
+          "rules": []
+        },
+        {
+          "persona": "seed-library",
+          "field": "reach",
+          "text": "Your group spans four countries with rural members. Choose software that works on low bandwidth and allows local hosting.",
+          "ms": 19496,
+          "tin": 311,
+          "tout": 22,
+          "usd": 0.00021035000000000002,
+          "rules": []
+        }
+      ],
+      "chat": [
+        {
+          "q": "Can we use Moss without running our own server?",
+          "text": "Yes. Moss is peer-to-peer groupware where each group forms its own private P2P network. This design removes the need for a central server. The briefing reviewed Moss on 2026-07-01. It is unknown if specific network conditions or device requirements apply to your group.",
+          "ms": 5248,
+          "tin": 1279,
+          "tout": 64,
+          "usd": 0.0007803500000000002,
+          "rules": []
+        },
+        {
+          "q": "Which of these work on a phone?",
+          "text": "Not known from the briefing. The facts list desktop stacks like Elixir, Vue.js, and Tauri, but do not state if any option runs on a phone. You and your group cannot confirm mobile support from this text.",
+          "ms": 1427,
+          "tin": 1277,
+          "tout": 48,
+          "usd": 0.00072825,
+          "rules": []
+        },
+        {
+          "q": "Is Group Income free to use?",
+          "text": "Yes. Group Income is open-source under the AGPL-3.0 license. This license allows free use, modification, and distribution. The platform is funded by donations, not user fees. This fact was reviewed on 2026-07-01. The briefing does not specify if any third-party services used by Group Income charge separate fees.",
+          "ms": 1954,
+          "tin": 1276,
+          "tout": 75,
+          "usd": 0.0008142000000000001,
+          "rules": []
+        },
+        {
+          "q": "What is the takeover risk for Hypha, and why?",
+          "text": "Moderate (3/5). Hypha is an open DAO platform tied to blockchain ecosystems and a token. Governance and legal control score 3 because it is developed by the Hypha DAO with token-based governance. Regulatory and jurisdictional exposure scores 3 due to the Hypha token and EOS home chain. Reviewed 2026-07-01.",
+          "ms": 6989,
+          "tin": 1281,
+          "tout": 76,
+          "usd": 0.0008196500000000001,
+          "rules": []
+        },
+        {
+          "q": "Which tool is best for us?",
+          "text": "The briefing does not rank options or call any tool best.\n\nBonfire is in alpha, uses Elixir, and has low takeover risk. Group Income is in production, uses Vue.js, and has low takeover risk. Hypha is in beta, uses blockchain, and has moderate takeover risk. Moss is in beta, uses Holochain, and has low takeover risk.\n\nYou and your group rule out crypto, cost, running a server, and lack setup skills. Hypha uses tokens and blockchain. Bonfire, Group Income, and Moss are open source. The briefing does not state which tools require running a server or specific setup skills. It does not state which tools are free. It does not state which tools fit a 2 to 10 person group deciding by agreement.",
+          "ms": 25712,
+          "tin": 1276,
+          "tout": 161,
+          "usd": 0.0010894000000000001,
+          "rules": [
+            "banned",
+            "long(123)",
+            "not-answer-first",
+            "other-tools(Holochain)"
+          ]
+        },
+        {
+          "q": "Does Bonfire support secret ballots?",
+          "text": "Not known from the briefing.\n\nThe briefing describes Bonfire Networks as a modular, federated social networking toolkit with fine-grained governance. It lists the stack (Elixir, Phoenix, LiveView) and maturity (v1.0.0-beta). It does not state whether Bonfire supports secret ballots. The review date is 2026-03-09.",
+          "ms": 2711,
+          "tin": 1276,
+          "tout": 80,
+          "usd": 0.0008302,
+          "rules": []
+        }
+      ],
+      "chatLow": [
+        {
+          "q": "Can we use Moss without running our own server?",
+          "text": "Yes, based on the briefing.\n\nMoss is described as \"peer-to-peer groupware\" where \"each group and each Tool within it forms its own private P2P network.\" That means no central server for you and your group to run. Downloadable releases exist for macOS, Windows, and Linux.\n\nReviewed: 2026-07-01.\n\nNot known from the briefing: whether the P2P setup requires any technical skill to configure, and whether it works well for a group of 2 to 10 people in one neighbourhood. The group's \"no setup skills\" rule is not addressed in the Moss entry.",
+          "ms": 31425,
+          "tin": 1303,
+          "tout": 447,
+          "usd": 0.00201675,
+          "rules": []
+        },
+        {
+          "q": "Which of these work on a phone?",
+          "text": "Not known from the briefing.\n\nThe briefing lists desktop stacks for all four: Bonfire uses Elixir/Phoenix (web), Group Income uses Vue.js/Hapi.js (web), Hypha uses a web client plus blockchain runtimes, and Moss uses Tauri with releases for macOS, Windows, and Linux only. None mention phone or mobile support.\n\nReviewed dates: Bonfire 2026-03-09; Group Income, Hypha, Moss 2026-07-01.",
+          "ms": 29965,
+          "tin": 1301,
+          "tout": 318,
+          "usd": 0.0016030500000000002,
+          "rules": []
+        },
+        {
+          "q": "Is Group Income free to use?",
+          "text": "Yes. Group Income is licensed under AGPL-3.0, a free open-source license. Reviewed 2026-07-01.\n\nWhat is not known from the briefing: whether any hosted or paid service tier exists alongside the self-hosted option.",
+          "ms": 10355,
+          "tin": 1300,
+          "tout": 309,
+          "usd": 0.0015738000000000002,
+          "rules": []
+        },
+        {
+          "q": "What is the takeover risk for Hypha, and why?",
+          "text": "Moderate (3/5). The briefing rates it moderate because it is an open DAO platform tied to blockchain ecosystems and a token. Governance and legal control score about 3: it is developed by the Hypha DAO and open-sourced, with token-based governance. Regulatory and jurisdictional exposure also scores about 3, tied to the Hypha token and EOS. Reviewed 2026-07-01.\n\nWhat is unknown: the briefing does not spell out specific takeover scenarios beyond the token and blockchain ties.",
+          "ms": 10375,
+          "tin": 1305,
+          "tout": 425,
+          "usd": 0.00194725,
+          "rules": []
+        },
+        {
+          "q": "Which tool is best for us?",
+          "text": "No single tool is best. Here are the trade-offs against your constraints:\n\n- **Hypha** is ruled out: it runs on blockchain and a token.\n- **Bonfire Networks** is a framework for building custom apps. It likely needs setup skills and a server to run.\n- **Group Income** is in production, has no token, and includes polls and chat. It is a platform you may need to host.\n- **Moss** is peer-to-peer, so no server. It is a desktop app, so no setup skills beyond installing. It has no crypto. It is in beta.\n\nWhat is unknown: whether Group Income can be hosted without cost or technical skill, and whether Moss's beta is stable enough for your group's use.",
+          "ms": 12706,
+          "tin": 1300,
+          "tout": 580,
+          "usd": 0.002441,
+          "rules": [
+            "banned"
+          ]
+        },
+        {
+          "q": "Does Bonfire support secret ballots?",
+          "text": "Not known from the briefing. The briefing describes Bonfire as a toolkit with \"fine-grained governance\" but does not state whether it supports secret ballots. Reviewed 2026-03-09.",
+          "ms": 4127,
+          "tin": 1300,
+          "tout": 149,
+          "usd": 0.0010618,
+          "rules": []
+        }
+      ]
+    }
+  },
+  "price": {
+    "@cf/google/gemma-4-26b-a4b-it": {
+      "in": 0.1,
+      "out": 0.3
+    },
+    "@cf/qwen/qwen3.8-27b": {
+      "in": 0.45,
+      "out": 3.2
+    },
+    "@cf/cloudflare/clef": {
+      "in": 0.24,
+      "out": 0
+    },
+    "@cf/cloudflare/clef-flash": {
+      "in": 0.038,
+      "out": 0
+    },
+    "@cf/cloudflare/clairic": {
+      "in": 0.24,
+      "out": 0,
+      "note": "0.10 promo until Dec 1, 2026"
+    },
+    "@cf/deepseek-ai/deepseek-v4.1-flash-1017": {
+      "in": 0.3,
+      "out": 1.2
+    },
+    "@cf/thinkingmachines/inkling-2-small": {
+      "in": 0.3,
+      "out": 1
+    }
+  }
+}

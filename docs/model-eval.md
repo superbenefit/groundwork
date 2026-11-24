@@ -1,4 +1,64 @@
-# M0 model eval: Plan step
+# Model eval
+
+Round 2 (Nov 24, 2026) replaces the round 1 decision below. Full tables and every sample answer: [eval/round2-summary.md](eval/round2-summary.md); raw results: [eval/round2-raw.json](eval/round2-raw.json). Harness: `scripts/eval-models.mjs`, gold labels: `scripts/eval-gold.mjs`.
+
+## Round 2: picks and writing
+
+Run against the `m0-spike` Preview through the `groundwork` gateway, with requests paced 1.5 s apart (an unpaced first attempt hit the gateway's rate limit and was discarded). Reasoning off for every model unless marked "low". Prices are list prices from developers.cloudflare.com on Nov 24, 2026.
+
+### Picks: which capabilities a question needs
+
+Same 10 personas. Each pick set is scored against hand-labelled gold sets: **core needs found** (recall of the 1–2 capabilities the question can't be answered without) and **precision** (share of picks that are core or reasonable). The gold labels are a judgement call and are worth a second look.
+
+| Model | How it was asked | Core needs found | Precision | p50 / max latency | Cost per 1,000 runs |
+|---|---|---|---|---|---|
+| **Clef-flash** | 43 yes/no questions, keep p ≥ 0.5, top 5 | **95%** | **100%** | **0.3 s / 0.9 s** | $0.18 |
+| Clef | same | 95% | 94% | 0.6 s / 1.0 s | $1.12 |
+| Gemma 4 | JSON schema, ids as enum | 95% | 92% | 1.5 s / 21.2 s | $0.12 |
+| Qwen 3.8 | same | 90% | 88% | 1.8 s / 7.6 s | $0.62 |
+| Clairic | 43 boolean fields | 90% | 84% | 2.3 s / 16.3 s | $3.42 ($1.42 at the promo price) |
+
+- Clef-flash had no off-target picks and the tightest latency. It returns a probability per capability, so ranking and the "how sure" signal come from the model rather than from prompt-following.
+- Gemma matches it on recall but adds unrelated picks (for example `self-hostable` and `local-first-storage` for a voting question) and had one 21 s call.
+- Clairic is built for reading values out of text, not choosing among options; it is the slowest and most expensive here and the least precise.
+- Clef costs more than Gemma because 43 questions cost about 4.7k input tokens. At $0.18 per 1,000 runs that doesn't matter.
+
+### Writing: search queries, notes and chat answers
+
+Three tasks per model:
+- **Search queries:** 3 queries per persona, run against a local keyword index of the 273 tools. Score: the share of top-10 hits that carry a relevant capability.
+- **Notes:** one note per "Other" answer, at most 25 words.
+- **Chat:** 6 follow-up questions over a briefing context built from the real records for Bonfire, Group Income, Hypha and Moss. Two are traps: "Which tool is best for us?", and a question the facts can't answer.
+
+DeepSeek V4.1 Flash and Inkling 2 Small were the candidates; Gemma and Qwen ran as baselines.
+
+| Model | Query hit rate | Note length (words) | Chat length (mean, range) | Chat p50 | Chat output tokens | Cost per 1,000 chat turns |
+|---|---|---|---|---|---|---|
+| **DeepSeek V4.1 Flash** | **60%** | 17–27 | **64** (36–99) | **2.3 s** | 102 | $0.50 |
+| Inkling 2 Small | 54% | 24–25 | 103 (93–120) | 2.4 s | 521 | $0.94 |
+| Gemma 4 | 53% | 19–24 | 76 (51–120) | 2.9 s | 119 | $0.17 |
+| Qwen 3.8 | 49% | 19–26 | 57 (37–123) | 5.2 s | 84 | $0.84 |
+
+Rule checks, after removing false positives ("US non-profit" matched the ban on "us"; Holochain and Cardano are in the context, so they are not invented tools):
+- **Every model** used the word "best" when declining to rank ("No single tool is best"). That fails the validator. The prompt needs an explicit "don't use the word best, even to deny it" line, plus a post-filter.
+- No model used "we", "our" or "us", and none named a tool outside the context.
+
+Reading the answers:
+- **DeepSeek:** answers first ("Yes, with one condition…", "Moderate (3/5)."), cites review dates, names what's unknown, and stays short. One overreach: it answered "Is Group Income free?" with "Yes" on the strength of the licence, then caveated hosting cost. Its notes are the most useful ("…weigh that against takeover risk if that volunteer leaves"), but two of four ran 1–2 words over 25. Its queries retrieved the most relevant tools.
+- **Inkling:** the most careful about what's unknown; it correctly said Group Income's price isn't stated. But it runs long (always 93–120 words against a 120 cap) and its notes read clipped ("Trade-off: simpler travels better; richer needs support"). With thinking turned off it still emitted about 5× more output tokens than its visible text, so it costs about twice DeepSeek.
+- **Gemma:** contradicted itself ("No." then "the briefing does not state…" for the Moss server question; "Yes, the takeover risk is moderate"). It is cheapest, but the weakest at answering first.
+- **Qwen:** concise and accurate, but slowest (5.2 s off, 12.7 s with low reasoning) and its output tokens cost 2.7× DeepSeek's.
+- **Low reasoning** didn't improve DeepSeek's or Inkling's rule compliance and added latency, so reasoning stays off.
+
+### Proposed model plan
+
+| Job | Model | Why |
+|---|---|---|
+| Capability picks, Plan flags (`wantsOrgModels`, `wantsMoney`), "Other" → closest option | **Clef-flash** | Most precise, fastest, calibrated probabilities. "Other" mapping becomes a `choice` question whose criteria are that field's real options, which fixes the round 1 `mappedTo` problem. |
+| Need wording, search queries, notes, Compose prose, follow-up chat | **DeepSeek V4.1 Flash** (reasoning off) | Best query retrieval, answers first, short, grounded, about half Inkling's cost |
+| Fallback for picks / writing | Gemma 4 | Cheap, reliable schema output |
+
+## Round 1: Plan step (superseded)
 
 Run on Nov 24, 2026 against the `m0-spike` Preview (`m0-spike-groundwork.superbenefit.workers.dev`), through the `default` AI Gateway (the `groundwork` gateway id was not found from the Worker; see below). Runner: `scripts/eval.mjs`. Personas: `src/eval/personas.ts`.
 
