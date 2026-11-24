@@ -25,7 +25,7 @@ Browser ── static pages (Astro build in dist/, served as Worker assets; neve
 
 ## Identity and access
 
-1. On first load, the page asks `GET /api/session`. With no valid cookie it runs Turnstile (invisible unless Cloudflare wants a challenge) and posts the token to `POST /api/session`.
+1. The welcome screen is prerendered and paints before any of this. In the background the page asks `GET /api/session`; with no valid cookie it runs Turnstile (invisible unless Cloudflare wants a challenge) and posts the token to `POST /api/session`. Only starting a briefing waits for the session.
 2. The Worker verifies the token, then sets `gw_session`: an HttpOnly, Secure, SameSite=Lax cookie holding `{ workspaceId, exp }` signed with HMAC-SHA-256 (`COOKIE_SECRET`). It lasts 7 days. The workspace id is also kept in `localStorage`, so the same browser keeps its groups when the cookie is renewed.
 3. Every `/agents/*` request and WebSocket goes through `gate()`: the cookie must be valid, `workspace-agent/<id>` must be the cookie's workspace, and `briefing-agent/<name>` must start with `<workspace>:`. Anything else is 401 or 403.
 
@@ -119,7 +119,7 @@ The `ratelimits` binding is approximate (per location), so the weekly caps, whic
 
 ## Front end (`web/`)
 
-Astro builds static pages with React islands (`client:only`): `/` (`App`: session, then onboarding or the returning screen) and `/briefing?s=<name>` (`BriefingPage`). Islands talk to agents with `useAgent` and receive state over the WebSocket; the chat panel renders messages with Think's `useAgentChat` but sends through `ask()`.
+Astro builds static pages with React islands: `/` (`App`, `client:load`, so the welcome screen is in the HTML; the session and workspace connection start in the background, and a browser with saved groups, marked by `gw.returning` in localStorage, goes to the returning screen) and `/briefing?s=<name>` (`BriefingPage`). Islands talk to agents with `useAgent` and receive state over the WebSocket; the chat panel renders messages with Think's `useAgentChat` but sends through `ask()`.
 
 | Component | Screen |
 |---|---|

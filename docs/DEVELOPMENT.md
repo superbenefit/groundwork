@@ -32,6 +32,8 @@ Workers AI only runs remotely, so a local `wrangler dev` can serve the pages but
 
 Previews have their own Durable Objects (separate data per branch), share the production KV snapshot, use Turnstile's always-pass test key, and expose the dev routes below. Cron triggers don't run on previews; use `POST /api/dev/snapshot`.
 
+`workers_dev` is off (production is served only at groundwork.superbenefit.dev), so `wrangler.jsonc` sets `preview_urls: true`; without it Preview URLs return Cloudflare error 1042. The setting is applied by production deploys from `main`.
+
 ### Dev routes (previews only)
 
 All of these return 404 on `groundwork.superbenefit.dev` (`src/dev.ts`).
