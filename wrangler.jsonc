@@ -1,0 +1,163 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "groundwork",
+  "main": "src/server.ts",
+  "compatibility_date": "2026-11-17",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "build": {
+    "command": "npx astro build"
+  },
+  "workers_dev": false,
+  "routes": [
+    {
+      "pattern": "groundwork.superbenefit.dev",
+      "custom_domain": true
+    }
+  ],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": [
+      "/agents/*",
+      "/api/*"
+    ]
+  },
+  "ai": {
+    "binding": "AI"
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "WorkspaceAgent",
+        "class_name": "WorkspaceAgent"
+      },
+      {
+        "name": "BriefingAgent",
+        "class_name": "BriefingAgent"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "WorkspaceAgent",
+        "BriefingAgent"
+      ]
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "OH_CACHE",
+      "id": "c533a4d6e4b546e5a1b7c7325100a58a"
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "RL_SESSION",
+      "namespace_id": "2101",
+      "simple": {
+        "limit": 10,
+        "period": 60
+      }
+    },
+    {
+      "name": "RL_RUN",
+      "namespace_id": "2102",
+      "simple": {
+        "limit": 3,
+        "period": 60
+      }
+    },
+    {
+      "name": "RL_CHAT",
+      "namespace_id": "2103",
+      "simple": {
+        "limit": 20,
+        "period": 60
+      }
+    }
+  ],
+  "triggers": {
+    "crons": [
+      "17 4 * * *"
+    ]
+  },
+  "vars": {
+    "MODEL_PICK": "@cf/cloudflare/clef-flash",
+    "MODEL_WRITE": "@cf/deepseek-ai/deepseek-v4.1-flash-1017",
+    "MODEL_FALLBACK": "@cf/google/gemma-4-26b-a4b-it",
+    "AI_GATEWAY_ID": "groundwork",
+    "PRODUCTION_HOST": "groundwork.superbenefit.dev",
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAGQXeHxPm9HUPaLm",
+    "OPENHAVEN_API": "https://openhaven.net/api",
+    "OPENHAVEN_MCP": "https://openhaven.net/mcp",
+    "RETENTION_DAYS": "30"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "previews": {
+    "durable_objects": {
+      "bindings": [
+        {
+          "name": "WorkspaceAgent",
+          "class_name": "WorkspaceAgent"
+        },
+        {
+          "name": "BriefingAgent",
+          "class_name": "BriefingAgent"
+        }
+      ]
+    },
+    "vars": {
+      "MODEL_PICK": "@cf/cloudflare/clef-flash",
+      "MODEL_WRITE": "@cf/deepseek-ai/deepseek-v4.1-flash-1017",
+      "MODEL_FALLBACK": "@cf/google/gemma-4-26b-a4b-it",
+      "AI_GATEWAY_ID": "groundwork",
+      "PRODUCTION_HOST": "groundwork.superbenefit.dev",
+      "TURNSTILE_SITE_KEY": "1x00000000000000000000AA",
+      "OPENHAVEN_API": "https://openhaven.net/api",
+      "OPENHAVEN_MCP": "https://openhaven.net/mcp",
+      "RETENTION_DAYS": "30"
+    },
+    "ai": {
+      "binding": "AI"
+    },
+    "kv_namespaces": [
+      {
+        "binding": "OH_CACHE",
+        "id": "c533a4d6e4b546e5a1b7c7325100a58a"
+      }
+    ],
+    "ratelimits": [
+      {
+        "name": "RL_SESSION",
+        "namespace_id": "2101",
+        "simple": {
+          "limit": 10,
+          "period": 60
+        }
+      },
+      {
+        "name": "RL_RUN",
+        "namespace_id": "2102",
+        "simple": {
+          "limit": 3,
+          "period": 60
+        }
+      },
+      {
+        "name": "RL_CHAT",
+        "namespace_id": "2103",
+        "simple": {
+          "limit": 20,
+          "period": 60
+        }
+      }
+    ]
+  }
+}
