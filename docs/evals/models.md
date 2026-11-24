@@ -1,6 +1,6 @@
-# Model eval
+# How the models were chosen
 
-Round 2 (Nov 24, 2026) replaces the round 1 decision below. Full tables and every sample answer: [eval/round2-summary.md](eval/round2-summary.md); raw results: [eval/round2-raw.json](eval/round2-raw.json). Harness: `scripts/eval-models.mjs`, gold labels: `scripts/eval-gold.mjs`.
+Round 2 (Nov 24, 2026) replaces the round 1 decision below. Full tables and every sample answer: [models-round2.md](models-round2.md); raw results: [models-round2.json](models-round2.json). Harness: `evals/models.mjs` (`npm run eval:models`), gold labels: `evals/gold.mjs`.
 
 ## Round 2: picks and writing
 
@@ -60,7 +60,7 @@ Reading the answers:
 
 ## Round 1: Plan step (superseded)
 
-Run on Nov 24, 2026 against the `m0-spike` Preview (`m0-spike-groundwork.superbenefit.workers.dev`), through the `default` AI Gateway (the `groundwork` gateway id was not found from the Worker; see below). Runner: `scripts/eval.mjs`. Personas: `src/eval/personas.ts`.
+Run on Nov 24, 2026 against the `m0-spike` Preview (`m0-spike-groundwork.superbenefit.workers.dev`), through the `default` AI Gateway (the `groundwork` gateway id was not found from the Worker; see below). Runner: a round-1 script since replaced by `evals/models.mjs`. Personas: `evals/personas.ts`.
 
 Each call is one `generateText` with `Output.object({ schema: Plan })`, non-streaming, temperature 0.2, **reasoning off** (`reasoningEffort: null`, `chat_template_kwargs.enable_thinking: false`).
 

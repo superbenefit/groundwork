@@ -29,7 +29,7 @@ async function runOnce(env: ModelEnv, model: string, input: Record<string, unkno
   );
 }
 
-/** Reasoning-off switches differ by model family (docs/model-eval.md). */
+/** Reasoning-off switches differ by model family (docs/evals/models.md). */
 export function noReasoning(model: string): Record<string, unknown> {
   return model.includes("deepseek") ? { reasoning_effort: "none" } : { chat_template_kwargs: { enable_thinking: false } };
 }

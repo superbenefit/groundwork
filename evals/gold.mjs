@@ -1,7 +1,7 @@
 // Hand-labelled capability sets per eval persona (M0 model eval).
 // must: capabilities the question cannot be answered without.
 // ok: capabilities that are a reasonable, relevant pick.
-// Anything else counts as an off-target pick. Labels are a judgement call; review them in docs/model-eval.md.
+// Anything else counts as an off-target pick. Labels are a judgement call; review them in docs/evals/models.md.
 export const GOLD = {
   riverside: {
     must: ["consent-governance", "transparent-resource-governance"],

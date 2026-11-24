@@ -1,5 +1,7 @@
 # Groundwork: PRD (proof of concept)
 
+> **Design record (Nov 24, 2026).** This is the product brief the app was built from. Some details changed during the build; for how Groundwork works now, see [ARCHITECTURE.md](../ARCHITECTURE.md).
+
 *A SuperBenefit guide that helps groups find tools that fit them, using OpenHaven's record.*
 
 Status: draft for review · Nov 24, 2026
@@ -338,7 +340,7 @@ Worker (Hono)  ── run_worker_first: /agents/*, /api/*  ── static assets 
 
 ## 13. Models
 
-Chosen from the M0 evals ([model-eval.md](model-eval.md)):
+Chosen from the M0 evals ([evals/models.md](../evals/models.md)):
 
 | Job | Model | Variable |
 |---|---|---|

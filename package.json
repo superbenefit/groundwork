@@ -11,8 +11,10 @@
     "deploy": "astro build && wrangler deploy",
     "typecheck": "wrangler types && tsc --noEmit",
     "test": "vitest run",
-    "eval": "node scripts/eval.mjs",
-    "snapshot": "node scripts/snapshot.mjs"
+    "check": "npm run typecheck && npm test",
+    "snapshot": "node scripts/snapshot.mjs",
+    "eval:models": "node evals/models.mjs",
+    "eval:briefings": "node evals/briefings.mjs"
   },
   "dependencies": {
     "@ai-sdk/provider": "4.0.39",
@@ -37,5 +39,6 @@
     "typescript": "7.0.2",
     "vitest": "4.1.12",
     "wrangler": "4.167.0"
-  }
+  },
+  "description": "Find open, community-run tools that fit how a group works. A SuperBenefit proof of concept powered by OpenHaven."
 }
